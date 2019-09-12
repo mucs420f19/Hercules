@@ -3,16 +3,16 @@
 #include <string>
 #include <vector>
 
-#define UMLFieldVisiblityPublic 1
-#define UMLFieldVisiblityPrivate 2
+#define UMLFieldVisibilityPublic 1
+#define UMLFieldVisibilityPrivate 2
 
 struct UMLField
 {
-	UMLField(std::string in_name, std::string in_type, int in_visiblity)
+	UMLField(std::string in_name, std::string in_type, int in_Visibility)
 	{
 		name = in_name;
 		type = in_type;
-		visibility = in_visiblity;
+		visibility = in_Visibility;
 	}
 	std::string name;
 	std::string type;
@@ -22,12 +22,12 @@ struct UMLField
 		std::string out;
 		switch (visibility)
 		{
-			case UMLFieldVisiblityPublic: 
+			case UMLFieldVisibilityPublic: 
 			{
 				out = "Public";
 				break;
 			}
-			case UMLFieldVisiblityPrivate:
+			case UMLFieldVisibilityPrivate:
 			{
 				out = "Private";
 				break;
@@ -43,12 +43,12 @@ struct UMLField
 
 struct UMLMethod
 {
-	UMLMethod(std::string in_name, std::string in_type, std::vector<std::string> in_parameters, int in_visiblity)
+	UMLMethod(std::string in_name, std::string in_type, std::vector<std::string> in_parameters, int in_Visibility)
 	{
 		name = in_name;
 		return_type = in_type;
 		parameters = in_parameters;
-		visibility = in_visiblity;
+		visibility = in_Visibility;
 	}
 	std::string name;
 	std::string return_type;
@@ -59,12 +59,12 @@ struct UMLMethod
 		std::string out;
 		switch (visibility)
 		{
-		case UMLFieldVisiblityPublic:
+		case UMLFieldVisibilityPublic:
 		{
 			out = "Public";
 			break;
 		}
-		case UMLFieldVisiblityPrivate:
+		case UMLFieldVisibilityPrivate:
 		{
 			out = "Private";
 			break;

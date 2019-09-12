@@ -7,3 +7,5 @@ cmake_minimum_required (VERSION 3.8)
 add_executable (HerculesProject "Main.cpp" "UMLObject.h" "UMLObject.cpp")
 
 # TODO: Add tests and install targets if needed.
+
+set(CMAKE_CXX_STANDARD 14)
