@@ -1,4 +1,11 @@
-*.*
-!CmakeLists.txt
-!*.cpp
-!*.h
+build/
+*.exe
+*.o
+*.so
+*.gch
+*.suo
+*.db
+*.opendb
+*.ipch
+*.json
+*.sqlite
