@@ -1,13 +1,12 @@
 ﻿// HerculesProject.cpp : Defines the entry point for the application.
 //
 
-#include "HerculesProject.h"
-#include "Windows.h"
+#include <iostream>
 
-using namespace std;
+#include "UMLObject.h"
 
 int main()
 {
-	cout << "Hello CMake." << endl;
+	std::cout << "Hello Team Hercules." << std::endl;
 	return 0;
 }
