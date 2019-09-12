@@ -1,0 +1,4 @@
+*.*
+!CmakeLists.txt
+!*.cpp
+!*.h
