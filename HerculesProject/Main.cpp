@@ -13,9 +13,9 @@ int main()
 	UMLObject* a = new UMLObject();
 
 	a->SetTitle("test1");
-	a->AddField(UMLField("field1", "float", UMLFieldVisiblityPublic));
-	a->AddField(UMLField("field2", "unsigned int", UMLFieldVisiblityPrivate));
-	a->AddMethod(UMLMethod("Method1()", "unsigned int", {}, UMLFieldVisiblityPrivate));
+	a->AddField(UMLField("field1", "float", UMLFieldVisibilityPublic));
+	a->AddField(UMLField("field2", "unsigned int", UMLFieldVisibilityPrivate));
+	a->AddMethod(UMLMethod("Method1()", "unsigned int", {}, UMLFieldVisibilityPrivate));
 
 
 
