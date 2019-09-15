@@ -1,5 +1,6 @@
 #pragma once
 #include "UMLObject.h"
+#include <fstream>
 
 namespace SavingLoadingIO
 {

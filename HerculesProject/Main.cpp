@@ -38,15 +38,15 @@ int main()
 	b->SetTitle("Wheels");
 	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
 	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-	b->AddMethod(UMLMethod("Rotate()", "unsigned int", {}, UMLFieldVisibilityPrivate));
+	b->AddMethod(UMLMethod("Rotate()", "unsigned int", {"Dummy param 1", "Dummy param 2"}, UMLFieldVisibilityPrivate));
 
 	std::cout << a->ToString() << std::endl << std::endl;
 
 	std::cout << b->ToString() << std::endl;
 
-	UMLObjectsDestructor();
-
 	SavingLoadingIO::SaveProjectToFile(UMLObjects_holder);
+
+	UMLObjectsDestructor();
 
 	return 0;
 }
