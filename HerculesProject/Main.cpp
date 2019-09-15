@@ -3,6 +3,7 @@
 
 #include <iostream>
 
+#include "SavingLoadingIO.h"
 #include "UMLObject.h"
 
 std::vector<UMLObject*> UMLObjects_holder;
@@ -44,6 +45,8 @@ int main()
 	std::cout << b->ToString() << std::endl;
 
 	UMLObjectsDestructor();
+
+	SavingLoadingIO::SaveProjectToFile(UMLObjects_holder);
 
 	return 0;
 }
