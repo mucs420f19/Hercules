@@ -70,6 +70,10 @@ std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 	return methods;
 }
 
+UMLField::UMLField()
+{
+}
+
 std::string UMLField::ReturnName()
 {
 	return name;
@@ -83,6 +87,25 @@ std::string UMLField::ReturnType()
 int UMLField::ReturnVisibility()
 {
 	return visibility;
+}
+
+void UMLField::SetName(std::string in)
+{
+	name = in;
+}
+
+void UMLField::SetReturnType(std::string in)
+{
+	type = in;
+}
+
+void UMLField::SetVisibility(int in)
+{
+	visibility = in;
+}
+
+UMLMethod::UMLMethod()
+{
 }
 
 std::string UMLMethod::ReturnName()
@@ -103,4 +126,24 @@ std::vector<std::string> UMLMethod::ReturnParameters()
 int UMLMethod::ReturnVisibility()
 {
 	return visibility;
+}
+
+void UMLMethod::SetName(std::string in)
+{
+	name = in;
+}
+
+void UMLMethod::SetReturnType(std::string in)
+{
+	return_type = in;
+}
+
+void UMLMethod::SetVisibility(int in)
+{
+	visibility = in;
+}
+
+void UMLMethod::SetParameters(std::vector<std::string> in)
+{
+	parameters = in;
 }

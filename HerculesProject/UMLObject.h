@@ -8,6 +8,7 @@
 
 struct UMLField
 {
+	UMLField();
 	UMLField(std::string in_name, std::string in_type, int in_visiblity)
 	{
 		name = in_name;
@@ -39,6 +40,10 @@ struct UMLField
 	std::string ReturnName();
 	std::string ReturnType();
 	int ReturnVisibility();
+
+	void SetName(std::string in);
+	void SetReturnType(std::string in);
+	void SetVisibility(int in);
 private:
 	std::string name;
 	std::string type;
@@ -47,6 +52,7 @@ private:
 
 struct UMLMethod
 {
+	UMLMethod();
 	UMLMethod(std::string in_name, std::string in_type, std::vector<std::string> in_parameters, int in_visiblity)
 	{
 		name = in_name;
@@ -87,6 +93,11 @@ struct UMLMethod
 	std::string ReturnType();
 	std::vector<std::string> ReturnParameters();
 	int ReturnVisibility();
+
+	void SetName(std::string in);
+	void SetReturnType(std::string in);
+	void SetVisibility(int in);
+	void SetParameters(std::vector<std::string> in);
 private:
 	std::string name;
 	std::string return_type;
