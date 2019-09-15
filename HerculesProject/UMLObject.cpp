@@ -59,3 +59,48 @@ std::string UMLObject::ToString()
 {
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
 }
+
+std::vector<UMLField> UMLObject::ReturnFieldsRaw()
+{
+	return fields;
+}
+
+std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
+{
+	return methods;
+}
+
+std::string UMLField::ReturnName()
+{
+	return name;
+}
+
+std::string UMLField::ReturnType()
+{
+	return type;
+}
+
+int UMLField::ReturnVisibility()
+{
+	return visibility;
+}
+
+std::string UMLMethod::ReturnName()
+{
+	return name;
+}
+
+std::string UMLMethod::ReturnType()
+{
+	return return_type;
+}
+
+std::vector<std::string> UMLMethod::ReturnParameters()
+{
+	return parameters;
+}
+
+int UMLMethod::ReturnVisibility()
+{
+	return visibility;
+}

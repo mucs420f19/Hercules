@@ -14,9 +14,6 @@ struct UMLField
 		type = in_type;
 		visibility = in_visiblity;
 	}
-	std::string name;
-	std::string type;
-	int visibility;
 	std::string GetVisibilityString()
 	{
 		std::string out;
@@ -39,6 +36,13 @@ struct UMLField
 	{
 		return "{" + name + ", " + type + ", " + GetVisibilityString() + "}";
 	 }
+	std::string ReturnName();
+	std::string ReturnType();
+	int ReturnVisibility();
+private:
+	std::string name;
+	std::string type;
+	int visibility;
 };
 
 struct UMLMethod
@@ -50,10 +54,6 @@ struct UMLMethod
 		parameters = in_parameters;
 		visibility = in_visiblity;
 	}
-	std::string name;
-	std::string return_type;
-	std::vector<std::string> parameters;
-	int visibility;
 	std::string GetVisibilityString()
 	{
 		std::string out;
@@ -83,6 +83,15 @@ struct UMLMethod
 		out += GetVisibilityString() + "}";
 		return out;
 	}
+	std::string ReturnName();
+	std::string ReturnType();
+	std::vector<std::string> ReturnParameters();
+	int ReturnVisibility();
+private:
+	std::string name;
+	std::string return_type;
+	std::vector<std::string> parameters;
+	int visibility;
 };
 
 class UMLObject
@@ -97,6 +106,9 @@ public:
 	std::string ReturnFields();
 	std::string ReturnMethods();
 	std::string ToString();
+
+	std::vector<UMLField> ReturnFieldsRaw();
+	std::vector<UMLMethod> ReturnMethodsRaw();
 private:
 	std::string title;
 	std::vector<UMLField> fields;
