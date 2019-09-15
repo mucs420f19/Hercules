@@ -25,6 +25,9 @@ void UMLObjectsDestructor()
 
 int main()
 {
+
+	std::cout << "Creating example UMLObjects...\n\n\n";
+
 	UMLObject* a = UMLObjectFactory();
 
 	a->SetTitle("Car");
@@ -50,22 +53,26 @@ int main()
 	before1 = a->ToString();
 	before2 = b->ToString();
 
+	std::cout << "Saving and destroying these UMLObjects...\n\n\n";
+
 	//save them to file
 	SavingLoadingIO::SaveProjectToFile(UMLObjects_holder);
 
 	//destory them out of memory
 	UMLObjectsDestructor();
 
+	std::cout << "Reloading UMLObjects...\n\n\n";
+
 	//load them into memory again
 	UMLObjects_holder = SavingLoadingIO::LoadProject();
 
+
+
+	std::cout << "Comparing UMLObjects before and after...\n\n\n";
 	a = UMLObjects_holder[0];
 	b = UMLObjects_holder[1];
-
 	std::cout << a->ToString() << std::endl << std::endl;
-
 	std::cout << b->ToString() << std::endl << std::endl;
-
 
 	after1 = a->ToString();
 	after2 = b->ToString();
