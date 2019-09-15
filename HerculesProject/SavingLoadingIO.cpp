@@ -79,6 +79,7 @@ namespace SavingLoadingIO
 		std::vector<std::string> lines;
 		while (std::getline(in, line))
 		{
+			while (line[0] == ' ') line.erase(line.begin(), line.begin() + 1);
 			lines.push_back(line);
 		}
 
