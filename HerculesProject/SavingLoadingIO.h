@@ -7,7 +7,7 @@
 
 namespace SavingLoadingIO
 {
-	void SaveProjectToFile(std::vector<UMLObject*> in);
+	void SaveProjectToFile(std::vector<UMLObject*> in, std::string filename = DefaultFileName);
 	std::vector<UMLObject*> LoadProject(std::string filename = DefaultFileName);
 	std::string RemoveQuotes(std::string in);
 	UMLObject* ProcessUMLObject(std::vector<std::string> i1);

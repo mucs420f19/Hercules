@@ -2,9 +2,9 @@
 
 namespace SavingLoadingIO
 {
-	void SaveProjectToFile(std::vector<UMLObject*> in)
+	void SaveProjectToFile(std::vector<UMLObject*> in, std::string filename)
 	{
-		std::ofstream out(DefaultFileName);
+		std::ofstream out(filename);
 		out << "<HerculesProject>\n";
 		for (auto i : in)
 		{
