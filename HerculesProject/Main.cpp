@@ -22,15 +22,15 @@ void UMLObjectsDestructor()
 		delete i;
 	}
 }
+
 void UMLObjectPrintTitles()
 {
 	for (auto i : UMLObjects_holder)
-	std::cout << i->ReturnTitle() << std::endl;
+		std::cout << i->ReturnTitle() << std::endl;
 }
 
-int main()
+void RunUnitTests()
 {
-
 	std::cout << "Creating example UMLObjects...\n\n\n";
 
 	UMLObject* a = UMLObjectFactory();
@@ -46,7 +46,7 @@ int main()
 	b->SetTitle("Wheels");
 	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
 	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-	b->AddMethod(UMLMethod("Rotate()", "unsigned int", {"Dummy param 1", "Dummy param 2"}, UMLFieldVisibilityPrivate));
+	b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
 
 	std::cout << a->ToString() << std::endl << std::endl;
 
@@ -93,6 +93,10 @@ int main()
 		std::cout << "UMLObject2 is correct" << std::endl;
 	}
 	else std::cout << "UMLObject2 is not correct" << std::endl;
+}
 
+int main()
+{
+	RunUnitTests();
 	return 0;
 }
