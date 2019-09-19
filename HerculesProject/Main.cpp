@@ -7,8 +7,10 @@
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
 
-void RunUnitTests()
+void RunUnitTest1()
 {
+	std::cout << "---------------\nRunning test 1...---------------\n\n\n\n";
+
 
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
@@ -104,10 +106,95 @@ void RunUnitTests()
 		std::cout << "UMLObject2 is correct" << std::endl;
 	}
 	else std::cout << "UMLObject2 is not correct" << std::endl;
+
+	std::cout << "---------------\nTest 1 completed...---------------\n\n\n\n";
+
+}
+
+void RunUnitTest2()
+{
+	std::cout << "---------------\nRunning test 2...\n---------------\n\n\n\n";
+
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+
+	UMLObject* a = NULL, * b = NULL;
+
+	if (holder->CreateNewClass("Car"))
+	{
+		std::cout << "Successfully created class" << std::endl;
+
+		a = holder->ReturnPtrToVector()[0];
+
+		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+		a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+		std::cout << a->ToString() << std::endl << std::endl;
+
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
+
+	if (holder->CreateNewClass("Wheel"))
+	{
+		std::cout << "Successfully created class" << std::endl;
+
+		b = holder->ReturnPtrToVector()[1];
+
+		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+		b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
+		std::cout << b->ToString() << std::endl << std::endl;
+
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
+
+
+	if (b != NULL)
+	{
+		if (holder->EditClassTitle("Car", "Wheel"))
+		{
+			std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
+			std::cout << "TEST 2 FAILED\n\n\n";
+		}
+		else
+		{
+			std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
+		}
+
+		std::cout << b->ToString() << std::endl << std::endl;
+
+
+		if (holder->EditClassTitle("Tire", "Wheel"))
+		{
+			std::cout << "Rename succeeded....\n\n\n";
+		}
+		else
+		{
+			std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
+			std::cout << "TEST 2 FAILED\n\n\n";
+		}
+
+		std::cout << b->ToString() << std::endl << std::endl;
+	}
+	else
+	{
+		std::cout << "TEST 2 FAILED\n\n\n";
+
+	}
+
+
+	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
 }
 
 int main()
 {
-	RunUnitTests();
+	RunUnitTest1();
+	RunUnitTest2();
 	return 0;
 }

@@ -15,6 +15,7 @@ public:
 	void UMLObjectPrintContents();
 	std::vector<UMLObject*> ReturnPtrToVector();
 	void AddUMLObject(UMLObject * in);
+	bool EditClassTitle(std::string new_title, std::string old_title);
 
 private:
 	std::vector<UMLObject*> UMLObjects_holder;

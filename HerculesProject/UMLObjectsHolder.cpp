@@ -60,3 +60,20 @@ void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 {
 	UMLObjects_holder.push_back(in);
 }
+
+bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
+{
+	for (auto i : UMLObjects_holder)
+	{
+		if (i->ReturnTitle() == new_title) return false;
+	}
+	for (auto i : UMLObjects_holder)
+	{
+		if (i->ReturnTitle() == old_title)
+		{
+			i->SetTitle(new_title);
+			return true;
+		}
+	}
+	return false;
+}
