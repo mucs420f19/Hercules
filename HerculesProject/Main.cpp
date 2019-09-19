@@ -25,7 +25,7 @@ void UMLObjectsDestructor()
 void UMLObjectPrintTitles()
 {
 	for (auto i : UMLObjects_holder)
-	i->ReturnTitle();
+	std::cout << i->ReturnTitle() << std::endl;
 }
 
 int main()
