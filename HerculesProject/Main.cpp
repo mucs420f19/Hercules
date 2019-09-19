@@ -22,6 +22,11 @@ void UMLObjectsDestructor()
 		delete i;
 	}
 }
+void UMLObjectPrintTitles()
+{
+	for (auto i : UMLObjects_holder)
+	i->ReturnTitle();
+}
 
 int main()
 {
