@@ -2,11 +2,12 @@
 
 namespace SavingLoadingIO
 {
-	void SaveProjectToFile(std::vector<UMLObject*> in, std::string filename)
+	void SaveProjectToFile(UMLObjectsHolder * in, std::string filename)
 	{
 		std::ofstream out(filename);
 		out << "<HerculesProject>\n";
-		for (auto i : in)
+
+		for (auto i : in->ReturnPtrToVector())
 		{
 			out << "<UMLObject>\n";
 			out << "<Title>\n";
@@ -69,10 +70,9 @@ namespace SavingLoadingIO
 		out.close();
 	}
 
-	std::vector<UMLObject*> LoadProject(std::string filename)
+	bool LoadProject(UMLObjectsHolder* out, std::string filename)
 	{
 		std::ifstream in(filename);
-		std::vector<UMLObject*> out;
 		//check for errors
 		
 		std::string line;
@@ -121,7 +121,7 @@ namespace SavingLoadingIO
 			std::copy(lines.begin() + s1, lines.begin() + s2 + 1, std::back_inserter(i1));
 			lines.erase(lines.begin() + s1, lines.begin() + s2 + 1);
 
-			out.push_back(ProcessUMLObject(i1));
+			out->AddUMLObject(ProcessUMLObject(i1));
 
 		}
 
@@ -243,7 +243,7 @@ namespace SavingLoadingIO
 
 	void ProcessUMLField(std::vector<std::string> i1, UMLObject* a)
 	{
-		size_t s1 = 0, s2 = i1.size(), t1, t2;
+		size_t s1 = 0, s2 = i1.size();
 		UMLField b;
 
 		while (s1 != s2)
@@ -335,7 +335,7 @@ namespace SavingLoadingIO
 
 	void ProcessUMLMethodParameters(std::vector<std::string> i1, UMLMethod* a)
 	{
-		size_t s1 = 0, s2 = i1.size(), t1, t2;
+		size_t s1 = 0, s2 = i1.size();
 		std::vector<std::string> b;
 
 		while (s1 != s2)

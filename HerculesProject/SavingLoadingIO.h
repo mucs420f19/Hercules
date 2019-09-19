@@ -1,5 +1,6 @@
 #pragma once
 #include "UMLObject.h"
+#include "UMLObjectsHolder.h"
 #include <fstream>
 #include <algorithm>
 
@@ -7,8 +8,8 @@
 
 namespace SavingLoadingIO
 {
-	void SaveProjectToFile(std::vector<UMLObject*> in, std::string filename = DefaultFileName);
-	std::vector<UMLObject*> LoadProject(std::string filename = DefaultFileName);
+	void SaveProjectToFile(UMLObjectsHolder * in, std::string filename = DefaultFileName);
+	bool LoadProject(UMLObjectsHolder* out, std::string filename = DefaultFileName);
 	std::string RemoveQuotes(std::string in);
 	UMLObject* ProcessUMLObject(std::vector<std::string> i1);
 	void ProcessUMLField(std::vector<std::string> i1, UMLObject * a);

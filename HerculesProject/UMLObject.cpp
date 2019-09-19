@@ -72,6 +72,7 @@ std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 
 UMLField::UMLField()
 {
+	visibility = UMLFieldVisibilityPrivate;
 }
 
 std::string UMLField::ReturnName()
@@ -106,6 +107,7 @@ void UMLField::SetVisibility(int in)
 
 UMLMethod::UMLMethod()
 {
+	visibility = UMLFieldVisibilityPrivate;
 }
 
 std::string UMLMethod::ReturnName()

@@ -5,82 +5,95 @@
 
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
+#include "UMLObjectsHolder.h"
 
-std::vector<UMLObject*> UMLObjects_holder;
+void RunUnitTest1()
+{
+	std::cout << "---------------\nRunning test 1...---------------\n\n\n\n";
 
-UMLObject* UMLObjectFactory()
-{
-	UMLObject* a = new UMLObject();
-	UMLObjects_holder.push_back(a);
-	return a;
-}
 
-void UMLObjectsDestructor()
-{
-	for (auto i : UMLObjects_holder)
-	{
-		delete i;
-	}
-}
-void UMLObjectPrintTitles()
-{
-	for (auto i : UMLObjects_holder)
-	std::cout << i->ReturnTitle() << std::endl;
-}
-
-int main()
-{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
 	std::cout << "Creating example UMLObjects...\n\n\n";
 
-	UMLObject* a = UMLObjectFactory();
+	std::string before1 = "empty string", before2 = "empty string", after1, after2;
+	UMLObject* a = NULL, * b = NULL;
 
-	a->SetTitle("Car");
-	a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-	a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-	a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+	if (holder->CreateNewClass("Car"))
+	{
+		std::cout << "Successfully created class" << std::endl;
 
+		a = holder->ReturnPtrToVector()[0];
 
-	UMLObject* b = UMLObjectFactory();
+		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+		a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+		std::cout << a->ToString() << std::endl << std::endl;
+		before1 = a->ToString();
 
-	b->SetTitle("Wheels");
-	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-	b->AddMethod(UMLMethod("Rotate()", "unsigned int", {"Dummy param 1", "Dummy param 2"}, UMLFieldVisibilityPrivate));
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
 
-	std::cout << a->ToString() << std::endl << std::endl;
+	if (holder->CreateNewClass("Wheel"))
+	{
+		std::cout << "Successfully created class" << std::endl;
 
-	std::cout << b->ToString() << std::endl << std::endl;
+		b = holder->ReturnPtrToVector()[1];
 
+		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+		b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
+		std::cout << b->ToString() << std::endl << std::endl;
+		before2 = b->ToString();
 
-	std::string before1, before2, after1, after2;
-
-	before1 = a->ToString();
-	before2 = b->ToString();
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
 
 	std::cout << "Saving and destroying these UMLObjects...\n\n\n";
 
 	//save them to file
-	SavingLoadingIO::SaveProjectToFile(UMLObjects_holder);
+	SavingLoadingIO::SaveProjectToFile(holder);
 
 	//destory them out of memory
-	UMLObjectsDestructor();
+	delete holder;
 
 	std::cout << "Reloading UMLObjects...\n\n\n";
 
 	//load them into memory again
-	UMLObjects_holder = SavingLoadingIO::LoadProject();
+	holder = new UMLObjectsHolder();
+
+	if (SavingLoadingIO::LoadProject(holder))
+	{
+		std::cout << "Load successful" << std::endl;
+	}
+	else
+	{
+		std::cout << "Unable to load" << std::endl;
+	}
 
 
 
 	std::cout << "Comparing UMLObjects before and after...\n\n\n";
-	a = UMLObjects_holder[0];
-	b = UMLObjects_holder[1];
-	std::cout << a->ToString() << std::endl << std::endl;
-	std::cout << b->ToString() << std::endl << std::endl;
 
-	after1 = a->ToString();
-	after2 = b->ToString();
+	if (a != NULL)
+	{
+		a = holder->ReturnPtrToVector()[0];
+		std::cout << a->ToString() << std::endl << std::endl;
+		after1 = a->ToString();
+	}
+
+	if (b != NULL)
+	{
+		b = holder->ReturnPtrToVector()[1];
+		std::cout << b->ToString() << std::endl << std::endl;
+		after2 = b->ToString();
+	}
 
 	if (before1 == after1)
 	{
@@ -94,5 +107,94 @@ int main()
 	}
 	else std::cout << "UMLObject2 is not correct" << std::endl;
 
+	std::cout << "---------------\nTest 1 completed...---------------\n\n\n\n";
+
+}
+
+void RunUnitTest2()
+{
+	std::cout << "---------------\nRunning test 2...\n---------------\n\n\n\n";
+
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+
+	UMLObject* a = NULL, * b = NULL;
+
+	if (holder->CreateNewClass("Car"))
+	{
+		std::cout << "Successfully created class" << std::endl;
+
+		a = holder->ReturnPtrToVector()[0];
+
+		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+		a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+		std::cout << a->ToString() << std::endl << std::endl;
+
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
+
+	if (holder->CreateNewClass("Wheel"))
+	{
+		std::cout << "Successfully created class" << std::endl;
+
+		b = holder->ReturnPtrToVector()[1];
+
+		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+		b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
+		std::cout << b->ToString() << std::endl << std::endl;
+
+	}
+	else
+	{
+		std::cout << "Unable to create class due to duplicate name" << std::endl;
+	}
+
+
+	if (b != NULL)
+	{
+		if (holder->EditClassTitle("Car", "Wheel"))
+		{
+			std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
+			std::cout << "TEST 2 FAILED\n\n\n";
+		}
+		else
+		{
+			std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
+		}
+
+		std::cout << b->ToString() << std::endl << std::endl;
+
+
+		if (holder->EditClassTitle("Tire", "Wheel"))
+		{
+			std::cout << "Rename succeeded....\n\n\n";
+		}
+		else
+		{
+			std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
+			std::cout << "TEST 2 FAILED\n\n\n";
+		}
+
+		std::cout << b->ToString() << std::endl << std::endl;
+	}
+	else
+	{
+		std::cout << "TEST 2 FAILED\n\n\n";
+
+	}
+
+
+	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
+}
+
+int main()
+{
+	RunUnitTest1();
+	RunUnitTest2();
 	return 0;
 }
