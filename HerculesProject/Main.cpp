@@ -37,7 +37,7 @@ void RunUnitTest1()
 		std::cout << "Unable to create class due to duplicate name" << std::endl;
 	}
 
-	if (holder->CreateNewClass("Wheel"))
+	if (holder->CreateNewClass("Whel"))
 	{
 		std::cout << "Successfully created class" << std::endl;
 
