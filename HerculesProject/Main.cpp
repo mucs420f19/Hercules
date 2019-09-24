@@ -1,4 +1,4 @@
-﻿// HerculesProject.cpp : Defines the entry point for the application.
+// HerculesProject.cpp : Defines the entry point for the application.
 //
 
 #include <iostream>
@@ -24,10 +24,12 @@ void RunUnitTest1()
 		std::cout << "Successfully created class" << std::endl;
 
 		a = holder->ReturnPtrToVector()[0];
+		
+		std::vector<std::string> testVec;
 
 		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
 		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-		a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
 		std::cout << a->ToString() << std::endl << std::endl;
 		before1 = a->ToString();
 
@@ -37,15 +39,19 @@ void RunUnitTest1()
 		std::cout << "Unable to create class due to duplicate name" << std::endl;
 	}
 
-	if (holder->CreateNewClass("Whel"))
+	if (holder->CreateNewClass("Wheel"))
 	{
 		std::cout << "Successfully created class" << std::endl;
 
 		b = holder->ReturnPtrToVector()[1];
+		
+		std::vector<std::string> testVec;
+		testVec.push_back("Dummy param 1");
+		testVec.push_back("Dummy param 2");
 
 		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
 		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-		b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
+		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
 		std::cout << b->ToString() << std::endl << std::endl;
 		before2 = b->ToString();
 
@@ -125,10 +131,12 @@ void RunUnitTest2()
 		std::cout << "Successfully created class" << std::endl;
 
 		a = holder->ReturnPtrToVector()[0];
+		
+		std::vector<std::string> testVec;
 
 		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
 		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-		a->AddMethod(UMLMethod("Drive()", "void", {}, UMLFieldVisibilityPrivate));
+		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
 		std::cout << a->ToString() << std::endl << std::endl;
 
 	}
@@ -142,10 +150,14 @@ void RunUnitTest2()
 		std::cout << "Successfully created class" << std::endl;
 
 		b = holder->ReturnPtrToVector()[1];
+		
+		std::vector<std::string> testVec;
+		testVec.push_back("Dummy param 1");
+		testVec.push_back("Dummy param 2");
 
 		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
 		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-		b->AddMethod(UMLMethod("Rotate()", "unsigned int", { "Dummy param 1", "Dummy param 2" }, UMLFieldVisibilityPrivate));
+		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
 		std::cout << b->ToString() << std::endl << std::endl;
 
 	}
@@ -194,7 +206,125 @@ void RunUnitTest2()
 
 int main()
 {
-	RunUnitTest1();
-	RunUnitTest2();
+	//RunUnitTest1();
+	//RunUnitTest2();
+	
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+  bool run = true;
+  int choice;
+  std::string fileName;
+  
+  std::cout << std::endl << "********************Welcome to Hercules********************" << std::endl;
+  
+  while (run)
+  {
+    std::cout << std::endl << "********************" << std::endl;
+    std::cout << "1. View Class List" << std::endl;
+    std::cout << "2. Create New Class" << std::endl;
+    std::cout << "3. Delete A Class" << std::endl;
+    std::cout << "4. Save" << std::endl;
+    std::cout << "5. Load" << std::endl;
+    std::cout << "6. Exit" << std::endl;
+    std::cout << "********************" << std::endl << std::endl;
+    std::cout << "Which task would you like to run?" << std::endl;
+    
+    std::cin >> choice;
+    
+    switch (choice)
+    {
+    case 1:
+    {
+      std::cout << std::endl << "Class List:" << std::endl;
+      
+      holder->UMLObjectPrintTitles();
+      
+      break;
+    }
+      
+    case 2:
+    {
+      std::cout << std::endl << "Please enter the name of the new class." << std::endl;
+      std::cin >> fileName;
+      std::cout << std::endl;
+      
+      if (holder->CreateNewClass(fileName))
+        std::cout << "Class created sucessfully." << std::endl;
+      else
+        std::cout << "Class creation failed." << std::endl;
+      
+      break;
+    }
+      
+    case 3:
+    {
+      if (holder->isNotEmpty())
+      {
+        size_t pos;
+      
+        std::cout << std::endl;
+      
+        holder->UMLObjectPrintTitles();
+      
+        std::cout << std::endl << "Please enter the number of the class you wish to delete." << std::endl;
+        std::cin >> pos;
+      
+        pos -= 1; 
+      
+        holder->DeleteUMLObject(pos);
+      
+        std::cout << std::endl;
+      }
+      
+      else
+        std::cout << std::endl << "You have no classes to delete." << std::endl;
+      
+      break;
+    }
+      
+    case 4:
+    {
+      std::cout << std::endl << "Please enter the name of the save file." << std::endl;
+      
+      std::cin >> fileName;
+      
+      SavingLoadingIO::SaveProjectToFile(holder, fileName);
+      
+      std::cout << std::endl << "File saved successfully as: " << fileName << std::endl;
+      
+      break;
+    }
+      
+    case 5:
+    {
+      std::cout << std::endl << "Please enter the name of the file you wish to load." << std::endl;
+      
+      std::cin >> fileName;
+      
+      if (SavingLoadingIO::LoadProject(holder, fileName))
+        std::cout << "Load successful." << std::endl << std::endl;
+      else
+        std::cout << "Unable to load." << std::endl << std::endl;
+      
+      break;
+    }
+      
+    case 6:
+    {
+      run = false;
+      
+      std::cout << std::endl << "********************" << std::endl;
+      std::cout << "Thank you for using Hercules!" << std::endl;
+      std::cout << "********************" << std::endl << std::endl;
+      
+      break;
+    }
+      
+    default:
+    {
+      std::cout << std::endl << "Invalid entry, please enter a number from 1 to 8." << std::endl << std::endl;
+    }
+    }
+  }
+	
 	return 0;
 }

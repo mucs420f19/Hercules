@@ -41,8 +41,13 @@ UMLObjectsHolder::~UMLObjectsHolder()
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
 {
+  int count = 1;
+  
 	for (auto i : UMLObjects_holder)
-		std::cout << i->ReturnTitle() << std::endl;
+	{
+	  std::cout << count << ". " << i->ReturnTitle() << std::endl;
+	  ++count;
+	}
 }
 
 void UMLObjectsHolder::UMLObjectPrintContents()
@@ -59,6 +64,19 @@ std::vector<UMLObject*> UMLObjectsHolder::ReturnPtrToVector()
 void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 {
 	UMLObjects_holder.push_back(in);
+}
+
+void UMLObjectsHolder::DeleteUMLObject(size_t in)
+{
+  UMLObjects_holder.erase(UMLObjects_holder.begin() + in);
+}
+
+bool UMLObjectsHolder::isNotEmpty()
+{
+  if (UMLObjects_holder.size() == 0)
+    return false;
+  else
+    return true;
 }
 
 bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
