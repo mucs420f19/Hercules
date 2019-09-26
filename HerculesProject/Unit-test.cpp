@@ -17,12 +17,11 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include "Main.cpp"
+#include "SavingLoadingIO.h"
+#include "UMLObject.h"
+#include "UMLObjectsHolder.h" 
 /************************************************************/
 // Local includes
-
-#include "SearchTree.hpp"
-
 /************************************************************/
 // Using declarations
 
@@ -45,38 +44,6 @@ using std::vector;
 /************************************************************/
 // Function prototypes
 
-template<typename T>
-void
-REQUIRE_TREE(const SearchTree<T>& t, string treeString);
-
-template<typename T>
-void
-REQUIRE_TREE(const SearchTree<T>& t, string treeString, int depth);
-
-template<typename T>
-void
-REQUIRE_HEAD(const SearchTree<T>& tree, T left, T right, T parent);
-
-template<typename T>
-void
-REQUIRE_HEAD_NULL(const SearchTree<T>& tree);
-
-template<typename T>
-void
-REQUIRE_LEVEL_ORDER(const SearchTree<T>& tree, string answer);
-
-template<typename T>
-void
-tree_insert(SearchTree<T>& tree, const vector<T>& values);
-
-template<typename T>
-void
-tree_erase(SearchTree<T>& tree, const vector<T>& values);
-
-template<typename T>
-void
-REQUIRE_ALL_EQUAL(const vector<T>& values);
-
 void
 CHECK_AND_WARN(bool condition, string message);
 
@@ -95,7 +62,7 @@ double GAINED_SCORE;
 // Total point value of all tests that actually ran.
 double TESTED_SCORE;
 // Total points that these tests are worth.
-double POINTS;
+double LPOINTS;
 
 /************************************************************/
 // Catch listeners
@@ -116,7 +83,7 @@ struct ScoringListener : Catch::TestEventListenerBase
 			try
 			{
 				// Point value is multiplied by total total points for the tests as a precentage.
-				point_value_num = (stod(point_value_string.substr(1, 4)) / 100.0) * POINTS;
+				point_value_num = (stod(point_value_string.substr(1, 4)) / 100.0) * LPOINTS;
 
 				if (sectionStats.assertions.total() > 0)
 				{
@@ -154,7 +121,7 @@ int
 main(int argc, char* argv[])
 {
 	// Set this to total point value of these tests.
-	POINTS = 90;
+	LPOINTS = 90;
 	TESTED_SCORE = GAINED_SCORE = LOST_SCORE = 0.0;
 
 	int result = Catch::Session().run(argc, argv);
@@ -172,13 +139,13 @@ main(int argc, char* argv[])
 	// Don't print with pretty colors if running on Windows.
 #ifdef _WIN32
 
-	cout << "\nSCORE: " << FINAL_SCORE << " / " << POINTS << "   >>>   "
-		<< (FINAL_SCORE / POINTS) * 100.0
+	cout << "\nSCORE: " << FINAL_SCORE << " / " << LPOINTS << "   >>>   "
+		<< (FINAL_SCORE / LPOINTS) * 100.0
 		<< " %\n\nYour output could have pretty colors if "
 		<< "you weren't on Windows.\n\n";
 
 	// Check that calculated score hasn't been compromised.
-	if (abs((POINTS - LOST_SCORE) - GAINED_SCORE) > 0.1)
+	if (abs((LPOINTS - LOST_SCORE) - GAINED_SCORE) > 0.1)
 	{
 		cout << "Not all tests were run or an error occurred.\n\n";
 	}
@@ -230,30 +197,32 @@ main(int argc, char* argv[])
 TEST_CASE("Create a Class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	holder->CreateNewClass("Car")
-
-	SECTION("default constructor - tree", "0")
+	holder->CreateNewClass("Car");
+	UMLObject* a = NULL;
+	a = holder->ReturnPtrToVector()[0];
+	SECTION("Class Constructor", "0")
 	{
-		REQUIRE_TREE(tree, "[ ]", -1);
+		REQUIRE(holder->UMLObjectReturnTitles() == "Car");
 	}
-
+	/*
 	// Dependencies: size
 	SECTION("default constructor - size", "0")
 	{
-		REQUIRE(tree.size() == 0);
+		//REQUIRE(tree.size() == 0);
 	}
 
 	// Dependencies: end
 	SECTION("default constructor - head", "0")
 	{
-		REQUIRE_HEAD_NULL(tree);
+		//REQUIRE_HEAD_NULL(tree);
 	}
+	*/
 }
 
 /*----------------------------------------------------------*/
 
 // Dependencies: insert
-TEST_CASE("copy constructor", "7")
+/*TEST_CASE("copy constructor", "7")
 {
 	SearchTree<int> tree_a;
 
@@ -291,11 +260,11 @@ TEST_CASE("copy constructor", "7")
 
 		REQUIRE(stream_a.str() != stream_b.str());
 	}
-}
+}*/
 
 /*----------------------------------------------------------*/
 
-TEST_CASE("empty", "1")
+/*TEST_CASE("empty", "1")
 {
 	SearchTree<int> tree;
 
@@ -311,7 +280,7 @@ TEST_CASE("empty", "1")
 
 		REQUIRE_FALSE(tree.empty());
 	}
-}
+}*/
 
 /*----------------------------------------------------------*/
 
