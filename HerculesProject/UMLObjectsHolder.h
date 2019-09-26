@@ -15,6 +15,8 @@ public:
 	void UMLObjectPrintContents();
 	std::vector<UMLObject*> ReturnPtrToVector();
 	void AddUMLObject(UMLObject * in);
+	bool DeleteUMLObject(std::string title);
+	size_t Size();
 	bool EditClassTitle(std::string new_title, std::string old_title);
 
 private:
