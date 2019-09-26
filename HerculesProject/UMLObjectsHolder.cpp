@@ -66,9 +66,17 @@ void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 	UMLObjects_holder.push_back(in);
 }
 
-void UMLObjectsHolder::DeleteUMLObject(size_t in)
+bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 {
-	UMLObjects_holder.erase(UMLObjects_holder.begin() + in);
+	for (unsigned int i = 0; i < UMLObjects_holder.size(); i++)
+	{
+		if (UMLObjects_holder[i]->ReturnTitle() == title)
+		{
+			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
+			return true;
+		}
+	}
+	return false;
 }
 
 size_t UMLObjectsHolder::Size()
