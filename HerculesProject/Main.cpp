@@ -257,7 +257,7 @@ int main()
       
     case 3:
     {
-      if (holder->isNotEmpty())
+      if (holder->Size())
       {
         size_t pos;
       
