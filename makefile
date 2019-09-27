@@ -1,3 +1,3 @@
-﻿SOURCES = HerculesProject/UMLObjectsHolder.cpp HerculesProject/Main.cpp HerculesProject/SavingLoadingIO.cpp HerculesProject/UMLObject.cpp
+﻿SOURCES = Main.cpp UMLObjectsHolder.cpp SavingLoadingIO.cpp UMLObject.cpp
 all:
 	g++ ${SOURCES} -o Hercules
