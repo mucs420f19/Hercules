@@ -1,5 +1,6 @@
 cmake_minimum_required (VERSION 3.8)
 project (Hercules)
+set(CMAKE_CXX_STANDARD 17)
 MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
 
 # Check platforms
@@ -21,5 +22,3 @@ endif()
 
 # Add the executable
 add_executable (Hercules Main.cpp UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp)
-
-set(CMAKE_CXX_STANDARD 17)

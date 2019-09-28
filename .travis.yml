@@ -18,7 +18,9 @@ addons:
       - g++-6
       - cmake
 script:
-  - cmake .
+  - mkdir build
+  - cd build
+  - cmake ..
   - cmake --build .
 notifications:
   email: false
