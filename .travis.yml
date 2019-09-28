@@ -2,8 +2,13 @@ dist: bionic
 sudo: required
 language:
   - cpp
+os:
+  - linux
+  - osx
+  - windows
 compiler:
   - gcc
+  - clang
 addons:
   apt:
     sources:
@@ -13,3 +18,5 @@ addons:
       - g++-6
       - cmake
 script: make
+notifications:
+  email: false
