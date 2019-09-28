@@ -17,6 +17,8 @@ addons:
       - gcc-6
       - g++-6
       - cmake
-script: make
+script:
+  - cmake .
+  - make
 notifications:
   email: false
