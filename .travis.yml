@@ -19,6 +19,6 @@ addons:
       - cmake
 script:
   - cmake .
-  - make
+  - cmake --build .
 notifications:
   email: false
