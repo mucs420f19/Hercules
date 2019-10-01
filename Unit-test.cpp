@@ -1,4 +1,4 @@
-#define CATCH_CONFIG_MAIN
+#define CATCH_CONFIG_RUNNER
 #include "Catch2.hpp"
 
 #include "SavingLoadingIO.h"
