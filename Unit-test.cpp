@@ -1,4 +1,4 @@
-#define CATCH_CONFIG_RUNNER
+#define CATCH_CONFIG_MAIN
 #include "Catch2.hpp"
 
 #include "SavingLoadingIO.h"
@@ -13,6 +13,6 @@ TEST_CASE("Create a Class", "0")
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles() == "Car");
+		REQUIRE(holder->UMLObjectReturnTitles() == "Wheel");
 	}
 }
