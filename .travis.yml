@@ -22,6 +22,5 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
-  - ./HerculesTest
 notifications:
   email: false

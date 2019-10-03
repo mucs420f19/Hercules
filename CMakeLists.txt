@@ -23,3 +23,4 @@ endif()
 # Add the executable
 add_executable (Hercules Main.cpp UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp)
 add_executable (HerculesTest UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp Unit-test.cpp Catch2.hpp)
+add_test (mytest HereculesTest)
