@@ -13,6 +13,7 @@ public:
 	~UMLObjectsHolder();
 	void UMLObjectPrintTitles();
 	void UMLObjectPrintContents();
+	std::string UMLObjectReturnTitles();
 	std::vector<UMLObject*> ReturnPtrToVector();
 	void AddUMLObject(UMLObject * in);
 	bool DeleteUMLObject(std::string title);
