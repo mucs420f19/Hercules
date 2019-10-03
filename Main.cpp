@@ -6,7 +6,6 @@
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
-#include "Unit-test.cpp"
 
 void RunUnitTest1()
 {
@@ -205,14 +204,6 @@ void RunUnitTest2()
 	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
 }
 
-int runCatchTests()
-{
-	//This line of code causes the Catch library to 
-	//run the tests in the project. 
-	return Catch::Session().run();
-}
-
-
 int main()
 {
 	//RunUnitTest1();
@@ -235,7 +226,6 @@ int main()
 		std::cout << "5. Save" << std::endl;
 		std::cout << "6. Load" << std::endl;
 		std::cout << "7. Exit" << std::endl;
-		std::cout << "8. Catch2" << std::endl;
 		std::cout << "********************" << std::endl << std::endl;
 		std::cout << "Which task would you like to run?" << std::endl;
 
@@ -343,15 +333,6 @@ int main()
 
 			break;
 		}
-
-		case 8:
-		{
-
-			return runCatchTests();
-
-			break;
-		}
-
 		default:
 		{
 			std::cout << std::endl << "Invalid entry, please enter a number from 1 to 8." << std::endl << std::endl;
