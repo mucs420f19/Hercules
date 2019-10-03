@@ -13,6 +13,6 @@ TEST_CASE("Create a Class", "0")
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles() == "Wheel");
+		REQUIRE(holder->UMLObjectReturnTitles() == "Car");
 	}
 }
