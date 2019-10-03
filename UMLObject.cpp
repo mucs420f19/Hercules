@@ -60,6 +60,45 @@ std::string UMLObject::ToString()
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
 }
 
+std::string UMLObject::ReturnRelationships()
+{
+	std::string out;
+	for (auto a : relationships)
+	{
+		out += a.ToString() + ", ";
+	}
+	return out;
+}
+
+void UMLObject::AddRelationship(UMLRelationship in)
+{
+	relationships.push_back(in);
+}
+
+size_t UMLObject::GetIndexRelationshipWith(std::string in)
+{
+	size_t out = -1;
+	for (unsigned int i = 0; i < relationships.size(); i++)
+	{
+		if (relationships[i].GetObject() == in)
+		{
+			out = i;
+			break;
+		}
+	}
+	return out;
+}
+
+void UMLObject::UpdateRelationship(size_t index, int type)
+{
+	relationships[index].SetType(type);
+}
+
+void UMLObject::DeleteRelationship(size_t index)
+{
+	relationships.erase(relationships.begin() + index);
+}
+
 std::vector<UMLField> UMLObject::ReturnFieldsRaw()
 {
 	return fields;

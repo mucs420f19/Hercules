@@ -204,10 +204,38 @@ void RunUnitTest2()
 	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
 }
 
+
+void RunUnitTest3()
+{
+	std::cout << "---------------\nRunning test 3...\n---------------\n\n\n\n";
+
+
+	UMLObject* a = NULL, * b = NULL;
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	a = holder->CreateNewClass("Car");
+	b = holder->CreateNewClass("Wheel");
+
+	holder->AddRelationship("Car", "Wheel", RelationshipAggregation);
+
+	std::cout << a->ReturnRelationships() << std::endl;
+	std::cout << b->ReturnRelationships() << std::endl;
+
+	holder->EditRelationship("Car", "Wheel", RelationshipComposition);
+	std::cout << a->ReturnRelationships() << std::endl;
+	std::cout << b->ReturnRelationships() << std::endl;
+
+	holder->DeleteRelationship("Car", "Wheel");
+	std::cout << a->ReturnRelationships() << std::endl;
+	std::cout << b->ReturnRelationships() << std::endl;
+
+}
+
 int main()
 {
 	//RunUnitTest1();
 	//RunUnitTest2();
+	//RunUnitTest3();
 
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	bool run = true;
