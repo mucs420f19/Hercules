@@ -333,10 +333,9 @@ int main()
 
 			break;
 		}
-
 		default:
 		{
-			std::cout << std::endl << "Invalid entry, please enter a number from 1 to 7." << std::endl << std::endl;
+			std::cout << std::endl << "Invalid entry, please enter a number from 1 to 8." << std::endl << std::endl;
 		}
 		}
 	}
