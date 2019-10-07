@@ -23,6 +23,14 @@ endif()
 enable_testing()
 
 # Add the executable
-add_executable (Hercules Main.cpp UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp)
-add_executable (HerculesTest UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp Unit-test.cpp Catch2.hpp)
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glfw3 REQUIRED)
+
+add_executable (Hercules Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
+add_executable (HerculesTest UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Unit-test.cpp)
+
+target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
+target_link_libraries(Hercules PUBLIC ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  glfw)
+
 add_test (mytest HerculesTest)
