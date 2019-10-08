@@ -17,9 +17,9 @@ addons:
       - gcc-6
       - g++-6
       - cmake
-      -OpenGL
-      -GLEW
-      -glfw
+      - OpenGL
+      - GLEW
+      - glfw
 script:
   - mkdir build
   - cd build
