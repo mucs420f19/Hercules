@@ -56,12 +56,12 @@ void UMLObjectsHolder::UMLObjectPrintContents()
 		std::cout << i->ToString() << std::endl;
 }
 
-std::string UMLObjectsHolder::UMLObjectReturnTitles()
+std::vector<const char*> UMLObjectsHolder::UMLObjectReturnTitles()
 {
-	std::string out;
-	for (auto i : UMLObjects_holder)
+	std::vector<const char*> out;
+	for (auto & i : UMLObjects_holder)
 	{
-		out += i->ReturnTitle();
+		out.push_back(i->ReturnTitle().c_str());
 	}
 	return out;
 }

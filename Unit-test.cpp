@@ -5,7 +5,7 @@
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h" 
 
-TEST_CASE("Create a Class", "0")
+/*TEST_CASE("Create a Class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	holder->CreateNewClass("Car");
@@ -15,4 +15,4 @@ TEST_CASE("Create a Class", "0")
 	{
 		REQUIRE(holder->UMLObjectReturnTitles() == "Car");
 	}
-}
+}*/

@@ -19,12 +19,14 @@
 #define NK_IMPLEMENTATION
 #define NK_GLFW_GL3_IMPLEMENTATION
 #define NK_KEYSTATE_BASED_INPUT
+#define INCLUDE_STYLE
 
 #include "nuklear.h"
 #include "nuklear_glfw_gl3.h"
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
+#include "style.c"
 
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 800
@@ -38,88 +40,148 @@ static void error_callback(int e, const char* d)
 	printf("Error %d: %s\n", e, d);
 }
 
-int main()
+int main(int argc, char** argv)
 {
+	
 	//Vars for class holders
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	bool run = true;
 	int choice;
 	std::string input, input2;
+	if (argc == 1)
+	{
+		/* Platform */
+		static GLFWwindow *win;
+		int width = 0, height = 0;
+		struct nk_context *ctx;
+		struct nk_colorf bg;
+		char add[256] = {0};
+		char edit[256] = {0};
+		char del[256] = {0};
+		static int show_menu = nk_true;
+		static int show_app_about = nk_false;
 
-/* Platform */
-    static GLFWwindow *win;
-    int width = 0, height = 0;
-    struct nk_context *ctx;
-    struct nk_colorf bg;
+		/* GLFW */
+		glfwSetErrorCallback(error_callback);
+		if (!glfwInit()) {
+			fprintf(stdout, "[GFLW] failed to init!\n");
+			exit(1);
+		}
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+			
+		#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+		#endif
 
-    /* GLFW */
-    glfwSetErrorCallback(error_callback);
-    if (!glfwInit()) {
-        fprintf(stdout, "[GFLW] failed to init!\n");
-        exit(1);
-    }
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-    win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hercules UML Editor", NULL, NULL);
-    glfwMakeContextCurrent(win);
-    glfwGetWindowSize(win, &width, &height);
+		win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hercules UML Editor", NULL, NULL);
+		glfwMakeContextCurrent(win);
+		glfwGetWindowSize(win, &width, &height);
 
-    /* OpenGL */
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    glewExperimental = 1;
-    if (glewInit() != GLEW_OK) {
-        fprintf(stderr, "Failed to setup GLEW\n");
-        exit(1);
-    }
+		/* OpenGL */
+		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		glewExperimental = 1;
+		if (glewInit() != GLEW_OK) 
+		{
+			fprintf(stderr, "Failed to setup GLEW\n");
+			exit(1);
+		}
 
-    ctx = nk_glfw3_init(win, NK_GLFW3_INSTALL_CALLBACKS);
-    /* Load Fonts: if none of these are loaded a default font will be used  */
-    /* Load Cursor: if you uncomment cursor loading please hide the cursor */
-    {struct nk_font_atlas *atlas;
-    nk_glfw3_font_stash_begin(&atlas);
-    nk_glfw3_font_stash_end();
-    }
+		ctx = nk_glfw3_init(win, NK_GLFW3_INSTALL_CALLBACKS);
+		/* Load Fonts: if none of these are loaded a default font will be used  */
+		/* Load Cursor: if you uncomment cursor loading please hide the cursor */
+		{
+			struct nk_font_atlas *atlas;
+			nk_glfw3_font_stash_begin(&atlas);
+			nk_glfw3_font_stash_end();
+		}
 
-    //Background window color
-    bg.r = 0.00f, bg.g = 0.00f, bg.b = 0.00f, bg.a = 0.00f;
-    while (!glfwWindowShouldClose(win))
-    {
-        /* Input */
-        glfwPollEvents();
-        nk_glfw3_new_frame();
+		#ifdef INCLUDE_STYLE
+		//set_style(ctx, THEME_WHITE);
+		//set_style(ctx, THEME_RED);
+		//set_style(ctx, THEME_BLUE);
+		set_style(ctx, THEME_DARK);
+		#endif
+		//Background window color
+		bg.r = 0.00f, bg.g = 0.00f, bg.b = 0.00f, bg.a = 0.00f;
+		while (!glfwWindowShouldClose(win))
+		{
+			/* Input */
+			glfwPollEvents();
+			nk_glfw3_new_frame();
 
-        /* GUI */
-        if (nk_begin(ctx, "Demo", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
-            NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-            NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
-           
-        nk_layout_row_static(ctx, 30, 100, 1);
-        nk_button_label(ctx, "Add Class");
-        nk_button_label(ctx, "Edit Class");
-        nk_button_label(ctx, "Delete Class");
-        nk_end(ctx);
+			/* GUI */
+			if (nk_begin(ctx, "TODO SAVE FILE NAME HERE", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+				NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
+				NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
 
-        /* Draw */
-        glfwGetWindowSize(win, &width, &height);
-        glViewport(0, 0, width, height);
-        glClear(GL_COLOR_BUFFER_BIT);
-        glClearColor(bg.r, bg.g, bg.b, bg.a);
-        /* IMPORTANT: `nk_glfw_render` modifies some global OpenGL state
-         * with blending, scissor, face culling, depth test and viewport and
-         * defaults everything back into a default state.
-         * Make sure to either a.) save and restore or b.) reset your own state after
-         * rendering the UI. */
-        nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
-        glfwSwapBuffers(win);
-    }
-    nk_glfw3_shutdown();
-    glfwTerminate();
+				nk_menubar_begin(ctx);
 
+				//Creates dropdown menu 
+				nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+				nk_layout_row_push(ctx, 45);
+				if (nk_menu_begin_label(ctx, "MENU", NK_TEXT_LEFT, nk_vec2(120, 200)))
+					{
+						nk_layout_row_dynamic(ctx, 25, 1);
+						
+						if (nk_menu_item_label(ctx, "About", NK_TEXT_LEFT))
+							show_app_about = nk_true;
+						nk_menu_end(ctx);
+					}	
+				if (show_app_about)
+				{
+						/* about popup */
+						static struct nk_rect s = {20, 100, 300, 190};
 
+						if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Lists", NK_WINDOW_CLOSABLE, s))
+						{
+							nk_layout_row_dynamic(ctx, 20, 1);
+							for( auto i : holder->UMLObjectReturnTitles() )
+							{
+								nk_label(ctx, i, NK_TEXT_LEFT);
+							}
+							nk_popup_end(ctx);
+						} else show_app_about = nk_false;
+					}
+
+			//Creates Buttons for class control
+		{
+			nk_layout_row_static(ctx, 0, 100, 2);
+			//Adds new class to holder
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+						if (nk_button_label(ctx, "Add Class"))
+							(holder->CreateNewClass(add));
+				//Edits a class in the holder
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
+						if (nk_button_label(ctx, "Edit Class"))
+							printf("%s\n", edit);
+				//Deletes a class in the holder
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
+						if (nk_button_label(ctx, "Delete Class"))
+							(holder->DeleteUMLObject(del));
+
+			}
+			nk_end(ctx);
+
+			/* Draw */
+			glfwGetWindowSize(win, &width, &height);
+			glViewport(0, 0, width, height);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClearColor(bg.r, bg.g, bg.b, bg.a);
+			/* IMPORTANT: `nk_glfw_render` modifies some global OpenGL state
+			* with blending, scissor, face culling, depth test and viewport and
+			* defaults everything back into a default state.
+			* Make sure to either a.) save and restore or b.) reset your own state after
+			* rendering the UI. */
+			nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+			glfwSwapBuffers(win);
+		}
+		nk_glfw3_shutdown();
+		glfwTerminate();
+   }
+   else
+   {
 		std::cout << std::endl << "********************Welcome to Hercules********************" << std::endl;
 
 		while (run)
@@ -245,6 +307,7 @@ int main()
 			}
 			}
 		}
-
-		return 0;
+ 	return 0;
 	}
+}
+	
