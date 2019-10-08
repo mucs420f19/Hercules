@@ -13,6 +13,300 @@ TEST_CASE("Create a Class", "0")
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles() == "Car");
+		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Car");
 	}
 }
+
+TEST_CASE("Edit a class", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+	UMLObject* a = holder->CreateNewClass("Car");
+	SECTION("Class Constructor", "0")
+	{
+		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Car");
+	}
+
+	holder->EditClassTitle("Vehicle", "Car");
+
+	SECTION("Class Rename", "0")
+	{
+		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
+	}
+
+	UMLObject* b = holder->CreateNewClass("Vehicle");
+
+	SECTION("Class Creation Duplicate", "0")
+	{
+		REQUIRE(b == NULL);
+		REQUIRE(holder->Size() == 1);
+	}
+
+}
+
+
+TEST_CASE("Add multiple classes", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	UMLObject* c = holder->CreateNewClass("Vehicle");
+	UMLObject* a = holder->CreateNewClass("Tire");
+
+	SECTION("Class Multiples", "0")
+	{
+		REQUIRE(a != NULL);
+		REQUIRE(c != NULL);
+		REQUIRE(holder->Size() == 2);
+		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
+		REQUIRE(holder->UMLObjectReturnTitles()[1] == "Tire");
+	}
+}
+
+TEST_CASE("Add relationship between classes", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	UMLObject* c = holder->CreateNewClass("Vehicle");
+	UMLObject* a = holder->CreateNewClass("Tire");
+
+	SECTION("Create classes", "0")
+	{
+		REQUIRE(holder->Size() == 2);
+		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
+		REQUIRE(holder->UMLObjectReturnTitles()[1] == "Tire");
+	}
+
+	holder->AddRelationship("Vehicle", "Tire", RelationshipComposition);
+
+	SECTION("Verify relationship", "0")
+	{
+		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{ type: 6, object: Tire, parent: 1}, ");
+		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{ type: 6, object: Vehicle, parent: 0}, ");
+	}
+
+}
+
+
+//
+//void RunUnitTest1()
+//{
+//	std::cout << "---------------\nRunning test 1...---------------\n\n\n\n";
+//
+//
+//	UMLObjectsHolder* holder = new UMLObjectsHolder();
+//
+//	std::cout << "Creating example UMLObjects...\n\n\n";
+//
+//	std::string before1 = "empty string", before2 = "empty string", after1, after2;
+//	UMLObject* a = NULL, * b = NULL;
+//
+//	if (holder->CreateNewClass("Car"))
+//	{
+//		std::cout << "Successfully created class" << std::endl;
+//
+//		a = holder->ReturnPtrToVector()[0];
+//
+//		std::vector<std::string> testVec;
+//
+//		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+//		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+//		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+//		std::cout << a->ToString() << std::endl << std::endl;
+//		before1 = a->ToString();
+//
+//	}
+//	else
+//	{
+//		std::cout << "Unable to create class due to duplicate name" << std::endl;
+//	}
+//
+//	if (holder->CreateNewClass("Wheel"))
+//	{
+//		std::cout << "Successfully created class" << std::endl;
+//
+//		b = holder->ReturnPtrToVector()[1];
+//
+//		std::vector<std::string> testVec;
+//		testVec.push_back("Dummy param 1");
+//		testVec.push_back("Dummy param 2");
+//
+//		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+//		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+//		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+//		std::cout << b->ToString() << std::endl << std::endl;
+//		before2 = b->ToString();
+//
+//	}
+//	else
+//	{
+//		std::cout << "Unable to create class due to duplicate name" << std::endl;
+//	}
+//
+//	std::cout << "Saving and destroying these UMLObjects...\n\n\n";
+//
+//	//save them to file
+//	SavingLoadingIO::SaveProjectToFile(holder);
+//
+//	//destory them out of memory
+//	delete holder;
+//
+//	std::cout << "Reloading UMLObjects...\n\n\n";
+//
+//	//load them into memory again
+//	holder = new UMLObjectsHolder();
+//
+//	if (SavingLoadingIO::LoadProject(holder))
+//	{
+//		std::cout << "Load successful" << std::endl;
+//	}
+//	else
+//	{
+//		std::cout << "Unable to load" << std::endl;
+//	}
+//
+//
+//
+//	std::cout << "Comparing UMLObjects before and after...\n\n\n";
+//
+//	if (a != NULL)
+//	{
+//		a = holder->ReturnPtrToVector()[0];
+//		std::cout << a->ToString() << std::endl << std::endl;
+//		after1 = a->ToString();
+//	}
+//
+//	if (b != NULL)
+//	{
+//		b = holder->ReturnPtrToVector()[1];
+//		std::cout << b->ToString() << std::endl << std::endl;
+//		after2 = b->ToString();
+//	}
+//
+//	if (before1 == after1)
+//	{
+//		std::cout << "UMLObject1 is correct" << std::endl;
+//	}
+//	else std::cout << "UMLObject1 is not correct" << std::endl;
+//
+//	if (before2 == after2)
+//	{
+//		std::cout << "UMLObject2 is correct" << std::endl;
+//	}
+//	else std::cout << "UMLObject2 is not correct" << std::endl;
+//
+//	std::cout << "---------------\nTest 1 completed...---------------\n\n\n\n";
+//
+//}
+//
+//void RunUnitTest2()
+//{
+//	std::cout << "---------------\nRunning test 2...\n---------------\n\n\n\n";
+//
+//	UMLObjectsHolder* holder = new UMLObjectsHolder();
+//
+//
+//	UMLObject* a = NULL, * b = NULL;
+//
+//	if (holder->CreateNewClass("Car"))
+//	{
+//		std::cout << "Successfully created class" << std::endl;
+//
+//		a = holder->ReturnPtrToVector()[0];
+//
+//		std::vector<std::string> testVec;
+//
+//		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+//		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+//		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+//		std::cout << a->ToString() << std::endl << std::endl;
+//
+//	}
+//	else
+//	{
+//		std::cout << "Unable to create class due to duplicate name" << std::endl;
+//	}
+//
+//	if (holder->CreateNewClass("Wheel"))
+//	{
+//		std::cout << "Successfully created class" << std::endl;
+//
+//		b = holder->ReturnPtrToVector()[1];
+//
+//		std::vector<std::string> testVec;
+//		testVec.push_back("Dummy param 1");
+//		testVec.push_back("Dummy param 2");
+//
+//		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+//		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+//		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+//		std::cout << b->ToString() << std::endl << std::endl;
+//
+//	}
+//	else
+//	{
+//		std::cout << "Unable to create class due to duplicate name" << std::endl;
+//	}
+//
+//
+//	if (b != NULL)
+//	{
+//		if (holder->EditClassTitle("Car", "Wheel"))
+//		{
+//			std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
+//			std::cout << "TEST 2 FAILED\n\n\n";
+//		}
+//		else
+//		{
+//			std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
+//		}
+//
+//		std::cout << b->ToString() << std::endl << std::endl;
+//
+//
+//		if (holder->EditClassTitle("Tire", "Wheel"))
+//		{
+//			std::cout << "Rename succeeded....\n\n\n";
+//		}
+//		else
+//		{
+//			std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
+//			std::cout << "TEST 2 FAILED\n\n\n";
+//		}
+//
+//		std::cout << b->ToString() << std::endl << std::endl;
+//	}
+//	else
+//	{
+//		std::cout << "TEST 2 FAILED\n\n\n";
+//
+//	}
+//
+//
+//	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
+//}
+//
+//
+//void RunUnitTest3()
+//{
+//	std::cout << "---------------\nRunning test 3...\n---------------\n\n\n\n";
+//
+//
+//	UMLObject* a = NULL, * b = NULL;
+//	UMLObjectsHolder* holder = new UMLObjectsHolder();
+//
+//	a = holder->CreateNewClass("Car");
+//	b = holder->CreateNewClass("Wheel");
+//
+//	holder->AddRelationship("Car", "Wheel", RelationshipAggregation);
+//
+//	std::cout << a->ReturnRelationships() << std::endl;
+//	std::cout << b->ReturnRelationships() << std::endl;
+//
+//	holder->EditRelationship("Car", "Wheel", RelationshipComposition);
+//	std::cout << a->ReturnRelationships() << std::endl;
+//	std::cout << b->ReturnRelationships() << std::endl;
+//
+//	holder->DeleteRelationship("Car", "Wheel");
+//	std::cout << a->ReturnRelationships() << std::endl;
+//	std::cout << b->ReturnRelationships() << std::endl;
+//
+//}
