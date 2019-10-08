@@ -8,7 +8,7 @@ UMLObject * UMLObjectsHolder::CreateNewClass(std::string title)
 {
 	if (IsTitleUnique(title))
 	{
-		std::cout << "Creating Class: " << title << std::endl;
+		//std::cout << "Creating Class: " << title << std::endl;
 		UMLObject* a = new UMLObject();
 		a->SetTitle(title);
 		UMLObjects_holder.push_back(a);
@@ -16,7 +16,7 @@ UMLObject * UMLObjectsHolder::CreateNewClass(std::string title)
 	}
 	else
 	{
-		std::cout << "Duplicate name detected" << std::endl;
+		//std::cout << "Duplicate name detected" << std::endl;
 		return 0;
 	}
 }
@@ -56,12 +56,12 @@ void UMLObjectsHolder::UMLObjectPrintContents()
 		std::cout << i->ToString() << std::endl;
 }
 
-std::string UMLObjectsHolder::UMLObjectReturnTitles()
+std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
 {
-	std::string out;
+	std::vector<std::string> out;
 	for (auto i : UMLObjects_holder)
 	{
-		out += i->ReturnTitle();
+		out.push_back(i->ReturnTitle());
 	}
 	return out;
 }

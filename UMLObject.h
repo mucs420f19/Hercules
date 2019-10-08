@@ -156,11 +156,16 @@ private:
 	std::vector<UMLRelationship> relationships;
 };
 
+//Relationship objects are part of UMLObjects but they cannot be edited directly
+//The need to be edited through the holder, which takes care of bookkeeping between all of the UMLObjects
 struct UMLRelationship
 {
 	int type;
 	UMLObject* object;
 	bool parent;
+	//There is no editing allowed besides chaning the type of relationship
+	//Changing who the relationship is attached to is considered a new relationship
+	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
 	std::string GetObject() { return object->ReturnTitle(); }
 	std::string ToString()
