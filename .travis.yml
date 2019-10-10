@@ -20,7 +20,7 @@ addons:
       - cmake
 install:
   - pip install conan
-  - conan user
+  - conan --user
 script:
   - mkdir build
   - cd build
