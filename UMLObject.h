@@ -3,28 +3,28 @@
 #include <string>
 #include <vector>
 
-#define UMLFieldVisibilityPublic 1
-#define UMLFieldVisibilityPrivate 2
+const int UMLFieldVisibilityPublic = 1;
+const int UMLFieldVisibilityPrivate = 2;
 
-#define RelationshipAbstraction 1
-#define RelationshipAggregation 2
-#define RelationshipAssociation 3
-#define RelationshipBinding 4
-#define RelationshipCommunicationPath 5
-#define RelationshipComposition 6
-#define RelationshipControlFlow 7
-#define RelationshipDependency 8
-#define RelationshipDeploy 9
-#define RelationshipDirectedAssociation 10
-#define RelationshipExtend 11
-#define RelationshipGeneralization 12
-#define RelationshipInterfaceRealization 13
-#define RelationshipInclude 14
-#define RelationshipManifestation 15
-#define RelationshipNoteAttachment 16
-#define RelationshipObjectFlow 17
-#define RelationshipRealization 18
-#define RelationshipUsage 19
+const int RelationshipAbstraction =1;
+const int RelationshipAggregation = 2;
+const int RelationshipAssociation = 3;
+const int RelationshipBinding = 4;
+const int RelationshipCommunicationPath = 5;
+const int RelationshipComposition = 6;
+const int RelationshipControlFlow = 7;
+const int RelationshipDependency =8;
+const int RelationshipDeploy = 9;
+const int RelationshipDirectedAssociation = 10;
+const int RelationshipExtend = 11;
+const int RelationshipGeneralization = 12;
+const int RelationshipInterfaceRealization = 13;
+const int RelationshipInclude = 14;
+const int RelationshipManifestation = 15;
+const int RelationshipNoteAttachment = 16;
+const int RelationshipObjectFlow = 17;
+const int RelationshipRealization = 18;
+const int RelationshipUsage = 19;
 
 //forward declaration
 struct UMLRelationship;
