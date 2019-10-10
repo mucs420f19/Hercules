@@ -19,15 +19,12 @@ addons:
       - g++-8
       - clang-6.0
       - cmake
-      - valgrind
-      - python3-pip
-      - python3-setuptools
 install:
-  - py -3 -m ensurepip
-  - sudo pip3 install conan
+  - sudo pip install conan
   - conan user
 script:
-  - conan install . --build missing
+  - conan new profile default -detect
+  - conan install . --build missing -pr default
   - mkdir build
   - cd build
   - cmake ..
