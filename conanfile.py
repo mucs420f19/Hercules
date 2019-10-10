@@ -1,0 +1,6 @@
+[requires]
+glew/2.1.0@bincrafters/stable
+glfw/3.2.1@bincrafters/stable
+
+[generators]
+cmake
