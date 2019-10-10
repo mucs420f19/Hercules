@@ -5,22 +5,22 @@ language:
 python: "3.7"
 os:
   - linux
-  - osx
   - windows
 compiler:
   - gcc
-  - clang
 addons:
   apt:
     sources:
       - ubuntu-toolchain-r-test
     packages:
       - gcc-6
-      - g++-6
+      - g++-8
+      - clang-6.0
       - cmake
 install:
   - sudo pip install conan
   - conan user
+  - conan --build glew
 script:
   - conan install .
   - mkdir build
