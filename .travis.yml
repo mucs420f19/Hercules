@@ -20,7 +20,7 @@ addons:
       - clang-6.0
       - cmake
 install:
-  - sudo pip3 install conan
+  - sudo pip install conan
   - conan user
 script:
   - conan install .
