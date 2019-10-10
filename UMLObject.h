@@ -32,11 +32,11 @@ struct UMLRelationship;
 struct UMLField
 {
 	UMLField();
-	UMLField(std::string in_name, std::string in_type, int in_visiblity)
+	UMLField(std::string inName, std::string inType, int inVisibility)
 	{
-		name = in_name;
-		type = in_type;
-		visibility = in_visiblity;
+		name = inName;
+		type = inType;
+		visibility = inVisibility;
 	}
 	std::string GetVisibilityString()
 	{
@@ -76,12 +76,12 @@ private:
 struct UMLMethod
 {
 	UMLMethod();
-	UMLMethod(std::string in_name, std::string in_type, std::vector<std::string> in_parameters, int in_visiblity)
+	UMLMethod(std::string inName, std::string inType, std::vector<std::string> in_parameters, int inVisibility)
 	{
-		name = in_name;
-		return_type = in_type;
+		name = inName;
+		return_type = inType;
 		parameters = in_parameters;
-		visibility = in_visiblity;
+		visibility = inVisibility;
 	}
 	std::string GetVisibilityString()
 	{
@@ -163,7 +163,7 @@ struct UMLRelationship
 	int type;
 	UMLObject* object;
 	bool parent;
-	//There is no editing allowed besides chaning the type of relationship
+	//There is no editing allowed besides changing the type of relationship
 	//Changing who the relationship is attached to is considered a new relationship
 	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
