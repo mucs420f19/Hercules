@@ -23,7 +23,7 @@ install:
   - sudo pip install conan
   - conan user
 script:
-  - conan install .
+  - conan install . --build missing
   - mkdir build
   - cd build
   - cmake ..
