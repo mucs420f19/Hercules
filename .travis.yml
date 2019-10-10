@@ -19,7 +19,7 @@ addons:
       - g++-6
       - cmake
 install:
-  - pip install conan --user
+  - pip install conan
   - conan user
 script:
   - conan install .
