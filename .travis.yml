@@ -3,13 +3,6 @@ sudo: required
 language:
   - cpp
 python: "3.7"
-os:
-  - linux
-  - osx
-  - windows
-compiler:
-  - gcc
-  - clang
 addons:
   apt:
     sources:
@@ -17,8 +10,27 @@ addons:
     packages:
       - gcc-6
       - g++-8
-      - clang-9.0
+      - clang-6.0
       - cmake
+
+matrix:
+  include:
+    - os: linux
+    compiler: gcc
+    - os: linux
+    compiler: clang
+    - os: osx
+    compiler: gcc
+    - os: osx
+    compiler: clang
+    script:
+    - echo MacClang
+    - os: windows
+    compiler: gcc
+    - os: windows
+    compiler: clang
+
+
 install:
   - sudo pip install conan
   - conan user
