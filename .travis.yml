@@ -21,18 +21,24 @@ matrix:
       compiler: clang
     - os: osx
       compiler: gcc
-      install:
-        - gcc --version
     - os: osx
       compiler: clang
     - os: windows
       compiler: gcc
       install:
-        - echo test
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+        - conan user
+        - conan install . --build missing
     - os: windows
       compiler: clang
       install:
-        - echo test
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+        - conan user
+        - conan install . --build missing
 
 
 install:
