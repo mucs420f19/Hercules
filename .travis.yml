@@ -21,14 +21,18 @@ matrix:
       compiler: clang
     - os: osx
       compiler: gcc
+      install:
+        - gcc --version
     - os: osx
       compiler: clang
-      script:
-        - echo MacClang
     - os: windows
       compiler: gcc
+      install:
+        - echo test
     - os: windows
       compiler: clang
+      install:
+        - echo test
 
 
 install:
