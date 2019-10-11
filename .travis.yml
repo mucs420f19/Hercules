@@ -16,15 +16,16 @@ addons:
 matrix:
   include:
     - os: linux
-      compiler: gcc
+      compiler: g++
     - os: linux
       compiler: clang
     - os: osx
-      compiler: gcc
+      compiler: g++
     - os: osx
       compiler: clang
     - os: windows
-      compiler: gcc
+      compiler: g++
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
@@ -33,6 +34,7 @@ matrix:
         - conan install . --build missing
     - os: windows
       compiler: clang
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
