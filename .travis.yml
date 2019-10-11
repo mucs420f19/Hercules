@@ -16,19 +16,19 @@ addons:
 matrix:
   include:
     - os: linux
-    compiler: gcc
+      compiler: gcc
     - os: linux
-    compiler: clang
+      compiler: clang
     - os: osx
-    compiler: gcc
+      compiler: gcc
     - os: osx
-    compiler: clang
-    script:
-    - echo MacClang
+      compiler: clang
+      script:
+        - echo MacClang
     - os: windows
-    compiler: gcc
+      compiler: gcc
     - os: windows
-    compiler: clang
+      compiler: clang
 
 
 install:
