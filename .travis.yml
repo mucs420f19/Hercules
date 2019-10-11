@@ -17,14 +17,13 @@ addons:
     packages:
       - gcc-6
       - g++-8
-      - clang-6.0
+      - clang-9.0
       - cmake
 install:
   - sudo pip install conan
   - conan user
 script:
-  - conan new profile default -detect
-  - conan install . --build missing -pr default
+  - conan install . --build missing
   - mkdir build
   - cd build
   - cmake ..
