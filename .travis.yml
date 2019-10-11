@@ -17,23 +17,14 @@ matrix:
   include:
     - os: linux
       compiler: gcc
-      install:
-        - sudo pip install conan
-        - conan user
     - os: linux
       compiler: clang
-      install:
-        - sudo pip install conan
-        - conan user
     - os: osx
       compiler: gcc
       install:
         - gcc --version
     - os: osx
       compiler: clang
-      install:
-        - sudo pip install conan
-        - conan user
     - os: windows
       compiler: gcc
       install:
@@ -43,8 +34,12 @@ matrix:
       install:
         - echo test
 
-script:
+
+install:
+  - sudo pip install conan
+  - conan user
   - conan install . --build missing
+script:
   - mkdir build
   - cd build
   - cmake ..
