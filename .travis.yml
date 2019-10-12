@@ -2,24 +2,58 @@ dist: bionic
 sudo: required
 language:
   - cpp
-os:
-  - linux
-  - osx
-  - windows
-compiler:
-  - gcc
-  - clang
+python: "3.7"
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - llvm-toolchain-bionic-9
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-6
-      - g++-6
-      - cmake
-      - OpenGL
-      - GLEW
-      - glfw
+    - clang-7
+    - cmake
+    - gcc-8
+    - g++-8
+    - ninja-build
+  homebrew:
+    packages:
+    - cmake
+    - gcc@8
+    - ninja
+
+matrix:
+  include:
+    - os: linux
+      compiler: g++
+    - os: linux
+      compiler: clang
+    # - os: osx
+    #   compiler: g++
+    - os: osx
+      compiler: clang
+    - os: windows
+      compiler: g++
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      install:
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+        - conan user
+        - conan install . --build missing
+    - os: windows
+      compiler: clang
+      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      install:
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+        - conan user
+        - conan install . --build missing
+
+
+install:
+  - sudo pip install conan
+  - conan user
+  - conan install . --build missing
 script:
   - mkdir build
   - cd build
