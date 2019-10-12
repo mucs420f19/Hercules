@@ -6,41 +6,49 @@ python: "3.7"
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - llvm-toolchain-bionic-9
+    - ubuntu-toolchain-r-test
     packages:
-      - gcc-6
-      - g++-8
-      - clang-6.0
-      - cmake
+    - clang-7
+    - cmake
+    - gcc-8
+    - g++-8
+    - ninja-build
+  homebrew:
+    packages:
+    - cmake
+    - gcc@8
+    - ninja
 
 matrix:
   include:
-    - os: linux
-      compiler: g++
-    - os: linux
-      compiler: clang
+    # - os: linux
+    #   compiler: g++
+    # - os: linux
+    #   compiler: clang
     - os: osx
       compiler: g++
-    - os: osx
-      compiler: clang
-    - os: windows
-      compiler: g++
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
-    - os: windows
-      compiler: clang
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
+      env: SDKROOT=$(xcodebuild -version -sdk macosx Path)
+    # - os: osx
+    #   compiler: clang
+    # - os: windows
+    #   compiler: g++
+    #   env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    #   install:
+    #     - choco install python
+    #     - python -m pip install --upgrade pip
+    #     - pip install conan
+    #     - conan user
+    #     - conan install . --build missing
+    # - os: windows
+    #   compiler: clang
+    #   env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+    #   install:
+    #     - choco install python
+    #     - python -m pip install --upgrade pip
+    #     - pip install conan
+    #     - conan user
+    #     - conan install . --build missing
 
 
 install:
