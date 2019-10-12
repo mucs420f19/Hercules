@@ -28,7 +28,6 @@ matrix:
     #   compiler: clang
     - os: osx
       compiler: g++
-      env: SDKROOT=$(xcodebuild -version -sdk macosx Path)
     # - os: osx
     #   compiler: clang
     # - os: windows
@@ -52,6 +51,7 @@ matrix:
 
 
 install:
+  - SDKROOT=$(xcodebuild -version -sdk macosx Path)
   - sudo pip install conan
   - conan user
   - conan install . --build missing
