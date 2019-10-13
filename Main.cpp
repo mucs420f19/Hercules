@@ -214,6 +214,7 @@ int main()
 
 			std::cin >> input;
 
+			//add something in here to ask if they want to save the current project... otherwise it gets thrown out
 			if (SavingLoadingIO::LoadProject(holder, input))
 				std::cout << "Load successful." << std::endl << std::endl;
 			else

@@ -12,6 +12,8 @@ public:
 	UMLObject* CreateNewClass(std::string title);
 	bool IsTitleUnique(std::string in);
 	~UMLObjectsHolder();
+	//delete all project contents
+	void ClearProject();
 	//print to console the class titles
 	void UMLObjectPrintTitles();
 	//print to console the entire contents of a class (using its ToString method)

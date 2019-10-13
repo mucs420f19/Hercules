@@ -71,6 +71,7 @@ namespace SavingLoadingIO
 
 	bool LoadProject(UMLObjectsHolder* out, std::string filename)
 	{
+		out->ClearProject();
 		std::ifstream in(filename);
 		if (!in.good()) return false;
 
@@ -93,6 +94,7 @@ namespace SavingLoadingIO
 		{
 			out->AddRelationship(i.parent, i.child, std::stoi(i.type));
 		}
+		LoadingCleanup(t);
 		return out;
 	}
 
@@ -240,5 +242,14 @@ namespace SavingLoadingIO
 			}
 		}
 		return out;
+	}
+
+	void LoadingCleanup(Node* in)
+	{
+		for (auto i : in->children)
+		{
+			LoadingCleanup(i);
+		}
+		delete (in);
 	}
 }
