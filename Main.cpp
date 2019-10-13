@@ -10,7 +10,95 @@
 int main()
 {
 
+
+
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+
+	//UMLObject* a = NULL, * b = NULL;
+
+	//if (holder->CreateNewClass("Car"))
+	//{
+	//	std::cout << "Successfully created class" << std::endl;
+
+	//	a = holder->ReturnPtrToVector()[0];
+
+	//	std::vector<std::string> testVec;
+
+	//	a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+	//	a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+	//	a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+	//	std::cout << a->ToString() << std::endl << std::endl;
+
+	//}
+	//else
+	//{
+	//	std::cout << "Unable to create class due to duplicate name" << std::endl;
+	//}
+
+	//if (holder->CreateNewClass("Wheel"))
+	//{
+	//	std::cout << "Successfully created class" << std::endl;
+
+	//	b = holder->ReturnPtrToVector()[1];
+
+	//	std::vector<std::string> testVec;
+	//	testVec.push_back("Dummy param 1");
+	//	testVec.push_back("Dummy param 2");
+
+	//	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+	//	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+	//	b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+	//	std::cout << b->ToString() << std::endl << std::endl;
+
+	//}
+	//else
+	//{
+	//	std::cout << "Unable to create class due to duplicate name" << std::endl;
+	//}
+
+
+	//if (b != NULL)
+	//{
+	//	if (holder->EditClassTitle("Car", "Wheel"))
+	//	{
+	//		std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
+	//		std::cout << "TEST 2 FAILED\n\n\n";
+	//	}
+	//	else
+	//	{
+	//		std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
+	//	}
+
+	//	std::cout << b->ToString() << std::endl << std::endl;
+
+
+	//	if (holder->EditClassTitle("Tire", "Wheel"))
+	//	{
+	//		std::cout << "Rename succeeded....\n\n\n";
+	//	}
+	//	else
+	//	{
+	//		std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
+	//		std::cout << "TEST 2 FAILED\n\n\n";
+	//	}
+
+	//	std::cout << b->ToString() << std::endl << std::endl;
+	//}
+	//else
+	//{
+	//	std::cout << "TEST 2 FAILED\n\n\n";
+
+	//}
+
+	//holder->AddRelationship("Car", "Tire", RelationshipComposition);
+
+	//std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
+
+
+
+
+
 	bool run = true;
 	int choice;
 	std::string input, input2;
@@ -103,9 +191,19 @@ int main()
 
 			std::cin >> input;
 
-			SavingLoadingIO::SaveProjectToFile(holder, input);
-
-			std::cout << std::endl << "File saved successfully as: " << input << std::endl;
+			if (SavingLoadingIO::SaveProjectToFile(holder, input) == SaveAlreadyExists)
+			{
+				std::cout << std::endl << "Save already exists. Overwrite? y/n: " << std::endl;
+				std::cin >> input;
+				if (input == "y")
+				{
+					SavingLoadingIO::SaveProjectToFile(holder, input, true); //for force overwrite
+				}
+				else
+				{
+					std::cout << std::endl << "Save cancelled" << std::endl;
+				}
+			}
 
 			break;
 		}

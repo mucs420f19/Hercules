@@ -109,6 +109,11 @@ std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 	return methods;
 }
 
+std::vector<UMLRelationship> UMLObject::ReturnRelationshipsRaw()
+{
+	return relationships;
+}
+
 UMLField::UMLField()
 {
 	visibility = UMLFieldVisibilityPrivate;

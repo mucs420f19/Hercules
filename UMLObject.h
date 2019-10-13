@@ -38,6 +38,16 @@ struct UMLField
 		type = in_type;
 		visibility = in_visiblity;
 	}
+	UMLField(std::string in_name, std::string in_type, std::string in_visiblity = "1")
+	{
+		name = in_name;
+		type = in_type;
+		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
+		{
+			visibility = UMLFieldVisibilityPublic;
+		}
+		else visibility = UMLFieldVisibilityPrivate;
+	}
 	std::string GetVisibilityString()
 	{
 		std::string out;
@@ -82,6 +92,17 @@ struct UMLMethod
 		return_type = in_type;
 		parameters = in_parameters;
 		visibility = in_visiblity;
+	}
+	UMLMethod(std::string in_name, std::string in_type, std::vector<std::string> in_parameters, std::string in_visiblity = "1")
+	{
+		name = in_name;
+		return_type = in_type;
+		parameters = in_parameters;
+		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
+		{
+			visibility = UMLFieldVisibilityPublic;
+		}
+		else visibility = UMLFieldVisibilityPrivate;
 	}
 	std::string GetVisibilityString()
 	{
@@ -149,6 +170,7 @@ public:
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
+	std::vector<UMLRelationship> ReturnRelationshipsRaw();
 private:
 	std::string title;
 	std::vector<UMLField> fields;
