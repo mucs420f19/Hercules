@@ -85,7 +85,7 @@ TEST_CASE("Add relationship between classes", "0")
 
 }
 
-TEST_CASE("Test SavingLoading All Items", "0")
+TEST_CASE("Test Saving Loading All Items", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	UMLObject* a = NULL, * b = NULL;
@@ -138,7 +138,9 @@ TEST_CASE("Test SavingLoading All Items", "0")
 		REQUIRE(c[0]->ReturnFields() == "{{Color, string, Public}, {Make, string, Public}, }");
 		REQUIRE(c[0]->ReturnFields() == d[0]->ReturnFields());
 
-
+		REQUIRE(c[0]->ReturnRelationships() == "{ type: 6, object: Tire, parent: 1}, ");
+		REQUIRE(c[0]->ReturnRelationships() == d[0]->ReturnRelationships());
+	   
 		REQUIRE(c[1]->ReturnTitle() == "Tire");
 		REQUIRE(c[1]->ReturnTitle() == d[1]->ReturnTitle());
 
@@ -149,10 +151,78 @@ TEST_CASE("Test SavingLoading All Items", "0")
 
 		REQUIRE(c[1]->ReturnFields() == "{{Manufacturer, string, Public}, {Diameter, unsigned int, Public}, }");
 		REQUIRE(c[1]->ReturnFields() == d[1]->ReturnFields());
+		
+		REQUIRE(c[1]->ReturnRelationships() == "{ type: 6, object: Car, parent: 0}, ");
+		REQUIRE(c[1]->ReturnRelationships() == d[1]->ReturnRelationships());
+
+	}
+
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder2, "tempfile2.txt", true) == SaveSuccess);
+
+	std::ifstream in("tempfile.txt");
+
+	std::string line;
+	std::vector<std::string> lines1, lines2;
+	while (std::getline(in, line))
+	{
+		lines1.push_back(line);
+	}
+	in.close();
+
+
+	std::ifstream in2("tempfile2.txt");
+
+	while (std::getline(in2, line))
+	{
+		lines2.push_back(line);
+	}
+	in2.close();
+
+	SECTION("Verify Identical files", "0")
+	{
+		REQUIRE(lines1.size() != 0);
+		REQUIRE(lines1.size() == lines2.size());
+		for (size_t i = 0; i < lines1.size(); i++)
+		{
+			REQUIRE(lines1[i] == lines2[i]);
+		}
 	}
 
 }
 
+TEST_CASE("Test Saving Overwriting", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "do_not_overwrite_me.txt", true) == SaveSuccess);
+
+	REQUIRE(SavingLoadingIO::LoadProject(holder, "do_not_overwrite_me.txt") == true);
+
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "do_not_overwrite_me.txt") == SaveAlreadyExists);
+
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "do_not_overwrite_me.txt", true) == SaveSuccess);
+
+}
+
+TEST_CASE("Test Invalid Loading", "0")
+{
+
+	std::string randfilename = "does_not_exist";
+	srand((unsigned int)time(0));
+	for (size_t i = 0; i < 10; i++)
+	{
+		randfilename += std::to_string(rand() % 10);
+	}
+	randfilename += ".txt";
+
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	REQUIRE(SavingLoadingIO::LoadProject(holder, randfilename) == false);
+
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, randfilename, true) == SaveSuccess);
+
+	REQUIRE(SavingLoadingIO::LoadProject(holder, randfilename) == true);
+}
 
 //
 //void RunUnitTest1()
