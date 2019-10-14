@@ -45,6 +45,7 @@ namespace SavingLoadingIO
 	std::string StripNode(std::string in);
 	void ParseNode(Node* current, std::vector<std::string> lines, size_t c = 0);
 	void ProcessResults(Node* current, UMLObjectsHolder* out, std::vector<Relationship> &relationships);
-	std::string FindChildWhere(Node * in, std::string key);
+	std::string FindChildWhere(Node* in, std::string key);
+	std::vector<Node *> FindNodesWhere(Node * in, std::string key);
 	void LoadingCleanup(Node* in);
 }

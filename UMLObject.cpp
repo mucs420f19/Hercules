@@ -166,6 +166,13 @@ std::string UMLMethod::ReturnType()
 
 std::vector<std::string> UMLMethod::ReturnParameters()
 {
+	std::vector<std::string> out;
+	for (auto i : parameters) out.push_back(i.ToString());
+	return out;
+}
+
+std::vector<UMLParameter> UMLMethod::ReturnParametersRaw()
+{
 	return parameters;
 }
 
@@ -189,7 +196,12 @@ void UMLMethod::SetVisibility(int in)
 	visibility = in;
 }
 
-void UMLMethod::SetParameters(std::vector<std::string> in)
+bool UMLMethod::AddParameter(UMLParameter in)
 {
-	parameters = in;
+	for (auto i : parameters)
+	{
+		if (in.name == i.name) return false;
+	}
+	parameters.push_back(in);
+	return true;
 }

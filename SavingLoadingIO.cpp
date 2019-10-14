@@ -5,12 +5,21 @@ namespace SavingLoadingIO
 	int SaveProjectToFile(UMLObjectsHolder* in, std::string filename, bool overwrite)
 	{
 		std::ifstream test(filename);
+		
+		//if the file already exists (we were able to open it) and the overwrite flag is not set.... return error
 		if (test.good() && overwrite == false)
 		{
 			return SaveAlreadyExists;
 		}
 		test.close();
 		std::ofstream out(filename);
+
+		//file is probably in use or could not be opened for another reason
+		if (!out.good())
+		{
+			return SaveError;
+		}
+
 		out << "Hercules:\n";
 
 		for (auto i : in->ReturnPtrToVector())
@@ -46,9 +55,22 @@ namespace SavingLoadingIO
 				out << "        - " << j.ReturnVisibility() << "\n";
 
 				out << "      Parameters:\n";
-				for (auto k : j.ReturnParameters())
+
+				for (auto k : j.ReturnParametersRaw())
 				{
-					out << "        - " << k << "\n";
+					out << "        UMLParameter:\n";
+
+					out << "          Type:\n";
+					out << "            - " << k.ReturnType()<< "\n";
+
+					out << "          Name:\n";
+					out << "            - " << k.ReturnName() << "\n";
+
+					out << "          Optional:\n";
+					out << "            - " << k.ReturnOpt() << "\n";
+
+					out << "          Default:\n";
+					out << "            - " << k.ReturnDefault() << "\n";
 				}
 			}
 
@@ -67,6 +89,7 @@ namespace SavingLoadingIO
 			}
 		}
 		out.close();
+		return SaveSuccess;
 	}
 
 	bool LoadProject(UMLObjectsHolder* out, std::string filename)
@@ -210,7 +233,19 @@ namespace SavingLoadingIO
 						}
 						else if (j->key == "UMLMethod")
 						{
-							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), {}, FindChildWhere(j, "Visibility"));
+							std::vector<UMLParameter> params;
+							if (FindNodesWhere(j, "Parameters").size() > 0)
+							{
+								Node* head = FindNodesWhere(j, "Parameters")[0];
+								std::vector<Node*> tar = FindNodesWhere(head, "UMLParameter");
+								for (auto i : tar)
+								{
+									UMLParameter param(FindChildWhere(i, "Type"), FindChildWhere(i, "Name"), FindChildWhere(i, "Optional"), FindChildWhere(i, "Default"));
+									params.push_back(param);
+								}
+								
+							}
+							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, FindChildWhere(j, "Visibility"));
 							a->AddMethod(method);
 						}
 						else if (j->key == "UMLRelationship")
@@ -242,6 +277,19 @@ namespace SavingLoadingIO
 			}
 		}
 		return out;
+	}
+
+	std::vector<Node*> FindNodesWhere(Node* in, std::string key)
+	{
+		std::vector<Node*> t;
+		for (auto i : in->children)
+		{
+			if (i->key == key)
+			{
+				t.push_back(i);
+			}
+		}
+		return t;
 	}
 
 	void LoadingCleanup(Node* in)
