@@ -85,17 +85,17 @@ private:
 
 struct UMLParameter
 {
-	UMLParameter(std::string in_type, std::string in_name, std::string in_opt = "", std::string in_default = "")
+	UMLParameter(std::string in_type, std::string in_name, std::string in_opt = "", std::string in_deflt = "")
 	{
 		type = in_type;
 		name = in_name;
 		if (in_opt == "false" || in_opt == "") opt = false; else opt = true;
-		default = in_default;
+		deflt = in_deflt;
 	}
 	std::string type;
 	std::string name;
 	bool opt;
-	std::string default;
+	std::string deflt;
 	std::string ReturnType()
 	{
 		return type;
@@ -110,13 +110,13 @@ struct UMLParameter
 	}
 	std::string ReturnDefault()
 	{
-		return default;
+		return deflt;
 	}
 	std::string ToString()
 	{
 		std::string out;
 		out += type + " " + name;
-		if (opt) out += " = " + default;
+		if (opt) out += " = " + deflt;
 		return out;
 	}
 };
