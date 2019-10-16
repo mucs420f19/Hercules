@@ -20,6 +20,9 @@ addons:
     - gcc@8
     - ninja
 
+before-install:
+  - cd build
+
 matrix:
   include:
     - os: linux
@@ -55,8 +58,6 @@ install:
   - conan user
   - conan install . --build missing
 script:
-  - mkdir build
-  - cd build
   - cmake ..
   - cmake --build .
   - ctest
