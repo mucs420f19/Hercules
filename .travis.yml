@@ -20,7 +20,7 @@ addons:
     - gcc@8
     - ninja
 
-before-install:
+before_install:
   - cd build
 
 matrix:
@@ -35,7 +35,7 @@ matrix:
       compiler: clang
     - os: windows
       compiler: g++
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
@@ -44,7 +44,7 @@ matrix:
         - conan install . --build missing
     - os: windows
       compiler: clang
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
