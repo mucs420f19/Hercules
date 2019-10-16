@@ -21,6 +21,7 @@ else()
 endif()
 
 enable_testing()
+<<<<<<< Updated upstream
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
 # Add the executable
@@ -35,3 +36,20 @@ target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${glew_INCLUDE
 target_link_libraries(Hercules PUBLIC ${OPENGL_LIBRARIES} ${glew_LIBRARIES}  ${glfw_LIBRARIES})
 
 add_test (mytest HerculesTest)
+=======
+set(CMAKE_MODULE_PATH ${CONAN_CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
+set(CMAKE_PREFIX_PATH ${CONAN_CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH})
+
+# Add the executable
+find_package(OpenGL REQUIRED)
+find_package(GLEW REQUIRED)
+find_package(glfw3 REQUIRED)
+
+add_executable (Hercules Main.cpp UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp)
+add_executable (HerculesTest UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp Unit-test.cpp Catch2.hpp)
+
+target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
+target_link_libraries(Hercules PUBLIC ${OPENGL_LIBRARIES} ${GLEW_LIBRARIES}  glfw)
+
+add_test (mytest HerculesTest)
+>>>>>>> Stashed changes

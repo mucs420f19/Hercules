@@ -13,7 +13,14 @@ public:
 	~UMLObjectsHolder();
 	void UMLObjectPrintTitles();
 	void UMLObjectPrintContents();
+<<<<<<< Updated upstream
 	std::vector<const char*> UMLObjectReturnTitles();
+=======
+	//Returns a vector containing just the object titles
+	std::vector<const char*> UMLObjectReturnTitles();
+	//returns a vector containing pointers to the classes
+	//this allows direct access to the objects and might not be best practice
+>>>>>>> Stashed changes
 	std::vector<UMLObject*> ReturnPtrToVector();
 	void AddUMLObject(UMLObject * in);
 	bool DeleteUMLObject(std::string title);
