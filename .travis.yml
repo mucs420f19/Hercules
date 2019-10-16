@@ -34,8 +34,8 @@ matrix:
       compiler: g++
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       install:
-        - choco install python
-        - python -m pip install --upgrade pip
+        - choco install python3
+        - python3 -m pip install --upgrade pip
         - pip install conan
         - conan user
         - conan install . --build missing
@@ -43,8 +43,8 @@ matrix:
       compiler: clang
       env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
       install:
-        - choco install python
-        - python -m pip install --upgrade pip
+        - choco install python3
+        - python3 -m pip install --upgrade pip
         - pip install conan
         - conan user
         - conan install . --build missing

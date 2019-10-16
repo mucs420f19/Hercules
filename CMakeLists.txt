@@ -21,7 +21,8 @@ else()
 endif()
 
 enable_testing()
-include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
+#set(CMAKE_MODULE_PATH ${CONAN_CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
+#set(CMAKE_PREFIX_PATH ${CONAN_CMAKE_PREFIX_PATH} ${CMAKE_PREFIX_PATH})
 
 # Add the executable
 find_package(OpenGL REQUIRED)
