@@ -2,131 +2,122 @@
 
 namespace SavingLoadingIO
 {
-	void SaveProjectToFile(UMLObjectsHolder * in, std::string filename)
+	int SaveProjectToFile(UMLObjectsHolder* in, std::string filename, bool overwrite)
 	{
+		std::ifstream test(filename);
+		
+		//if the file already exists (we were able to open it) and the overwrite flag is not set.... return error
+		if (test.good() && overwrite == false)
+		{
+			return SaveAlreadyExists;
+		}
+		test.close();
 		std::ofstream out(filename);
-		out << "<HerculesProject>\n";
+
+		//file is probably in use or could not be opened for another reason
+		if (!out.good())
+		{
+			return SaveError;
+		}
+
+		out << "Hercules:\n";
 
 		for (auto i : in->ReturnPtrToVector())
 		{
-			out << "<UMLObject>\n";
-			out << "<Title>\n";
-			out << "\"" << i->ReturnTitle() << "\"\n";
-			out << "</Title>\n";
-			out << "<Fields>\n";
+			out << "  UMLObject:\n";
+			out << "    Title:\n";
+			out << "      - " << i->ReturnTitle() << "\n";
 			for (auto j : i->ReturnFieldsRaw())
 			{
-				out << "<UMLField>\n";
+				out << "    UMLField:\n";
 
-				out << "<Name>\n";
-				out << "\"" << j.ReturnName() << "\"\n";
-				out << "</Name>\n";
+				out << "      Name:\n";
+				out << "        - " << j.ReturnName() << "\n";
 
-				out << "<Type>\n";
-				out << "\"" << j.ReturnType() << "\"\n";
-				out << "</Type>\n";
+				out << "      Type:\n";
+				out << "        - " << j.ReturnType() << "\n";
 
-				out << "<Visibility>\n";
-				out  << j.ReturnVisibility() << "\n";
-				out << "</Visibility>\n";
-
-				out << "</UMLField>\n";
+				out << "      Visibility:\n";
+				out << "        - " << j.ReturnVisibility() << "\n";
 			}
-			out << "</Fields>\n";
-			out << "<Methods>\n";
+
 			for (auto j : i->ReturnMethodsRaw())
 			{
-				out << "<UMLMethod>\n";
+				out << "    UMLMethod:\n";
 
-				out << "<Name>\n";
-				out << "\"" << j.ReturnName() << "\"\n";
-				out << "</Name>\n";
+				out << "      Name:\n";
+				out << "        - " << j.ReturnName() << "\n";
 
-				out << "<Type>\n";
-				out << "\"" << j.ReturnType() << "\"\n";
-				out << "</Type>\n";
+				out << "      Type:\n";
+				out << "        - " << j.ReturnType() << "\n";
 
-				out << "<Visibility>\n";
-				out << j.ReturnVisibility() << "\n";
-				out << "</Visibility>\n";
+				out << "      Visibility:\n";
+				out << "        - " << j.ReturnVisibility() << "\n";
 
-				out << "<Parameters>\n";
+				out << "      Parameters:\n";
 
-				for (auto k : j.ReturnParameters())
+				for (auto k : j.ReturnParametersRaw())
 				{
-					out << "<Parameter>\n";
-					out << "\"" << k << "\"\n";
-					out << "</Parameter>\n";
+					out << "        UMLParameter:\n";
+
+					out << "          Type:\n";
+					out << "            - " << k.ReturnType()<< "\n";
+
+					out << "          Name:\n";
+					out << "            - " << k.ReturnName() << "\n";
+
+					out << "          Optional:\n";
+					out << "            - " << k.ReturnOpt() << "\n";
+
+					out << "          Default:\n";
+					out << "            - " << k.ReturnDefault() << "\n";
 				}
-
-				out << "</Parameters>\n";
-
-				out << "</UMLMethod>\n";
 			}
-			out << "</Methods>\n";
-			out << "</UMLObject>\n";
+
+			for (auto j : i->ReturnRelationshipsRaw())
+			{
+				out << "    UMLRelationship:\n";
+
+				out << "      Object:\n";
+				out << "        - " << j.GetObject() << "\n";
+
+				out << "      Type:\n";
+				out << "        - " << j.type << "\n";
+
+				out << "      Parent:\n";
+				out << "        - " << j.parent << "\n";
+			}
 		}
-		out << "</HerculesProject>";
 		out.close();
+		return SaveSuccess;
 	}
 
 	bool LoadProject(UMLObjectsHolder* out, std::string filename)
 	{
+		out->ClearProject();
 		std::ifstream in(filename);
-		//check for errors
-		
+		if (!in.good()) return false;
+
 		std::string line;
 		std::vector<std::string> lines;
 		while (std::getline(in, line))
-		{
-			while (line[0] == ' ') line.erase(line.begin(), line.begin() + 1);
-			lines.push_back(line);
+		{	
+			if (line.size()) lines.push_back(RemoveWhitespaceAfter(line));
 		}
 
-		//invalid file
-		if (lines[0] != "<HerculesProject>" && lines[lines.size() - 1] != "</HerculesProject>") return out;
-		lines.erase(lines.begin(), lines.begin() + 1);
-		lines.erase(lines.end() - 1, lines.end());
+		if (lines.size() == 0) return false;
+		if (lines[0] != "Hercules:") return false;
 
-
-		size_t s1, s2, t1, t2;
-
-		while (lines.size())
+		Node* t = new Node();
+		t->key = StripNode(lines[0]);
+		ParseNode(t, lines);
+		std::vector<Relationship> rela;
+		ProcessResults(t, out, rela);
+		for (auto i : rela)
 		{
-
-			s1 = -1;
-			s2 = -1;
-			for (size_t i = 0; i < lines.size(); i++)
-			{
-				t1 = lines[i].find("<UMLObject>");
-				if (t1 != std::string::npos)
-				{
-					s1 = i;
-				}
-				t2 = lines[i].find("</UMLObject>");
-				if (t2 != std::string::npos)
-				{
-					s2 = i;
-				}
-				if (s1 != -1 && s2 != -1)
-				{
-					break;
-				}
-			}
-
-			//something is mismatched
-			if (s1 == std::string::npos || s2 == std::string::npos) return out;
-
-			std::vector<std::string> i1;
-			std::copy(lines.begin() + s1, lines.begin() + s2 + 1, std::back_inserter(i1));
-			lines.erase(lines.begin() + s1, lines.begin() + s2 + 1);
-
-			out->AddUMLObject(ProcessUMLObject(i1));
-
+			out->AddRelationship(i.parent, i.child, std::stoi(i.type));
 		}
-
-
-
+		LoadingCleanup(t);
 		return out;
 	}
 
@@ -136,218 +127,177 @@ namespace SavingLoadingIO
 		return in;
 	}
 
-	UMLObject* ProcessUMLObject(std::vector<std::string> i1)
+	size_t GetIndent(std::string in)
 	{
-		if (i1[0] != "<UMLObject>" || i1[i1.size() - 1] != "</UMLObject>") return 0;
-		//process i1
-		i1.erase(i1.begin(), i1.begin() + 1);
-		i1.erase(i1.end() - 1, i1.end());
-
-		UMLObject* a = new UMLObject();
-
-		size_t s1, s2, t1, t2;
-
-		s1 = -1;
-		s2 = -1;
-		for (size_t i = 0; i < i1.size(); i++)
+		size_t c = 0;
+		while (in.size() != 0 && in[0] == ' ')
 		{
-			t1 = i1[i].find("<Title>");
-			if (t1 != std::string::npos)
-			{
-				s1 = i;
-			}
-			t2 = i1[i].find("</Title>");
-			if (t2 != std::string::npos)
-			{
-				s2 = i;
-			}
-			if (s1 != -1 && s2 != -1)
-			{
-				break;
-			}
+			c++;
+			in.erase(in.begin());
 		}
-
-		a->SetTitle(RemoveQuotes(i1[s1 + 1]));
-
-		while (i1.size())
-		{
-
-			s1 = -1;
-			s2 = -1;
-			for (size_t i = 0; i < i1.size(); i++)
-			{
-				t1 = i1[i].find("<UMLField>");
-				if (t1 != std::string::npos)
-				{
-					s1 = i;
-				}
-				t2 = i1[i].find("</UMLField>");
-				if (t2 != std::string::npos)
-				{
-					s2 = i;
-				}
-				if (s1 != -1 && s2 != -1)
-				{
-					break;
-				}
-			}
-
-			//something is mismatched
-			if (s1 == std::string::npos || s2 == std::string::npos) break;
-
-			std::vector<std::string> i2;
-			std::copy(i1.begin() + s1, i1.begin() + s2 + 1, std::back_inserter(i2));
-			i1.erase(i1.begin() + s1, i1.begin() + s2 + 1);
-
-			ProcessUMLField(i2, a);
-
-		}
-
-		while (i1.size())
-		{
-
-			s1 = -1;
-			s2 = -1;
-			for (size_t i = 0; i < i1.size(); i++)
-			{
-				t1 = i1[i].find("<UMLMethod>");
-				if (t1 != std::string::npos)
-				{
-					s1 = i;
-				}
-				t2 = i1[i].find("</UMLMethod>");
-				if (t2 != std::string::npos)
-				{
-					s2 = i;
-				}
-				if (s1 != -1 && s2 != -1)
-				{
-					break;
-				}
-			}
-
-			//something is mismatched
-			if (s1 == std::string::npos || s2 == std::string::npos) break;
-
-			std::vector<std::string> i2;
-			std::copy(i1.begin() + s1, i1.begin() + s2 + 1, std::back_inserter(i2));
-			i1.erase(i1.begin() + s1, i1.begin() + s2 + 1);
-
-			ProcessUMLMethod(i2, a);
-
-		}
-
-
-		return a;
+		return c;
 	}
 
-	void ProcessUMLField(std::vector<std::string> i1, UMLObject* a)
+	bool IsItem(std::string in)
 	{
-		size_t s1 = 0, s2 = i1.size();
-		UMLField b;
-
-		while (s1 != s2)
-		{
-			std::string acc1 = i1[s1];
-			if (acc1 == "<Name>")
-			{
-				b.SetName(RemoveQuotes(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else if (acc1 == "<Type>")
-			{
-				b.SetReturnType(RemoveQuotes(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else if (acc1 == "<Visibility>")
-			{
-				b.SetVisibility(std::stoi(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else s1++;
-		}
-		a->AddField(b);
+		in = RemoveWhitespaceBefore(in);
+		if (in.size() != 0 && in[0] == '-') return true; else return false;
 	}
 
-	void ProcessUMLMethod(std::vector<std::string> i1, UMLObject* a)
+	bool IsNode(std::string in)
 	{
-		size_t s1 = 0, s2 = i1.size(), t1, t2;
-		UMLMethod b;
+		if (in.size() != 0 && in[in.size() - 1] == ':') return true; else return false;
+	}
 
-		while (s1 != s2)
+	std::string RemoveWhitespaceBefore(std::string in)
+	{
+		while (in.size() != 0 && in[0] == ' ') in.erase(in.begin());
+		return in;
+	}
+
+	std::string RemoveWhitespaceAfter(std::string in)
+	{
+		while (in.size() != 0 && in[in.size() - 1] == ' ') in.erase(in.end() - 1);
+		return in;
+	}
+
+	std::string StripItem(std::string in)
+	{
+		in = RemoveWhitespaceBefore(in);
+		if (in.size() != 0 && in[0] == '-') in.erase(in.begin());
+		in = RemoveWhitespaceBefore(in);
+		return in;
+	}
+
+	std::string StripNode(std::string in)
+	{
+		in = RemoveWhitespaceBefore(in);
+		if (in.size() != 0 && in[in.size() - 1] == ':') in.erase(in.end() - 1);
+		return in;
+	}
+
+	void ParseNode(Node* current, std::vector<std::string> lines, size_t c)
+	{
+		if (lines.size() <= c) return;
+		std::string scurrent = lines[c];
+		c++;
+
+		for (size_t counter = c; counter < lines.size(); counter++)
 		{
-			std::string acc1 = i1[s1];
-			if (acc1 == "<Name>")
+			std::string i = lines[counter];
+			if (GetIndent(i) == GetIndent(scurrent)) break;
+			if (GetIndent(i) == (GetIndent(scurrent)) + 2)
 			{
-				b.SetName(RemoveQuotes(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else if (acc1 == "<Type>")
-			{
-				b.SetReturnType(RemoveQuotes(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else if (acc1 == "<Visibility>")
-			{
-				b.SetVisibility(std::stoi(i1[s1 + 1]));
-				s1 += 3;
-			}
-			else if (acc1 == "<Parameters>")
-			{
-				while (i1.size())
+				if (IsNode(i))
 				{
+					Node* t = new Node();
+					t->parent = current;
+					t->key = StripNode(i);
+					current->children.push_back(t);
+					ParseNode(t, lines, counter);
+				}
+				else if (IsItem(i))
+				{
+					current->contents.push_back(StripItem(i));
+				}
+			}
+		}
+	}
 
-					s1 = -1;
-					s2 = -1;
-					for (size_t i = 0; i < i1.size(); i++)
+	void ProcessResults(Node* current, UMLObjectsHolder* out, std::vector<Relationship>& relationships)
+	{
+		std::string title;
+		for (auto i : current->children)
+		{
+			if (i->key == "UMLObject")
+			{
+				title.clear();
+				for (auto j : i->children)
+				{
+					if (j->key == "Title" && j->contents.size() == 1)
 					{
-						t1 = i1[i].find("<Parameters>");
-						if (t1 != std::string::npos)
+						title = j->contents[0];
+					}
+				}
+				if (title != "")
+				{
+					UMLObject* a = new UMLObject();
+					a->SetTitle(title);
+					out->AddUMLObject(a);
+					for (auto j : i->children)
+					{
+						if (j->key == "UMLField")
 						{
-							s1 = i;
+							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), FindChildWhere(j, "Visibility"));
+							a->AddField(field);
 						}
-						t2 = i1[i].find("</Parameters>");
-						if (t2 != std::string::npos)
+						else if (j->key == "UMLMethod")
 						{
-							s2 = i;
+							std::vector<UMLParameter> params;
+							if (FindNodesWhere(j, "Parameters").size() > 0)
+							{
+								Node* head = FindNodesWhere(j, "Parameters")[0];
+								std::vector<Node*> tar = FindNodesWhere(head, "UMLParameter");
+								for (auto i : tar)
+								{
+									UMLParameter param(FindChildWhere(i, "Type"), FindChildWhere(i, "Name"), FindChildWhere(i, "Optional"), FindChildWhere(i, "Default"));
+									params.push_back(param);
+								}
+								
+							}
+							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, FindChildWhere(j, "Visibility"));
+							a->AddMethod(method);
 						}
-						if (s1 != -1 && s2 != -1)
+						else if (j->key == "UMLRelationship")
 						{
-							break;
+							if (FindChildWhere(j, "Parent") == "1")
+							{
+								relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type")));
+							}
+							else relationships.push_back(Relationship(FindChildWhere(j, "Object"), title, FindChildWhere(j, "Type")));
 						}
 					}
-
-					//something is mismatched
-					if (s1 == std::string::npos || s2 == std::string::npos) break;
-
-					std::vector<std::string> i2;
-					std::copy(i1.begin() + s1, i1.begin() + s2 + 1, std::back_inserter(i2));
-					i1.erase(i1.begin() + s1, i1.begin() + s2 + 1);
-
-					ProcessUMLMethodParameters(i2, &b);
-
 				}
 			}
-			else s1++;
 		}
-		a->AddMethod(b);
 	}
 
-	void ProcessUMLMethodParameters(std::vector<std::string> i1, UMLMethod* a)
+	std::string FindChildWhere(Node * in, std::string key)
 	{
-		size_t s1 = 0, s2 = i1.size();
-		std::vector<std::string> b;
-
-		while (s1 != s2)
+		std::string out;
+		for (auto i : in->children)
 		{
-			std::string acc1 = i1[s1];
-			if (acc1 == "<Parameter>")
+			if (i->key == key)
 			{
-				b.push_back(RemoveQuotes(i1[s1 + 1]));
-				s1 += 3;
+				if (i->contents.size() == 1)
+				{
+					out = i->contents[0];
+					break;
+				}
 			}
-			else s1++;
 		}
-		a->SetParameters(b);
+		return out;
+	}
+
+	std::vector<Node*> FindNodesWhere(Node* in, std::string key)
+	{
+		std::vector<Node*> t;
+		for (auto i : in->children)
+		{
+			if (i->key == key)
+			{
+				t.push_back(i);
+			}
+		}
+		return t;
+	}
+
+	void LoadingCleanup(Node* in)
+	{
+		for (auto i : in->children)
+		{
+			LoadingCleanup(i);
+		}
+		delete (in);
 	}
 }
