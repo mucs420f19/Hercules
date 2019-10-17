@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "Catch2.hpp"
+#include "catch2/catch.hpp"
 
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"

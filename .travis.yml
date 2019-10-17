@@ -20,43 +20,35 @@ addons:
     - gcc@8
     - ninja
 
-before_install:
-  - cd build
-
 matrix:
   include:
     - os: linux
       compiler: g++
+      env: PATH=$HOME/.local/bin:$PATH
     - os: linux
       compiler: clang
-    # - os: osx
-    #   compiler: g++
+      env: PATH=$HOME/.local/bin:$PATH
     - os: osx
       compiler: clang
+      env: PATH=$HOME/.local/bin:$PATH
     - os: windows
       compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
+      before_install:
+	- choco install python
     - os: windows
       compiler: clang
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      install:
+      before_install:
         - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
-
-
 install:
-  - sudo pip install conan
+  - python -m pip install --upgrade pip
+  - pip install conan
   - conan user
-  - conan install . --build missing
+  - mkdir build
+  - cd build
+  - conan install .. --build missing
+  - cd ..
 script:
   - cmake ..
   - cmake --build .

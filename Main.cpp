@@ -63,10 +63,11 @@ int main(int argc, char** argv)
 
 		/* GLFW */
 		glfwSetErrorCallback(error_callback);
-		if (!glfwInit()) {
-			fprintf(stdout, "[GFLW] failed to init!\n");
-			exit(1);
-		}
+		if (!glfwInit()) 
+			{
+				fprintf(stdout, "[GFLW] failed to init!\n");
+				exit(1);
+			}
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -83,10 +84,10 @@ int main(int argc, char** argv)
 		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 		glewExperimental = 1;
 		if (glewInit() != GLEW_OK) 
-		{
-			fprintf(stderr, "Failed to setup GLEW\n");
-			exit(1);
-		}
+			{
+				fprintf(stderr, "Failed to setup GLEW\n");
+				exit(1);
+			}
 
 		ctx = nk_glfw3_init(win, NK_GLFW3_INSTALL_CALLBACKS);
 		/* Load Fonts: if none of these are loaded a default font will be used  */
@@ -131,10 +132,10 @@ int main(int argc, char** argv)
 					}	
 				if (show_app_about)
 				{
-						/* about popup */
-						static struct nk_rect s = {20, 100, 300, 190};
+					/* about popup */
+					static struct nk_rect s = {20, 100, 300, 190};
 
-						if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Lists", NK_WINDOW_CLOSABLE, s))
+					if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Lists", NK_WINDOW_CLOSABLE, s))
 						{
 							nk_layout_row_dynamic(ctx, 20, 1);
 							for( auto i : holder->UMLObjectReturnTitles() )
@@ -143,23 +144,23 @@ int main(int argc, char** argv)
 							}
 							nk_popup_end(ctx);
 						} else show_app_about = nk_false;
-					}
+				}
 
-			//Creates Buttons for class control
+		//Creates Buttons for class control
 		{
 			nk_layout_row_static(ctx, 0, 100, 2);
 			//Adds new class to holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-						if (nk_button_label(ctx, "Add Class"))
-							(holder->CreateNewClass(add));
-				//Edits a class in the holder
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
-						if (nk_button_label(ctx, "Edit Class"))
-							printf("%s\n", edit);
-				//Deletes a class in the holder
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
-						if (nk_button_label(ctx, "Delete Class"))
-							(holder->DeleteUMLObject(del));
+					if (nk_button_label(ctx, "Add Class"))
+						(holder->CreateNewClass(add));
+			//Edits a class in the holder
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Edit Class"))
+						printf("%s\n", edit);
+			//Deletes a class in the holder
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Delete Class"))
+						(holder->DeleteUMLObject(del));
 
 			}
 			nk_end(ctx);
@@ -183,91 +184,6 @@ int main(int argc, char** argv)
 
 
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-
-
-	//UMLObject* a = NULL, * b = NULL;
-
-	//if (holder->CreateNewClass("Car"))
-	//{
-	//	std::cout << "Successfully created class" << std::endl;
-
-	//	a = holder->ReturnPtrToVector()[0];
-
-	//	std::vector<std::string> testVec;
-
-	//	a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-	//	a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-	//	a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-	//	std::cout << a->ToString() << std::endl << std::endl;
-
-	//}
-	//else
-	//{
-	//	std::cout << "Unable to create class due to duplicate name" << std::endl;
-	//}
-
-	//if (holder->CreateNewClass("Wheel"))
-	//{
-	//	std::cout << "Successfully created class" << std::endl;
-
-	//	b = holder->ReturnPtrToVector()[1];
-
-	//	std::vector<std::string> testVec;
-	//	testVec.push_back("Dummy param 1");
-	//	testVec.push_back("Dummy param 2");
-
-	//	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-	//	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-	//	b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-	//	std::cout << b->ToString() << std::endl << std::endl;
-
-	//}
-	//else
-	//{
-	//	std::cout << "Unable to create class due to duplicate name" << std::endl;
-	//}
-
-
-	//if (b != NULL)
-	//{
-	//	if (holder->EditClassTitle("Car", "Wheel"))
-	//	{
-	//		std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
-	//		std::cout << "TEST 2 FAILED\n\n\n";
-	//	}
-	//	else
-	//	{
-	//		std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
-	//	}
-
-	//	std::cout << b->ToString() << std::endl << std::endl;
-
-
-	//	if (holder->EditClassTitle("Tire", "Wheel"))
-	//	{
-	//		std::cout << "Rename succeeded....\n\n\n";
-	//	}
-	//	else
-	//	{
-	//		std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
-	//		std::cout << "TEST 2 FAILED\n\n\n";
-	//	}
-
-	//	std::cout << b->ToString() << std::endl << std::endl;
-	//}
-	//else
-	//{
-	//	std::cout << "TEST 2 FAILED\n\n\n";
-
-	//}
-
-	//holder->AddRelationship("Car", "Tire", RelationshipComposition);
-
-	//std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
-
-
-
-
 
 	bool run = true;
 	int choice;
