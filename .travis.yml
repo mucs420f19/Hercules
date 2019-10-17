@@ -29,21 +29,13 @@ matrix:
     - os: osx
       compiler: clang
     - os: windows
-      compiler: g++
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-    - os: windows
-      compiler: clang
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
 
-env: PATH=$HOME/.local/bin:/home/travis/build/mucs420f19/Hercules/build:$PATH
+env: PATH=$HOME/.local/bin:$PATH
 before_install:
   - sudo pip install --user conan
 
