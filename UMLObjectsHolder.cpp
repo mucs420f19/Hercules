@@ -38,6 +38,15 @@ UMLObjectsHolder::~UMLObjectsHolder()
 	}
 }
 
+void UMLObjectsHolder::ClearProject()
+{
+	for (auto i : UMLObjects_holder)
+	{
+		i = NULL;
+		delete i;
+	}
+}
+
 void UMLObjectsHolder::UMLObjectPrintTitles()
 {
 	int count = 1;
