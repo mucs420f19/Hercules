@@ -20,49 +20,7 @@ addons:
     - gcc@8
     - ninja
 
-<<<<<<< HEAD
 before_install:
-<<<<<<< HEAD
-=======
-matrix:
-  include:
-    - os: linux
-      compiler: g++
-    - os: linux
-      compiler: clang
-    # - os: osx
-    #   compiler: g++
-    - os: osx
-      compiler: clang
-    - os: windows
-      compiler: g++
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
-    - os: windows
-      compiler: clang
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
-      install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-        - conan user
-        - conan install . --build missing
-
-
-install:
-  - sudo pip install conan
-  - conan user
-  - conan install . --build missing
-script:
->>>>>>> develop
-  - mkdir build
-=======
->>>>>>> origin/s2-gui-travis
   - cd build
 
 matrix:

@@ -1,0 +1,83 @@
+Hercules:
+  UMLObject:
+    Title:
+      - Car
+    UMLField:
+      Name:
+        - Color
+      Type:
+        - string
+      Visibility:
+        - 1
+    UMLField:
+      Name:
+        - Make
+      Type:
+        - string
+      Visibility:
+        - 1
+    UMLMethod:
+      Name:
+        - Drive()
+      Type:
+        - void
+      Visibility:
+        - 2
+      Parameters:
+    UMLRelationship:
+      Object:
+        - Tire
+      Type:
+        - 6
+      Parent:
+        - 1
+  UMLObject:
+    Title:
+      - Tire
+    UMLField:
+      Name:
+        - Manufacturer
+      Type:
+        - string
+      Visibility:
+        - 1
+    UMLField:
+      Name:
+        - Diameter
+      Type:
+        - unsigned int
+      Visibility:
+        - 1
+    UMLMethod:
+      Name:
+        - Rotate()
+      Type:
+        - unsigned int
+      Visibility:
+        - 2
+      Parameters:
+        UMLParameter:
+          Type:
+            - int
+          Name:
+            - Dummy param 1
+          Optional:
+            - false
+          Default:
+            - 
+        UMLParameter:
+          Type:
+            - float
+          Name:
+            - Dummy param 2
+          Optional:
+            - true
+          Default:
+            - 0.0f
+    UMLRelationship:
+      Object:
+        - Car
+      Type:
+        - 6
+      Parent:
+        - 0
