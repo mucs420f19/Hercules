@@ -16,8 +16,7 @@ endif()
 
 # WKK - header files do not belong in source list; source files != header files
 add_executable (Hercules Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
-
-add_executable (HerculesTest UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp Unit-test.cpp)
+add_executable (HerculesTest UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Unit-test.cpp)
 
 enable_testing()
 
