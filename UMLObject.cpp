@@ -241,3 +241,18 @@ bool UMLObject::EditField(std::string oldName, std::string newName)
   }
   return false;
 }
+
+bool UMLObject::DeleteMethod(std::string in)
+{
+  unsigned int count = 0;
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == in)
+    {
+      methods.erase(methods.begin() + count);
+      return true;
+    }
+    ++count;
+  }
+  return false;
+}
