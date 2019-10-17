@@ -37,6 +37,18 @@ UMLObjectsHolder::~UMLObjectsHolder()
 		i = NULL;
 		delete i;
 	}
+<<<<<<< Updated upstream
+=======
+}
+
+void UMLObjectsHolder::ClearProject()
+{
+	for (auto i : UMLObjects_holder)
+	{
+		i = NULL;
+		delete i;
+	}
+>>>>>>> Stashed changes
 }
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
@@ -109,4 +121,65 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 		}
 	}
 	return false;
+<<<<<<< Updated upstream
+=======
+}
+
+bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type)
+{
+	UMLObject* p, * c;
+
+	p = GetObject(parent);
+	c = GetObject(child);
+
+	if (p == 0 || c == 0) return false;
+
+	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
+
+	p->AddRelationship({ type, c, true });
+	c->AddRelationship({ type, p, false });
+
+	return true;
+}
+
+bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type)
+{
+	UMLObject* p, * c;
+
+	p = GetObject(parent);
+	c = GetObject(child);
+
+	if (p == 0 || c == 0) return false;
+
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
+
+	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type);
+	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type);
+	return true;
+}
+
+bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
+{
+	UMLObject* p, * c;
+
+	p = GetObject(parent);
+	c = GetObject(child);
+
+	if (p == 0 || c == 0) return false;
+
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
+
+	p->DeleteRelationship(p->GetIndexRelationshipWith(child));
+	c->DeleteRelationship(c->GetIndexRelationshipWith(parent));
+	return true;
+}
+
+UMLObject* UMLObjectsHolder::GetObject(std::string title)
+{
+	for (auto i : UMLObjects_holder)
+	{
+		if (i->ReturnTitle() == title) return i;
+	}
+	return 0;
+>>>>>>> Stashed changes
 }
