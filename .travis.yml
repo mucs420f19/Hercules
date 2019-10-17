@@ -25,33 +25,47 @@ matrix:
     - os: linux
       compiler: g++
       env: PATH=$HOME/.local/bin:$PATH
+      before_install:
+        - pip install --user conan
     - os: linux
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
+      before_install:
+        - pip install --user conan
     - os: osx
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
+      before_install:
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install --user conan
     - os: windows
       compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
-      - choco install python
+        - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
     - os: windows
       compiler: clang
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+
 install:
-  - python -m pip install --upgrade pip
-  - pip install conan
   - conan user
   - mkdir build
   - cd build
   - conan install .. --build missing
   - cd ..
+
 script:
+  - cd build
   - cmake ..
   - cmake --build .
   - ctest
+
 notifications:
   email: false
