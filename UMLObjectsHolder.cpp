@@ -75,6 +75,16 @@ std::vector<const char*> UMLObjectsHolder::UMLObjectReturnTitles()
 	return out;
 }
 
+std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitlesString()
+{
+	std::vector<std::string> out;
+	for (auto& i : UMLObjects_holder)
+	{
+		out.push_back(i->ReturnTitle());
+	}
+	return out;
+}
+
 std::vector<UMLObject*> UMLObjectsHolder::ReturnPtrToVector()
 {
 	return UMLObjects_holder;

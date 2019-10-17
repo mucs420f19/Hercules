@@ -20,6 +20,7 @@ public:
 	void UMLObjectPrintContents();
 	//Returns a vector containing just the object titles
 	std::vector<const char*> UMLObjectReturnTitles();
+	std::vector<std::string> UMLObjectReturnTitlesString();
 	//returns a vector containing pointers to the classes
 	//this allows direct access to the objects and might not be best practice
 	std::vector<UMLObject*> ReturnPtrToVector();
