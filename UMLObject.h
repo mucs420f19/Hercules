@@ -124,11 +124,11 @@ struct UMLParameter
 struct UMLMethod
 {
 	UMLMethod();
-	UMLMethod(std::string inName, std::string inType, std::vector<UMLParameter> inParameters, int inVisiblity)
+	UMLMethod(std::string inName, std::string inType, std::vector<UMLParameter> inParameters, int inVisibility)
 	{
 		name = inName;
 		return_type = inType;
-		parameters = in_parameters;
+		parameters = inParameters;
 		visibility = inVisibility;
 	}
 	UMLMethod(std::string in_name, std::string in_type, std::vector<UMLParameter> in_parameters, std::string in_visiblity = "1")

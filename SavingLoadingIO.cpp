@@ -104,6 +104,7 @@ namespace SavingLoadingIO
 		{	
 			if (line.size()) lines.push_back(RemoveWhitespaceAfter(line));
 		}
+		in.close();
 
 		if (lines.size() == 0) return false;
 		if (lines[0] != "Hercules:") return false;
