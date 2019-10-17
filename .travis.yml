@@ -22,6 +22,7 @@ addons:
 
 <<<<<<< HEAD
 before_install:
+<<<<<<< HEAD
 =======
 matrix:
   include:
@@ -60,6 +61,8 @@ install:
 script:
 >>>>>>> develop
   - mkdir build
+=======
+>>>>>>> origin/s2-gui-travis
   - cd build
 
 matrix:
@@ -74,7 +77,7 @@ matrix:
       compiler: clang
     - os: windows
       compiler: g++
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
@@ -83,13 +86,14 @@ matrix:
         - conan install . --build missing
     - os: windows
       compiler: clang
-      env: PATH=/c/Python37:/c/Python37/Scripts:$PATH
+      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
         - conan user
         - conan install . --build missing
+
 
 install:
   - sudo pip install conan

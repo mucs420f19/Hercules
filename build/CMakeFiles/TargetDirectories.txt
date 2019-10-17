@@ -1,0 +1,5 @@
+/home/brian/Hercules/build/CMakeFiles/rebuild_cache.dir
+/home/brian/Hercules/build/CMakeFiles/edit_cache.dir
+/home/brian/Hercules/build/CMakeFiles/test.dir
+/home/brian/Hercules/build/CMakeFiles/Hercules.dir
+/home/brian/Hercules/build/CMakeFiles/HerculesTest.dir
