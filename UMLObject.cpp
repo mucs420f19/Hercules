@@ -60,6 +60,45 @@ std::string UMLObject::ToString()
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
 }
 
+std::string UMLObject::ReturnRelationships()
+{
+	std::string out;
+	for (auto a : relationships)
+	{
+		out += a.ToString() + ", ";
+	}
+	return out;
+}
+
+void UMLObject::AddRelationship(UMLRelationship in)
+{
+	relationships.push_back(in);
+}
+
+size_t UMLObject::GetIndexRelationshipWith(std::string in)
+{
+	size_t out = -1;
+	for (unsigned int i = 0; i < relationships.size(); i++)
+	{
+		if (relationships[i].GetObject() == in)
+		{
+			out = i;
+			break;
+		}
+	}
+	return out;
+}
+
+void UMLObject::UpdateRelationship(size_t index, int type)
+{
+	relationships[index].SetType(type);
+}
+
+void UMLObject::DeleteRelationship(size_t index)
+{
+	relationships.erase(relationships.begin() + index);
+}
+
 std::vector<UMLField> UMLObject::ReturnFieldsRaw()
 {
 	return fields;
@@ -68,6 +107,11 @@ std::vector<UMLField> UMLObject::ReturnFieldsRaw()
 std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 {
 	return methods;
+}
+
+std::vector<UMLRelationship> UMLObject::ReturnRelationshipsRaw()
+{
+	return relationships;
 }
 
 UMLField::UMLField()
@@ -122,6 +166,13 @@ std::string UMLMethod::ReturnType()
 
 std::vector<std::string> UMLMethod::ReturnParameters()
 {
+	std::vector<std::string> out;
+	for (auto i : parameters) out.push_back(i.ToString());
+	return out;
+}
+
+std::vector<UMLParameter> UMLMethod::ReturnParametersRaw()
+{
 	return parameters;
 }
 
@@ -145,7 +196,12 @@ void UMLMethod::SetVisibility(int in)
 	visibility = in;
 }
 
-void UMLMethod::SetParameters(std::vector<std::string> in)
+bool UMLMethod::AddParameter(UMLParameter in)
 {
-	parameters = in;
+	for (auto i : parameters)
+	{
+		if (in.name == i.name) return false;
+	}
+	parameters.push_back(in);
+	return true;
 }
