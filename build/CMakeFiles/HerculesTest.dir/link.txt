@@ -1,1 +1,0 @@
-/usr/bin/c++     CMakeFiles/HerculesTest.dir/UMLObject.cpp.o CMakeFiles/HerculesTest.dir/SavingLoadingIO.cpp.o CMakeFiles/HerculesTest.dir/UMLObjectsHolder.cpp.o CMakeFiles/HerculesTest.dir/Unit-test.cpp.o  -o HerculesTest 
