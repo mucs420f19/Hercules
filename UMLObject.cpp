@@ -205,3 +205,21 @@ bool UMLMethod::AddParameter(UMLParameter in)
 	parameters.push_back(in);
 	return true;
 }
+
+bool UMLObject::EditMethod(std::string oldName, std::string newName)
+{
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == newName) 
+      return false;
+  }
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == oldName)
+    {
+      i.SetName(newName);
+      return true;
+    }
+  }
+  return false;
+}
