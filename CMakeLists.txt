@@ -23,16 +23,6 @@ endif()
 enable_testing()
 include(${CMAKE_BINARY_DIR}/conan_paths.cmake)
 
-# Add the executable
-find_package(OpenGL REQUIRED)
-find_package(glew REQUIRED)
-find_package(glfw3 REQUIRED)
-
-add_executable (Hercules Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
-add_executable (HerculesTest UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Unit-test.cpp)
-
-target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${glew_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
-target_link_libraries(Hercules PUBLIC ${OPENGL_LIBRARIES} ${glew_LIBRARIES}  ${glfw_LIBRARIES})
 
 add_test (mytest HerculesTest)
 set(CMAKE_MODULE_PATH ${CONAN_CMAKE_MODULE_PATH} ${CMAKE_MODULE_PATH})
