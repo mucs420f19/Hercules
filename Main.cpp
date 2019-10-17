@@ -13,6 +13,7 @@ int main()
   bool run = true;
   std::cout << "Welcome to the Hercules UML Editor" << std::endl;
   std::cout << "Type 'help' for a list of commands." << std::endl;
+  
   // Execute until 'exit' is used
   while (run)
   {
@@ -80,25 +81,18 @@ int main()
           {
             std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
             
-            std::cin >> input;
+            std::string yn;
+            std::cin >> yn;
             
-            if (input == "y")
+            if (yn == "y")
             {
               SavingLoadingIO::SaveProjectToFile(holder, substrings[1], true);
               
               std::cout << "File saved successfully." << std::endl;
-              
-              break;
             }
             
             else
-            {
               std::cout << "File not saved." << std::endl;
-              
-              break;
-            }
-              
-          
           }
         }
         
@@ -149,6 +143,12 @@ int main()
           // 'add method _____ _____'
           if (substrings[1] == "method")
           {
+            UMLMethod newMethod;
+            newMethod.SetName(substrings[3]);
+            
+            holder->GetObject(substrings[2])->AddMethod(newMethod);
+            
+            // ===== Check if class (substrings[3]) exists ============================================================
           }
           
           // 'add field _____ _____'
