@@ -223,3 +223,21 @@ bool UMLObject::EditMethod(std::string oldName, std::string newName)
   }
   return false;
 }
+
+bool UMLObject::EditField(std::string oldName, std::string newName)
+{
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == newName)
+      return false;
+  }
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == oldName)
+    {
+      i.SetName(newName);
+      return true;
+    }
+  }
+  return false;
+}

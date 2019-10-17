@@ -208,6 +208,7 @@ public:
 	void DeleteRelationship(size_t index);
 	
 	bool EditMethod(std::string oldName, std::string newName);
+	bool EditField(std::string oldName, std::string newName);
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
