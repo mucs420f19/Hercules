@@ -4,20 +4,20 @@ UMLObjectsHolder::UMLObjectsHolder()
 {
 }
 
-bool UMLObjectsHolder::CreateNewClass(std::string title)
+UMLObject * UMLObjectsHolder::CreateNewClass(std::string title)
 {
 	if (IsTitleUnique(title))
 	{
-		std::cout << "Creating Class: " << title << std::endl;
+		//std::cout << "Creating Class: " << title << std::endl;
 		UMLObject* a = new UMLObject();
 		a->SetTitle(title);
 		UMLObjects_holder.push_back(a);
-		return true;
+		return a;
 	}
 	else
 	{
-		std::cout << "Duplicate name detected" << std::endl;
-		return false;
+		//std::cout << "Duplicate name detected" << std::endl;
+		return 0;
 	}
 }
 
@@ -37,8 +37,6 @@ UMLObjectsHolder::~UMLObjectsHolder()
 		i = NULL;
 		delete i;
 	}
-<<<<<<< Updated upstream
-=======
 }
 
 void UMLObjectsHolder::ClearProject()
@@ -48,7 +46,6 @@ void UMLObjectsHolder::ClearProject()
 		i = NULL;
 		delete i;
 	}
->>>>>>> Stashed changes
 }
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
@@ -74,6 +71,16 @@ std::vector<const char*> UMLObjectsHolder::UMLObjectReturnTitles()
 	for (auto & i : UMLObjects_holder)
 	{
 		out.push_back(i->ReturnTitle().c_str());
+	}
+	return out;
+}
+
+std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitlesString()
+{
+	std::vector<std::string> out;
+	for (auto& i : UMLObjects_holder)
+	{
+		out.push_back(i->ReturnTitle());
 	}
 	return out;
 }
@@ -121,8 +128,6 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 		}
 	}
 	return false;
-<<<<<<< Updated upstream
-=======
 }
 
 bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type)
@@ -181,5 +186,4 @@ UMLObject* UMLObjectsHolder::GetObject(std::string title)
 		if (i->ReturnTitle() == title) return i;
 	}
 	return 0;
->>>>>>> Stashed changes
 }
