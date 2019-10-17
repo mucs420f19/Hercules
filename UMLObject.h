@@ -210,6 +210,7 @@ public:
 	bool EditMethod(std::string oldName, std::string newName);
 	bool EditField(std::string oldName, std::string newName);
 	bool DeleteMethod(std::string in);
+	bool DeleteField(std::string in);
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();

@@ -256,3 +256,18 @@ bool UMLObject::DeleteMethod(std::string in)
   }
   return false;
 }
+
+bool UMLObject::DeleteField(std::string in)
+{
+  unsigned int count = 0;
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == in)
+    {
+      fields.erase(fields.begin() + count);
+      return true;
+    }
+    ++count;
+  }
+  return false;
+}
