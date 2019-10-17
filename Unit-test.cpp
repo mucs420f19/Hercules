@@ -3,7 +3,8 @@
 
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
-#include "UMLObjectsHolder.h" 
+#include "UMLObjectsHolder.h"
+#include "REPL.h"
 
 TEST_CASE("Create a Class", "0")
 {
@@ -222,6 +223,28 @@ TEST_CASE("Test Invalid Loading", "0")
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, randfilename, true) == SaveSuccess);
 
 	REQUIRE(SavingLoadingIO::LoadProject(holder, randfilename) == true);
+}
+
+TEST_CASE("REPL Test 1", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	RunREPL(holder, "add class test_class1");
+	REQUIRE(holder->Size() == 1);
+	REQUIRE(holder->GetUMLObject("test_class1") != NULL);
+
+	RunREPL(holder, "edit class test_class1 new_class_name");
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "new_class_name");
+
+	//write more here
+}
+
+TEST_CASE("REPL Test 2", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	//write more here
 }
 
 //
