@@ -28,8 +28,8 @@ matrix:
       compiler: clang
     # - os: osx
     #   compiler: g++
-    - os: osx
-      compiler: clang
+    # - os: osx
+    #   compiler: clang
     - os: windows
       compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
