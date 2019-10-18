@@ -41,8 +41,9 @@ public:
 	bool EditRelationship(std::string parent, std::string child, int type);
 	//delete the specified relationship. returns true if successful
 	bool DeleteRelationship(std::string parent, std::string child);
+	UMLObject* GetUMLObject(std::string title);
 
 private:
 	std::vector<UMLObject*> UMLObjects_holder;
-	UMLObject* GetObject(std::string title);
+
 };
