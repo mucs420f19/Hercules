@@ -58,6 +58,8 @@ int main(int argc, char** argv)
 		char add[256] = {0};
 		char edit[256] = {0};
 		char del[256] = {0};
+		char save[256] = {0};
+		char load[256] = {0};
 		static int show_menu = nk_true;
 		static int show_app_about = nk_false;
 
@@ -99,10 +101,8 @@ int main(int argc, char** argv)
 		}
 
 		#ifdef INCLUDE_STYLE
-		//set_style(ctx, THEME_WHITE);
-		//set_style(ctx, THEME_RED);
-		//set_style(ctx, THEME_BLUE);
 		set_style(ctx, THEME_DARK);
+		
 		#endif
 		//Background window color
 		bg.r = 0.00f, bg.g = 0.00f, bg.b = 0.00f, bg.a = 0.00f;
@@ -117,42 +117,26 @@ int main(int argc, char** argv)
 				NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
 				NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
 
-				nk_menubar_begin(ctx);
+		//Begin menubar here or core dump later on		
+		nk_menubar_begin(ctx);
 
-				//Creates dropdown menu 
-				nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-				nk_layout_row_push(ctx, 45);
-				if (nk_menu_begin_label(ctx, "MENU", NK_TEXT_LEFT, nk_vec2(120, 200)))
-					{
-						nk_layout_row_dynamic(ctx, 25, 1);
-						
-						if (nk_menu_item_label(ctx, "About", NK_TEXT_LEFT))
-							show_app_about = nk_true;
-						nk_menu_end(ctx);
-					}	
-				if (show_app_about)
-				{
-					/* about popup */
-					static struct nk_rect s = {20, 100, 300, 190};
-
-					if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Lists", NK_WINDOW_CLOSABLE, s))
-						{
-							nk_layout_row_dynamic(ctx, 20, 1);
-							for( auto i : holder->UMLObjectReturnTitles() )
-							{
-								nk_label(ctx, i, NK_TEXT_LEFT);
-							}
-							nk_popup_end(ctx);
-						} else show_app_about = nk_false;
-				}
-
+		//Saving and Loading buttons
+		{
+			nk_layout_row_static(ctx, 50, 200, 2);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Save"))	
+					SavingLoadingIO::SaveProjectToFile(holder, save, true);		
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Load"))	
+					SavingLoadingIO::LoadProject(holder, load);				
+		}
 		//Creates Buttons for class control
 		{
 			nk_layout_row_static(ctx, 0, 100, 2);
 			//Adds new class to holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Add Class"))
-						(holder->CreateNewClass(add));
+					if (nk_button_label(ctx, "Add Class"))						
+						(holder->CreateNewClass(add));												
 			//Edits a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Edit Class"))
@@ -162,7 +146,22 @@ int main(int argc, char** argv)
 					if (nk_button_label(ctx, "Delete Class"))
 						(holder->DeleteUMLObject(del));
 
+		}
+
+		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "List Classes", NK_TEXT_LEFT, nk_vec2(500, 40)))
+			{
+				nk_layout_row_dynamic(ctx, 20, 1);
+					for( auto i : holder->UMLObjectReturnTitles() )
+					{
+						nk_label(ctx, i, NK_TEXT_LEFT);
+					}
+				nk_menu_end(ctx);
 			}
+
+			//Close the ctx struct context
 			nk_end(ctx);
 
 			/* Draw */
