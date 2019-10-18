@@ -23,4 +23,4 @@ enable_testing()
 target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
 target_link_libraries(Hercules PUBLIC ${CONAN_LIBS})
 
-add_test (mytest HerculesTest)
+add_test (NAME mytest COMMAND HerculesTest)
