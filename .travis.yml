@@ -51,6 +51,7 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
+  - ls -ld $PWD/*
   - ctest
 
 notifications:
