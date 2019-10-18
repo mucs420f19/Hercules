@@ -153,7 +153,51 @@ int main(int argc, char** argv)
 						(holder->DeleteUMLObject(del));
 
 		}
+
+		//Right now this has no input validation.  Allows multiple methods of same name to be created.
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{						
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter Method Name")) {
+						printf("Method Name");
+						UMLMethod newMethod;
+						newMethod.SetName(method);
+						holder->GetUMLObject(classname)->AddMethod(newMethod);
+						strcpy(classname,overwrite);
+					}
+
+				nk_menu_end(ctx);
+			}
+
+		//Right now this has no input validation.  Allows multiple fields of same name to be created.
+		if (nk_menu_begin_label(ctx, "Add field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter field Name")) {
+						printf("Field Name");
+						UMLField newField;
+						newField.SetName(field);
+						holder->GetUMLObject(classname)->AddField(newField);
+						strcpy(classname,overwrite);
+					}
 		
+				nk_menu_end(ctx);
+			}
+
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
@@ -166,52 +210,7 @@ int main(int argc, char** argv)
 					}
 				nk_menu_end(ctx);
 			}
-
-			//Right now this has no input validation.  Allows multiple methods of same name to be created.
-		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_LEFT, nk_vec2(500, 200)))
-			{
-				nk_layout_row_static(ctx, 0, 100, 2);
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	{
-						printf("te");
-						//classname = add;
-						strcpy(classname,add);
-					}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter Method Name")) {
-						printf("Method Name");
-						UMLMethod newMethod;
-						newMethod.SetName(method);
-						holder->GetUMLObject(classname)->AddMethod(newMethod);
-						strcpy(classname,overwrite);
-					}
-
-
-				nk_menu_end(ctx);
-			}
-			//Right now this has no input validation.  Allows multiple fields of same name to be created.
-		if (nk_menu_begin_label(ctx, "Add field", NK_TEXT_LEFT, nk_vec2(500, 200)))
-			{
-				nk_layout_row_static(ctx, 0, 100, 2);
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	{
-						printf("te");
-						strcpy(classname,add);
-					}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter field Name")) {
-						printf("Field Name");
-						UMLField newField;
-						newField.SetName(field);
-						holder->GetUMLObject(classname)->AddField(newField);
-						strcpy(classname,overwrite);
-					}
-		
-
-				nk_menu_end(ctx);
-			}
+			
 			//Close the ctx struct context
 			nk_end(ctx);
 
