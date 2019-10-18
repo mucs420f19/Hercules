@@ -64,6 +64,8 @@ int main(int argc, char** argv)
 		char load[256] = {0};
 		char method[20] = {0};
 		char field [256] = {0};
+		char classname [256] = {0};
+		char overwrite [256] = {0};
 		static int show_menu = nk_true;
 		static int show_app_about = nk_false;
 
@@ -172,14 +174,18 @@ int main(int argc, char** argv)
 			{
 				nk_layout_row_static(ctx, 0, 100, 2);
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	
+					if (nk_button_label(ctx, "Confirm Class Name"))	{
 						printf("te");
+						//classname = add;
+						strcpy(classname,add);
+					}
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Enter Method Name")) {
 						printf("Method Name");
 						UMLMethod newMethod;
 						newMethod.SetName(method);
-						holder->GetUMLObject("cat")->AddMethod(newMethod);
+						holder->GetUMLObject(classname)->AddMethod(newMethod);
+						strcpy(classname,overwrite);
 					}
 
 
@@ -190,14 +196,17 @@ int main(int argc, char** argv)
 			{
 				nk_layout_row_static(ctx, 0, 100, 2);
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	
+					if (nk_button_label(ctx, "Confirm Class Name"))	{
 						printf("te");
+						strcpy(classname,add);
+					}
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Enter field Name")) {
 						printf("Field Name");
 						UMLField newField;
 						newField.SetName(field);
-						holder->GetUMLObject("cat")->AddField(newField);
+						holder->GetUMLObject(classname)->AddField(newField);
+						strcpy(classname,overwrite);
 					}
 		
 
