@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 		char del[256] = {0};
 		char save[256] = {0};
 		char load[256] = {0};
-		char method[256] = {0};
+		std::string method;
 		char field [256] = {0};
 		static int show_menu = nk_true;
 		static int show_app_about = nk_false;
@@ -155,8 +155,7 @@ int main(int argc, char** argv)
 
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Add Method"))		
-					printf("test");				
-						//holder->GetUMLObject(add->AddMethod(method));
+					printf("test");									
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Add Field"))						
 						printf("test");
@@ -165,7 +164,7 @@ int main(int argc, char** argv)
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "List Classes", NK_TEXT_LEFT, nk_vec2(500, 200)))
+		if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_LEFT, nk_vec2(500, 200)))
 			{
 				nk_layout_row_dynamic(ctx, 20, 1);
 					for( auto i : holder->UMLObjectReturnTitles() )
@@ -175,6 +174,26 @@ int main(int argc, char** argv)
 				nk_menu_end(ctx);
 			}
 
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_LEFT, nk_vec2(500, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 100, 2);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+						printf("te");
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method.c_str(), sizeof(method) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter Method Name"))
+						printf("Method Name");
+
+					UMLMethod newMethod;
+					newMethod.SetName(method);
+
+					holder->GetUMLObject(add)->AddMethod(method);
+
+				nk_menu_end(ctx);
+			}
+		
 			//Close the ctx struct context
 			nk_end(ctx);
 
@@ -227,7 +246,7 @@ int main(int argc, char** argv)
 			{
 				std::cout << std::endl << "Class List:" << std::endl;
 
-				holder->UMLObjectPrintTitles();
+				holder->UMLObjectPrintContents();
 
 				break;
 			}
@@ -334,7 +353,7 @@ int main(int argc, char** argv)
 
 				break;
 			}
-			/*case 8:
+			case 8:
 			{
 				std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
 
@@ -350,7 +369,24 @@ int main(int argc, char** argv)
 					holder->GetUMLObject(input)->AddMethod(newMethod);
 
 				break;
-			}*/
+			}
+			case 9:
+			{
+				std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
+
+				std::cin >> input;
+
+				std::cout << std::endl << "Please enter the field name." << std::endl;
+
+				std::cin >> input2;
+
+					UMLField newField;
+					newField.SetName(input2);
+
+					holder->GetUMLObject(input)->AddField(newField);
+
+				break;
+			}
 
 			default:
 			{
