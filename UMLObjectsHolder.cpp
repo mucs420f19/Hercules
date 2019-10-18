@@ -123,8 +123,8 @@ bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, in
 {
 	UMLObject* p, * c;
 
-	p = GetObject(parent);
-	c = GetObject(child);
+	p = GetUMLObject(parent);
+	c = GetUMLObject(child);
 
 	if (p == 0 || c == 0) return false;
 
@@ -140,8 +140,8 @@ bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, i
 {
 	UMLObject* p, * c;
 
-	p = GetObject(parent);
-	c = GetObject(child);
+	p = GetUMLObject(parent);
+	c = GetUMLObject(child);
 
 	if (p == 0 || c == 0) return false;
 
@@ -156,8 +156,8 @@ bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 {
 	UMLObject* p, * c;
 
-	p = GetObject(parent);
-	c = GetObject(child);
+	p = GetUMLObject(parent);
+	c = GetUMLObject(child);
 
 	if (p == 0 || c == 0) return false;
 
@@ -168,7 +168,7 @@ bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 	return true;
 }
 
-UMLObject* UMLObjectsHolder::GetObject(std::string title)
+UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 {
 	for (auto i : UMLObjects_holder)
 	{

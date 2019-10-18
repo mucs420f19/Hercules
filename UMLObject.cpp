@@ -205,3 +205,69 @@ bool UMLMethod::AddParameter(UMLParameter in)
 	parameters.push_back(in);
 	return true;
 }
+
+bool UMLObject::EditMethod(std::string oldName, std::string newName)
+{
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == newName) 
+      return false;
+  }
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == oldName)
+    {
+      i.SetName(newName);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool UMLObject::EditField(std::string oldName, std::string newName)
+{
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == newName)
+      return false;
+  }
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == oldName)
+    {
+      i.SetName(newName);
+      return true;
+    }
+  }
+  return false;
+}
+
+bool UMLObject::DeleteMethod(std::string in)
+{
+  unsigned int count = 0;
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == in)
+    {
+      methods.erase(methods.begin() + count);
+      return true;
+    }
+    ++count;
+  }
+  return false;
+}
+
+bool UMLObject::DeleteField(std::string in)
+{
+  unsigned int count = 0;
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == in)
+    {
+      fields.erase(fields.begin() + count);
+      return true;
+    }
+    ++count;
+  }
+  return false;
+}
