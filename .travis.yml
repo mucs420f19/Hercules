@@ -29,6 +29,7 @@ matrix:
     - os: osx
       compiler: clang
     - os: windows
+      compiler: MSVC
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
@@ -37,15 +38,17 @@ matrix:
 
 env: PATH=$HOME/.local/bin:$PATH
 before_install:
-  - sudo pip install --user conan
+  - pip install --user conan
 
 install:
   - conan user
   - mkdir build
   - cd build
   - conan install .. --build missing
+  - cd ..
 
 script:
+  - cd build
   - cmake ..
   - cmake --build .
   - ctest
