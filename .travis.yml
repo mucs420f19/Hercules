@@ -2,7 +2,7 @@ dist: bionic
 sudo: required
 language:
   - cpp
-python: "3.7"
+python: "3.8"
 addons:
   apt:
     sources:
@@ -24,35 +24,21 @@ matrix:
   include:
     - os: linux
       compiler: g++
-      env: PATH=$HOME/.local/bin:$PATH
-      before_install:
-        - pip install --user conan
     - os: linux
       compiler: clang
-      env: PATH=$HOME/.local/bin:$PATH
-      before_install:
-        - pip install --user conan
     - os: osx
       compiler: clang
-      env: PATH=$HOME/.local/bin:$PATH
-      before_install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install --user conan
     - os: windows
-      compiler: g++
+      compiler: MSVC
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
-    - os: windows
-      compiler: clang
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
+
+env: PATH=$HOME/.local/bin:$PATH
+before_install:
+  - pip install --user conan
 
 install:
   - conan user
@@ -65,6 +51,7 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
+  - cd bin
   - ctest
 
 notifications:
