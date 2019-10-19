@@ -38,21 +38,24 @@ matrix:
       before_install:
         - pip install python
         - python -m pip install --upgrade pip
-        - pip install --user conan
+        - pip install conan
     - os: windows
-      compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
-    - os: windows
-      compiler: clang
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
+      install:
+        - conan user
+        - mkdir build
+        - cd build
+        - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
+        - cd ..
+      script:
+        - cd build
+        - cmake ..
+        - cmake --build .
+        - ctest -C Debug
 
 install:
   - conan user
@@ -65,7 +68,7 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
-  - ctest
+  - ctest -C Debug
 
 notifications:
   email: false
