@@ -40,24 +40,8 @@ matrix:
         - python -m pip install --upgrade pip
         - pip install conan
     - os: windows
-      compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
-        - choco upgrade cmake
-        - choco install visualstudio2019community
-        - choco install visualstudio2019-workload-vctools
-        - choco install visualstudio2019buildtools
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-    - os: windows
-      compiler: clang
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco upgrade cmake
-        - choco install visualstudio2019community
-        - choco install visualstudio2019-workload-vctools
-        - choco install visualstudio2019buildtools
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
