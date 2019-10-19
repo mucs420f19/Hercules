@@ -51,6 +51,11 @@ matrix:
         - cd build
         - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
         - cd ..
+      script:
+        - cd build
+        - cmake ..
+        - cmake --build .
+        - ctest -C Debug
 
 install:
   - conan user
@@ -63,7 +68,7 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
-  - ctest
+  - ctest -C Debug
 
 notifications:
   email: false
