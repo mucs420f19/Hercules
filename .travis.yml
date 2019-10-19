@@ -43,6 +43,7 @@ matrix:
       compiler: g++
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
+        - choco upgrade cmake
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
@@ -50,6 +51,7 @@ matrix:
       compiler: clang
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
+        - choco upgrade cmake
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
