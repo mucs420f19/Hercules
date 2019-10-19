@@ -36,7 +36,7 @@ matrix:
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
-        - choco install python
+        - pip install python
         - python -m pip install --upgrade pip
         - pip install --user conan
     - os: windows
