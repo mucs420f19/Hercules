@@ -6,12 +6,9 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()
 
 # Set RPATH
-if(CMAKE_HOST_WIN32)
-else()
-    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-    MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-endif()
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 
 # WKK - header files do not belong in source list; source files != header files
