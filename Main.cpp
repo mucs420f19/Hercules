@@ -46,9 +46,6 @@ int main(int argc, char** argv)
 	
 	//Vars for class holders
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	bool run = true;
-	int choice;
-	std::string input, input2;
 	
 	if (argc == 1)
 	{
@@ -140,7 +137,9 @@ int main(int argc, char** argv)
 			//Adds new class to holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Add Class"))						
-						(holder->CreateNewClass(add));												
+						{
+							(holder->CreateNewClass(add));
+						}										
 			//Edits a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Edit Class"))
@@ -148,7 +147,9 @@ int main(int argc, char** argv)
 			//Deletes a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Delete Class"))
-						(holder->DeleteUMLObject(del));
+						{
+							(holder->DeleteUMLObject(del));
+						}
 
 		}
 
@@ -164,8 +165,8 @@ int main(int argc, char** argv)
 						strcpy(classname,add);
 					}
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter Method Name")) {
-						printf("Method Name");
+					if (nk_button_label(ctx, "Enter Method Name")) 
+					{
 						UMLMethod newMethod;
 						newMethod.SetName(method);
 						holder->GetUMLObject(classname)->AddMethod(newMethod);
@@ -185,8 +186,8 @@ int main(int argc, char** argv)
 						strcpy(classname,add);
 					}
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter field Name")) {
-						printf("Field Name");
+					if (nk_button_label(ctx, "Enter field Name")) 
+					{
 						UMLField newField;
 						newField.SetName(field);
 						holder->GetUMLObject(classname)->AddField(newField);
@@ -198,8 +199,8 @@ int main(int argc, char** argv)
 
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_LEFT, nk_vec2(500, 200)))
+		nk_layout_row_push(ctx, 405);
+		if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_CENTERED, nk_vec2(500, 200)))
 			{
 				nk_layout_row_dynamic(ctx, 20, 1);
 					for( auto i : holder->UMLObjectReturnTitles() )
@@ -208,7 +209,6 @@ int main(int argc, char** argv)
 					}
 				nk_menu_end(ctx);
 			}
-		nk_label(ctx, "test", NK_TEXT_CENTERED);
 			
 			//Close the ctx struct context
 			nk_end(ctx);
@@ -228,182 +228,11 @@ int main(int argc, char** argv)
 		}
 		nk_glfw3_shutdown();
 		glfwTerminate();
-
 }
-
 	else
 	{
-		std::cout << std::endl << "********************Welcome to Hercules********************" << std::endl;
-
-		while (run)
-		{
-			std::cout << std::endl << "********************" << std::endl;
-			std::cout << "1. View Class List" << std::endl;
-			std::cout << "2. Create New Class" << std::endl;
-			std::cout << "3. Delete A Class" << std::endl;
-			std::cout << "4. Edit A Class" << std::endl;
-			std::cout << "5. Save" << std::endl;
-			std::cout << "6. Load" << std::endl;
-			std::cout << "7. Exit" << std::endl;
-			std::cout << "********************" << std::endl << std::endl;
-			std::cout << "Which task would you like to run?" << std::endl;
-
-			std::cin >> choice;
-
-			switch (choice)
-			{
-			case 1:
-			{
-				std::cout << std::endl << "Class List:" << std::endl;
-
-				holder->UMLObjectPrintContents();
-
-				break;
-			}
-
-			case 2:
-			{
-				std::cout << std::endl << "Please enter the name of the new class." << std::endl;
-				std::cin >> input;
-				std::cout << std::endl;
-
-				if (holder->CreateNewClass(input))
-					std::cout << "Class created sucessfully." << std::endl;
-				else
-					std::cout << "Class creation failed." << std::endl;
-
-				break;
-			}
-
-			case 3:
-			{
-				if (holder->Size())
-				{
-					std::cout << std::endl;
-
-					holder->UMLObjectPrintTitles();
-
-					std::cout << std::endl << "Please enter the number of the class you wish to delete." << std::endl;
-					std::cin >> input;
-
-					if (holder->DeleteUMLObject(input))
-						std::cout << "Delete successful." << std::endl << std::endl;
-					else
-						std::cout << "Unable to delete class." << std::endl << std::endl;
-				}
-				else
-					std::cout << std::endl << "You have no classes to delete." << std::endl;
-
-				break;
-			}
-
-			case 4:
-			{
-				std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
-
-				std::cin >> input;
-
-				std::cout << std::endl << "Please enter the new name for the class." << std::endl;
-
-				std::cin >> input2;
-
-				if (holder->EditClassTitle(input2, input))
-					std::cout << "Rename successful." << std::endl << std::endl;
-				else
-					std::cout << "Unable to rename class." << std::endl << std::endl;
-
-				break;
-			}
-
-			case 5:
-			{
-				std::cout << std::endl << "Please enter the name of the save file." << std::endl;
-
-				std::cin >> input;
-
-				if (SavingLoadingIO::SaveProjectToFile(holder, input) == SaveAlreadyExists)
-				{
-					std::cout << std::endl << "Save already exists. Overwrite? y/n: " << std::endl;
-					std::cin >> input;
-					if (input == "y")
-					{
-						SavingLoadingIO::SaveProjectToFile(holder, input, true); //for force overwrite
-					}
-					else
-					{
-						std::cout << std::endl << "Save cancelled" << std::endl;
-					}
-				}
-
-				break;
-			}
-
-			case 6:
-			{
-				std::cout << std::endl << "Please enter the name of the file you wish to load." << std::endl;
-
-				std::cin >> input;
-
-				//add something in here to ask if they want to save the current project... otherwise it gets thrown out
-				if (SavingLoadingIO::LoadProject(holder, input))
-					std::cout << "Load successful." << std::endl << std::endl;
-				else
-					std::cout << "Unable to load." << std::endl << std::endl;
-
-				break;
-			}
-
-			case 7:
-			{
-				run = false;
-
-				std::cout << std::endl << "********************" << std::endl;
-				std::cout << "Thank you for using Hercules!" << std::endl;
-				std::cout << "********************" << std::endl << std::endl;
-
-				break;
-			}
-			case 8:
-			{
-				std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
-
-				std::cin >> input;
-
-				std::cout << std::endl << "Please enter the method name." << std::endl;
-
-				std::cin >> input2;
-
-					UMLMethod newMethod;
-					newMethod.SetName(input2);
-
-					holder->GetUMLObject(input)->AddMethod(newMethod);
-
-				break;
-			}
-			case 9:
-			{
-				std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
-
-				std::cin >> input;
-
-				std::cout << std::endl << "Please enter the field name." << std::endl;
-
-				std::cin >> input2;
-
-					UMLField newField;
-					newField.SetName(input2);
-
-					holder->GetUMLObject(input)->AddField(newField);
-
-				break;
-			}
-
-			default:
-			{
-				std::cout << std::endl << "Invalid entry, please enter a number from 1 to 8." << std::endl << std::endl;
-			}
-			}
-		}
+		RunREPL(holder);
 	}
+
 	return 0;
 }

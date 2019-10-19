@@ -58,6 +58,7 @@ std::string UMLObject::ReturnMethods()
 std::string UMLObject::ToString()
 {
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
+	
 }
 
 std::string UMLObject::ReturnRelationships()
