@@ -45,14 +45,14 @@ matrix:
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
-        - pip install --user conan
+        - pip install conan
     - os: windows
       compiler: clang
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
-        - pip install --user conan
+        - pip install conan
 
 install:
   - conan user

@@ -143,7 +143,9 @@ int main(int argc, char** argv)
 			//Edits a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Edit Class"))
-						printf("%s\n", edit);
+						{
+							(holder->EditClassTitle(edit, add));
+						}
 			//Deletes a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
 					if (nk_button_label(ctx, "Delete Class"))
