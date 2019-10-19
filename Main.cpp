@@ -62,12 +62,10 @@ int main(int argc, char** argv)
 		char del[256] = {0};
 		char save[256] = {0};
 		char load[256] = {0};
-		char method[20] = {0};
+		char method[256] = {0};
 		char field [256] = {0};
 		char classname [256] = {0};
 		char overwrite [256] = {0};
-		static int show_menu = nk_true;
-		static int show_app_about = nk_false;
 
 		/* GLFW */
 		glfwSetErrorCallback(error_callback);
@@ -210,6 +208,7 @@ int main(int argc, char** argv)
 					}
 				nk_menu_end(ctx);
 			}
+		nk_label(ctx, "test", NK_TEXT_CENTERED);
 			
 			//Close the ctx struct context
 			nk_end(ctx);
