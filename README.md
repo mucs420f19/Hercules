@@ -69,7 +69,8 @@ Team Hercules UML editor written in C++
 ```
 ## Using The GUI
 ```
-- If you wish to save your file enter the desired name into the text box by save and hit the save button
+- If you wish to save your file enter the desired name into the text box by the save button and click the save button
+- If you wish to load a file enter the name into the text box next to the load button and then click the load button
 ```
 ## Tests
 
