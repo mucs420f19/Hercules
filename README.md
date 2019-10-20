@@ -94,6 +94,7 @@ enter method/field name button then Enter the new method/field into the third te
 and click the confirm button then add the method/field name into the next text box and hit the
 enter method/field name button
 
+-To List you Classes,Field, and Methods click the List you Classes,Field, and Methods button.
 ```
 ## Tests
 
