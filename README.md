@@ -67,6 +67,7 @@ Team Hercules UML editor written in C++
 ```
 - ./Hercules -console
 ```
+## Using The GUI
 
 ## Tests
 
