@@ -194,6 +194,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				// 'add field _____ _____'
 				else if (substrings[1] == "field")
 				{
+					UMLField newField;
+					newField.SetName(substrings[3]);
+
+					holder->GetUMLObject(substrings[2])->AddField(newField);
+
+					// ===== Check if class (substrings[3]) exists ============================================================
 				}
 
 				// 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added

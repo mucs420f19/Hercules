@@ -26,7 +26,7 @@ void UMLObject::AddMethod(UMLMethod in)
 	methods.push_back(in);
 }
 
-std::string UMLObject::ReturnTitle()
+const std::string & UMLObject::ReturnTitle() const
 {
 	return title;
 }
@@ -58,6 +58,7 @@ std::string UMLObject::ReturnMethods()
 std::string UMLObject::ToString()
 {
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
+	
 }
 
 std::string UMLObject::ReturnRelationships()

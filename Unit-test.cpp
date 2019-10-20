@@ -1,5 +1,5 @@
 #define CATCH_CONFIG_MAIN
-#include "Catch2.hpp"
+#include "catch2/catch.hpp"
 
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
@@ -14,7 +14,7 @@ TEST_CASE("Create a Class", "0")
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Car");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
 	}
 }
 
@@ -24,14 +24,14 @@ TEST_CASE("Edit a class", "0")
 	UMLObject* a = holder->CreateNewClass("Car");
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Car");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
 	}
 
 	holder->EditClassTitle("Vehicle", "Car");
 
 	SECTION("Class Rename", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
 	}
 
 	UMLObject* b = holder->CreateNewClass("Vehicle");
@@ -57,8 +57,8 @@ TEST_CASE("Add multiple classes", "0")
 		REQUIRE(a != NULL);
 		REQUIRE(c != NULL);
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
-		REQUIRE(holder->UMLObjectReturnTitles()[1] == "Tire");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
 	}
 }
 
@@ -72,8 +72,8 @@ TEST_CASE("Add relationship between classes", "0")
 	SECTION("Create classes", "0")
 	{
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->UMLObjectReturnTitles()[0] == "Vehicle");
-		REQUIRE(holder->UMLObjectReturnTitles()[1] == "Tire");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
 	}
 
 	holder->AddRelationship("Vehicle", "Tire", RelationshipComposition);
