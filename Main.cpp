@@ -60,7 +60,9 @@ int main(int argc, char** argv)
 		char save[256] = {0};
 		char load[256] = {0};
 		char method[256] = {0};
+		char editMethod[256] = {0};
 		char field [256] = {0};
+		char editField[256] = {0};
 		char classname [256] = {0};
 		char overwrite [256] = {0};
 
@@ -114,9 +116,9 @@ int main(int argc, char** argv)
 			nk_glfw3_new_frame();
 
 			/* GUI */
-			if (nk_begin(ctx, "TODO SAVE FILE NAME HERE", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+			if (nk_begin(ctx, " ", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
 				NK_WINDOW_BORDER|NK_WINDOW_MOVABLE|NK_WINDOW_SCALABLE|
-				NK_WINDOW_MINIMIZABLE|NK_WINDOW_TITLE))
+				NK_WINDOW_TITLE))
 
 		//Begin menubar here or core dump later on		
 		nk_menubar_begin(ctx);
@@ -155,7 +157,7 @@ int main(int argc, char** argv)
 
 		}
 
-		//Right now this has no input validation.  Allows multiple methods of same name to be created.
+		//Add method
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
 		if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
@@ -178,7 +180,54 @@ int main(int argc, char** argv)
 				nk_menu_end(ctx);
 			}
 
-		//Right now this has no input validation.  Allows multiple fields of same name to be created.
+		//Edit method
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Edit method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{						
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter Method Name")) 
+					{
+						
+					}
+					nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter New Method Name")) 
+					{
+						
+					}
+
+				nk_menu_end(ctx);
+			}
+
+		//Delete method
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Delete method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{						
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter Method Name")) 
+					{
+						holder->GetUMLObject(classname)->DeleteMethod(method);
+					}
+
+				nk_menu_end(ctx);
+			}
+
+		//Add field
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
 		if (nk_menu_begin_label(ctx, "Add field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
 			{
 				nk_layout_row_static(ctx, 0, 150, 1);
@@ -199,6 +248,50 @@ int main(int argc, char** argv)
 				nk_menu_end(ctx);
 			}
 
+		//Edit field
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Edit field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{						
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter field Name")) 
+					{
+
+					}
+					nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter New Field Name")) 
+					{
+						
+					}
+				nk_menu_end(ctx);
+			}
+
+		//Delete field
+		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+		nk_layout_row_push(ctx, 200);
+		if (nk_menu_begin_label(ctx, "Delete field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Confirm Class Name"))	
+					{						
+						strcpy(classname,add);
+					}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+					if (nk_button_label(ctx, "Enter Field Name")) 
+					{
+						holder->GetUMLObject(classname)->DeleteField(field);
+					}
+
+				nk_menu_end(ctx);
+			}
+
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 405);
@@ -211,6 +304,8 @@ int main(int argc, char** argv)
 					}
 				nk_menu_end(ctx);
 			}
+
+			//nk_label(ctx, holder->UMLObjectPrintContents(), NK_TEXT_LEFT);
 			
 			//Close the ctx struct context
 			nk_end(ctx);
