@@ -11,7 +11,7 @@ Team Hercules UML editor written in C++
 
 ### Windows
 
-  - Dependencies: Chocolatey, Cmake
+  - Dependencies: Chocolatey, Cmake, Microsoft Visual Studio 2017
 ```
 - choco install python
 - python -m pip install --upgrade pip
