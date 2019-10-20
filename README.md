@@ -71,6 +71,7 @@ Team Hercules UML editor written in C++
 ```
 - If you wish to save your file enter the desired name into the text box by the save button and click the save button
 - If you wish to load a file enter the name into the text box next to the load button and then click the load button
+- To add a Class enter the desired name into the text box by the Add Class Button and click the Add Class button
 ```
 ## Tests
 
