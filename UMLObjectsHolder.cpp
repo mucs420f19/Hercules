@@ -1,9 +1,9 @@
 #include "UMLObjectsHolder.h"
-
+// Creates a constructor
 UMLObjectsHolder::UMLObjectsHolder()
 {
 }
-
+// Allows a new class using title as primary key
 UMLObject * UMLObjectsHolder::CreateNewClass(std::string title)
 {
 	if (IsTitleUnique(title))
@@ -29,12 +29,11 @@ bool UMLObjectsHolder::IsTitleUnique(std::string in)
 	}
 	return true;
 }
-
+// Destructor
 UMLObjectsHolder::~UMLObjectsHolder()
 {
 	for (auto i : UMLObjects_holder)
 	{
-		i = NULL;
 		delete i;
 	}
 }
@@ -92,7 +91,7 @@ std::vector<UMLObject*> UMLObjectsHolder::ReturnPtrToVector()
 
 void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 {
-	UMLObjects_holder.push_back(in);
+	if (in != NULL) UMLObjects_holder.push_back(in);
 }
 
 bool UMLObjectsHolder::DeleteUMLObject(std::string title)
