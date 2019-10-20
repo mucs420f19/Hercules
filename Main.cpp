@@ -61,6 +61,7 @@ int main(int argc, char** argv)
 		char load[256] = {0};
 		char method[256] = {0};
 		char editMethod[256] = {0};
+		char tempName[256] = {0};
 		char field [256] = {0};
 		char editField[256] = {0};
 		char classname [256] = {0};
@@ -184,23 +185,24 @@ int main(int argc, char** argv)
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
 		if (nk_menu_begin_label(ctx, "Edit method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
-			{
-				nk_layout_row_static(ctx, 0, 150, 1);
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	
-					{						
-						strcpy(classname,add);
-					}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter Method Name")) 
-					{
-						
-					}
-					nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter New Method Name")) 
-					{
-						
-					}
+            {
+                nk_layout_row_static(ctx, 0, 150, 1);
+                nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Confirm Class Name"))
+                    {
+                        strcpy(classname,add);
+                    }
+                nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Enter Method Name")) 
+                    {
+                    	strcpy(tempName, method);
+                    }
+                    nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Enter New Method Name")) 
+                    {
+                        holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
+						strcpy(tempName, overwrite);
+                    }
 
 				nk_menu_end(ctx);
 			}
@@ -252,23 +254,25 @@ int main(int argc, char** argv)
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
 		if (nk_menu_begin_label(ctx, "Edit field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
-			{
-				nk_layout_row_static(ctx, 0, 150, 1);
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Confirm Class Name"))	
-					{						
-						strcpy(classname,add);
-					}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter field Name")) 
-					{
+            {
+                nk_layout_row_static(ctx, 0, 150, 1);
+                nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Confirm Class Name"))
+                    {
+                        strcpy(classname,add);
+                    }
+                nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Enter Field Name")) 
+                    {
+                    	strcpy(tempName, field);
+                    }
+                    nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
+                    if (nk_button_label(ctx, "Enter New field Name")) 
+                    {
+                        holder->GetUMLObject(classname)->EditField(tempName, editField);
+						strcpy(tempName, overwrite);
+                    }
 
-					}
-					nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
-					if (nk_button_label(ctx, "Enter New Field Name")) 
-					{
-						
-					}
 				nk_menu_end(ctx);
 			}
 
@@ -291,6 +295,8 @@ int main(int argc, char** argv)
 
 				nk_menu_end(ctx);
 			}
+
+
 
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);

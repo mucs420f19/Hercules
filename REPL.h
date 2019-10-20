@@ -235,12 +235,43 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						std::cout << "Make sure that the class exists and that the new title is not already in use." << std::endl;
 					}
 				}
+				
 			}
 
-			// 'delete _____ ...'
-			else if (substrings[0] == "delete")
+			case 5:
 			{
-			}
+				// 0 = edit, 1 = method, 2 = classname, 3 = old method, 4 = new method
+				if (substrings[0] == "edit")
+				{
+					//edit method
+					if (substrings[1] == "method")
+					{
+
+						// Method name change is acceptable
+						if (holder->GetUMLObject(substrings[2])->EditMethod(substrings[3], substrings[4]))// (old, new)
+							std::cout << "method name changed successfully." << std::endl;
+						// Method name change is not acceptable - Either the field doesn't exist or the new title is taken
+						else
+						{
+							std::cout << "An error has occurred." << std::endl;
+							std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
+						}
+					}
+					//edit field
+					else if (substrings[1] == "field")
+					{
+
+						// Field name change is acceptable
+						if (holder->GetUMLObject(substrings[2])->EditField(substrings[3], substrings[4]))// (old, new)
+							std::cout << "Field name changed successfully." << std::endl;
+						// Field name change is not acceptable - Either the field doesn't exist or the new title is taken
+						else
+						{
+							std::cout << "An error has occurred." << std::endl;
+							std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
+						}
+					}
+				}
 
 			// Fail if first substring is not 'add', 'edit', or 'delete'
 			else
@@ -248,7 +279,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 			break;
 		}
-
+	}
 		// Fail if too many commands are entered
 		default:
 		{
