@@ -43,7 +43,7 @@ Team Hercules UML editor written in C++
 
 ### Mac
 
-  - Dependencies: Python, Pip v19.3.1, Cmake v 3.8.0
+  - Dependencies: Python v3.8, Pip v19.3.1, Cmake v 3.8.0
 ```
 - pip install python
 - python -m pip install --upgrade pip
