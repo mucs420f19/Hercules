@@ -68,7 +68,9 @@ Team Hercules UML editor written in C++
 - ./Hercules -console
 ```
 ## Using The GUI
-
+```
+- If you wish to save your file enter the desired name into the text box by save and hit the save button
+```
 ## Tests
 
 The project includes a dedicated unit test executable used to verify functionality
