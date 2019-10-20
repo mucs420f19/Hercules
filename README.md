@@ -28,7 +28,7 @@ Team Hercules UML editor written in C++
 
 ### Linux
 
-  - Dependencies: Python, Pip, Cmake
+  - Dependencies: Python, Pip, Cmake v 3.8.0
 ```
 - pip install --user conan
 - conan user
