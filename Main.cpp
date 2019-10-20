@@ -1,6 +1,5 @@
 // HerculesProject.cpp : Defines the entry point for the application.
 //
-
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
@@ -330,6 +329,5 @@ int main(int argc, char** argv)
 	{
 		RunREPL(holder);
 	}
-
 	return 0;
 }
