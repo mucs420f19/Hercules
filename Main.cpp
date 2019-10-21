@@ -382,7 +382,7 @@ int main(int argc, char** argv)
 				nk_layout_row_dynamic(ctx, 20, 1);
 				for (auto i : holder->UMLObjectReturnTitles())
 				{
-					nk_label(ctx, i, NK_TEXT_LEFT);
+					nk_label(ctx, i.c_str(), NK_TEXT_LEFT);
 				}
 				nk_menu_end(ctx);
 			}
