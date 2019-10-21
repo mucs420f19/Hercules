@@ -64,12 +64,10 @@ std::string UMLObject::ToString()
 std::string UMLObject::ReturnRelationships()
 {
 	std::string out;
-  out += "{";
 	for (auto a : relationships)
 	{
 		out += a.ToString() + ", ";
 	}
-	out += "}";
 	return out;
 }
 
@@ -271,26 +269,6 @@ bool UMLObject::DeleteField(std::string in)
       return true;
     }
     ++count;
-  }
-  return false;
-}
-
-bool UMLObject::DoesMethodExist(std::string in)
-{
-  for (auto i : methods)
-  {
-    if (i.ReturnName() == in)
-      return true;
-  }
-  return false;
-}
-
-bool UMLObject::DoesFieldExist(std::string in)
-{
-  for (auto i : fields)
-  {
-    if (i.ReturnName() == in)
-      return true;
   }
   return false;
 }

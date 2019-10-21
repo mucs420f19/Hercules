@@ -344,7 +344,7 @@ int main(int argc, char** argv)
 			//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 			nk_layout_row_push(ctx, 405);
-			if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_CENTERED, nk_vec2(500, 200)))
+			if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_CENTERED, nk_vec2(600, 200)))
 			{
 				nk_layout_row_dynamic(ctx, 20, 1);
 				for (auto i : holder->UMLObjectReturnTitles())
