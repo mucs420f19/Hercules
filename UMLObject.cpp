@@ -57,17 +57,19 @@ std::string UMLObject::ReturnMethods()
 
 std::string UMLObject::ToString()
 {
-	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
+	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods() + ", Relationships: " + ReturnRelationships();
 	
 }
 
 std::string UMLObject::ReturnRelationships()
 {
 	std::string out;
+  out += "{";
 	for (auto a : relationships)
 	{
 		out += a.ToString() + ", ";
 	}
+	out += "}";
 	return out;
 }
 
