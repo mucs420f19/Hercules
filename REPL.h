@@ -343,7 +343,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			    // 'delete relationship _____ _____' 
 			    else if (substrings[1] == "relationship")
 			    {
+			      // Relationship deletion acceptable
+			      if (holder->DeleteRelationship(substrings[2], substrings[3]))
+			        std::cout << "Relationship deleted successfully." << std::endl;
 			      
+			      // Deletion not acceptable
+			      else
+			        std::cout << "An error has occurred, relationship not deleted." << std::endl;
 			    }
 			    
 			    // Fail if second substring is not 'method', 'field', or 'relationship'
