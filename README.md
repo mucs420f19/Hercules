@@ -103,6 +103,8 @@ enter method/field name button
 -RelationshipAggregation = 2
 -RelationshipAssociation = 3
 -RelationshipBinding     = 4
+-RelationshipCommunicationPath = 5
+-
 
 
 ```
