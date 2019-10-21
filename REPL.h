@@ -58,13 +58,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 	{
 		//no need to getline if we are in test mode
 		if (run)
-		{
-			// Split the user's input into substrings
 			getline(std::cin, input);
-		}
+		
 		int length = input.length();
 		std::vector<std::string> substrings;
 
+		// Split the user's input into substrings
 		for (int x = 0, y = 0; x < length; ++x)
 		{
 			if (input[x] == ' ')
@@ -98,7 +97,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			  else if (substrings[0] == "exit")
 			  {
 				  std::cout << "Thank you for using the Hercules UML Editor!" << std::endl;
-				  std::cout << "Have a nice day!" << std::endl;
+				  std::cout << "Have a nice day!" << std::endl << std::endl;
+				  
 				  run = false;
 			  }
 
@@ -111,7 +111,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 		  case 2:
 		  {
-			  // 'save _____' - NOT COMPLETE ==================================================================================================================
+			  // 'save _____' 
 			  if (substrings[0] == "save")
 			  {
 				  // Save successful
@@ -135,9 +135,28 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 					  else
 					  	std::cout << "File not saved." << std::endl;
-			  	}
+				  }
+				  
+				  // Save error
+				  else 
+				    std::cout << "An error has occurred while trying to save. File not saved." << std::endl;
+			  }
+			  
+			  else if (substrings[0] == "load")
+			  {
+			    // Load unsuccessful
+			    if (SavingLoadingIO::LoadProject(holder, substrings[1]) == false)
+			      std::cout << "An error has occurred while trying to load. Make sure the file exists and is not currently open." << std::endl;
+			    
+			    // Load successful
+			    else
+			      std::cout << "File loaded successfully." << std::endl;
 			  }
 
+			  // Fail if first substring is not 'save' or 'load'
+			  else
+			    fail();
+			  
 			  break;
 		  }
 
@@ -282,13 +301,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		    break;
 		  } 
 		    
-		// Fail if too many commands are entered
-		default:
-		{
-			fail();
+		  // Fail if too many commands are entered
+		  default:
+		  {
+			  fail();
 
-			break;
-		}
+			  break;
+		  }
 		}
 	} while (run);
 }
