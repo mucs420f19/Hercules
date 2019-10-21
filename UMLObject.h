@@ -211,6 +211,8 @@ public:
 	bool EditField(std::string oldName, std::string newName);
 	bool DeleteMethod(std::string in);
 	bool DeleteField(std::string in);
+	
+	bool DoesMethodExist(std::string in);
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();

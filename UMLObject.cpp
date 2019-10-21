@@ -272,3 +272,13 @@ bool UMLObject::DeleteField(std::string in)
   }
   return false;
 }
+
+bool UMLObject::DoesMethodExist(std::string in)
+{
+  for (auto i : methods)
+  {
+    if (i.ReturnName() == in)
+      return true;
+  }
+  return false;
+}
