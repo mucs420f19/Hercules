@@ -323,7 +323,21 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			    // 'delete field _____ _____'
 			    else if (substrings[1] == "field")
 			    {
+			      // Check that the class exists
+			      if (holder->IsTitleUnique(substrings[2]) == false)
+			      {
+			        // Check that the field exists
+			        if (holder->GetUMLObject(substrings[2])->DeleteField(substrings[3]) == true)
+			          std::cout << "Field successfully deleted." << std::endl;
+			        
+			        // Field does not exist
+			        else
+			          std::cout << "Could not find a field by that name." << std::endl;
+			      }
 			      
+			      // Class does not exist
+			      else
+			        std::cout << "Could not find a class by that name." << std::endl;
 			    }
 			    
 			    // 'delete relationship _____ _____' 
