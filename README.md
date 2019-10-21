@@ -106,6 +106,7 @@ enter method/field name button
 -RelationshipCommunicationPath = 5
 -RelationshipComposition = 6
 -RelationshipControlFlow = 7
+-RelationshipDependency = 8
 
 
 ```
