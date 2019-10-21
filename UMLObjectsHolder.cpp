@@ -100,6 +100,13 @@ bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 	{
 		if (UMLObjects_holder[i]->ReturnTitle() == title)
 		{
+		  for (auto j : UMLObjects_holder)
+		  {
+		    size_t del = j->GetIndexRelationshipWith(title);
+		    if (del != -1)
+		      j->DeleteRelationship(del);
+		  }
+		  
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
 			return true;
 		}
