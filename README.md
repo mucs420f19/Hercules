@@ -110,6 +110,9 @@ enter method/field name button
 -RelationshipDeploy = 9
 -RelationshipDirectedAssociation = 10
 -RelationshipExtend = 11
+-RelationshipGeneralization = 12
+-
+
 
 
 ```
