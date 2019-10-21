@@ -96,6 +96,8 @@ enter method/field name button
 
 -To List you Classes,Field, and Methods click the List you Classes,Field, and Methods button.
 ```
+## Relationship Types
+
 ## Tests
 
 The project includes a dedicated unit test executable used to verify functionality
