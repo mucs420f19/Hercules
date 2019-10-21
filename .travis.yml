@@ -68,7 +68,7 @@ script:
   - cd build
   - cmake ..
   - cmake --build .
-  - ctest -C Debug
+  - ctest -C Debug --verbose
 
 notifications:
   email: false
