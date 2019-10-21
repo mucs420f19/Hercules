@@ -240,9 +240,25 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					  UMLField newField;
 					  newField.SetName(substrings[3]);
 
-					  holder->GetUMLObject(substrings[2])->AddField(newField);
-
-					  // ===== Check if class (substrings[3]) exists ============================================================
+					  // Check that the class exists
+					  if (holder->IsTitleUnique(substrings[2]) == false)
+					  {
+					    // Check if the field already exists
+					    if (holder->GetUMLObject(substrings[2])->DoesFieldExist(substrings[3]) == false)
+					    {
+					      holder->GetUMLObject(substrings[2])->AddField(newField);
+					      
+					      std::cout << "Field added successfully." << std::endl;
+					    }
+					    
+					    // Field already exists, does not duplicate
+					    else
+					      std::cout << "This field already exists." << std::endl;
+					  }
+					  
+					  // Class does not exist, field not added
+					  else
+					    std::cout << "Could not find a class by that name." << std::endl;
 				  }
 
 				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
