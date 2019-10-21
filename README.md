@@ -111,6 +111,7 @@ enter method/field name button
 -RelationshipDirectedAssociation = 10
 -RelationshipExtend = 11
 -RelationshipGeneralization = 12
+-RelationshipInterfaceRealization = 13
 -
 
 
