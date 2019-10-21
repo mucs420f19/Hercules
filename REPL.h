@@ -1,3 +1,5 @@
+#pragma once
+
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
@@ -264,8 +266,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
 				  else if (substrings[1] == "relationship")
 				  {
+				    // Check that the objects are not identical - Object cannot have relationship to itself
+				    if (substrings[2] == substrings[3])
+				      std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
+				    
 					  // Relationship acceptable
-					  if (holder->AddRelationship(substrings[2], substrings[3], 0))
+					  else if (holder->AddRelationship(substrings[2], substrings[3], 0))
 						  std::cout << "Relationship created successfully." << std::endl;
 
 					  // Relationship not acceptable and not created
