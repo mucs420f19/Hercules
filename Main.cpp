@@ -315,45 +315,12 @@ int main(int argc, char** argv)
 				if (nk_button_label(ctx, "Confirm Class Name"))
 				{
 					strcpy(tempName, field);
-				}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, type, sizeof(type) - 1, nk_filter_default);
-				if (nk_button_label(ctx, "Confirm Relation type"))
-				{
-					int i = atoi(type);
-					holder->AddRelationship(classname, tempName, i);
+					holder->AddRelationship(classname, tempName, 0);
 					strcpy(classname, overwrite);
-					strcpy(tempName, overwrite);
 				}
-
 				nk_menu_end(ctx);
 			}
-			// Edit Relationship
-			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-			nk_layout_row_push(ctx, 200);
-			if (nk_menu_begin_label(ctx, "Edit Relationship", NK_TEXT_CENTERED, nk_vec2(200, 200)))
-			{
-				nk_layout_row_static(ctx, 0, 150, 1);
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-				if (nk_button_label(ctx, "Confirm Class Name"))
-				{
-					strcpy(classname, add);
-				}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-				if (nk_button_label(ctx, "Confirm Class Name"))
-				{
-					strcpy(tempName, field);
-				}
-				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, type, sizeof(type) - 1, nk_filter_default);
-				if (nk_button_label(ctx, "Confirm Relation type"))
-				{
-					int i = atoi(type);
-					holder->EditRelationship(classname, tempName, i);
-					strcpy(classname, overwrite);
-					strcpy(tempName, overwrite);
-				}
 
-				nk_menu_end(ctx);
-			}
 			//Delete Relationship
 			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 			nk_layout_row_push(ctx, 200);
