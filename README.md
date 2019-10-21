@@ -102,6 +102,8 @@ enter method/field name button
 -RelationshipAbstraction = 1
 -RelationshipAggregation = 2
 -RelationshipAssociation = 3
+-RelationshipBinding     = 4
+
 
 ```
 
