@@ -248,6 +248,9 @@ TEST_CASE("REPL Test 2", "0")
 }
 
 TEST_CASE("")
+{
+
+}
 
 //
 //void RunUnitTest1()
