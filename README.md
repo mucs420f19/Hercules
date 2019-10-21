@@ -104,6 +104,7 @@ enter method/field name button
 -RelationshipAssociation = 3
 -RelationshipBinding     = 4
 -RelationshipCommunicationPath = 5
+-RelationshipComposition = 6
 -
 
 
