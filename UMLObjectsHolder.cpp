@@ -41,10 +41,9 @@ UMLObjectsHolder::~UMLObjectsHolder()
 void UMLObjectsHolder::ClearProject()
 {
 	for (auto i : UMLObjects_holder)
-	{
-		i = NULL;
 		delete i;
-	}
+  
+  UMLObjects_holder.clear();
 }
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
