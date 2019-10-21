@@ -282,3 +282,13 @@ bool UMLObject::DoesMethodExist(std::string in)
   }
   return false;
 }
+
+bool UMLObject::DoesFieldExist(std::string in)
+{
+  for (auto i : fields)
+  {
+    if (i.ReturnName() == in)
+      return true;
+  }
+  return false;
+}

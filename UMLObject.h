@@ -213,6 +213,7 @@ public:
 	bool DeleteField(std::string in);
 	
 	bool DoesMethodExist(std::string in);
+	bool DoesFieldExist(std::string in);
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
