@@ -204,18 +204,34 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 		  case 4:
 		  {
-			  // 'add _____ ...'
-			  if (substrings[0] == "add")
-			  { 
-				  // 'add method _____ _____'
-				  if (substrings[1] == "method")
-				  {
-					  UMLMethod newMethod;
+		    // 'add _____ ...'
+		    if (substrings[0] == "add")
+		    { 
+		      // 'add method _____ _____'
+		      if (substrings[1] == "method")
+		      {
+		        UMLMethod newMethod;
 					  newMethod.SetName(substrings[3]);
 
-					  holder->GetUMLObject(substrings[2])->AddMethod(newMethod);
-
-					  // ===== Check if class (substrings[3]) exists ============================================================
+					  // Check that the class exists
+					  if (holder->IsTitleUnique(substrings[2]) == false)
+					  {
+					    // Check if the method already exists
+					    if (holder->GetUMLObject(substrings[2])->DoesMethodExist(substrings[3]) == false)
+					    {
+					      holder->GetUMLObject(substrings[2])->AddMethod(newMethod);
+					      
+					      std::cout << "Method added successfully." << std::endl;
+					    }
+					    
+					    // Method already exists, does not duplicate
+					    else
+					      std::cout << "This method already exists." << std::endl;
+					  }
+					  
+					  // Class does not exist, method not added
+					  else
+					    std::cout << "Could not find a class by that name." << std::endl;
 				  }
 
 				  // 'add field _____ _____'
