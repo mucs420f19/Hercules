@@ -41,10 +41,9 @@ UMLObjectsHolder::~UMLObjectsHolder()
 void UMLObjectsHolder::ClearProject()
 {
 	for (auto i : UMLObjects_holder)
-	{
-		i = NULL;
 		delete i;
-	}
+  
+  UMLObjects_holder.clear();
 }
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
@@ -64,12 +63,12 @@ void UMLObjectsHolder::UMLObjectPrintContents()
 		std::cout << i->ToString() << std::endl;
 }
 
-std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
+std::vector<const char*> UMLObjectsHolder::UMLObjectReturnTitles()
 {
-	std::vector<std::string> out;
-	for (auto i : UMLObjects_holder)
+	std::vector<const char*> out;
+	for (auto & i : UMLObjects_holder)
 	{
-		out.push_back(i->ToString());
+		out.push_back(i->ReturnTitle().c_str());
 	}
 	return out;
 }
@@ -100,6 +99,13 @@ bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 	{
 		if (UMLObjects_holder[i]->ReturnTitle() == title)
 		{
+		  for (auto j : UMLObjects_holder)
+		  {
+		    size_t del = j->GetIndexRelationshipWith(title);
+		    if (del != -1)
+		      j->DeleteRelationship(del);
+		  }
+		  
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
 			return true;
 		}
