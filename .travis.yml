@@ -33,9 +33,9 @@ matrix:
       before_install:
         - pip install --user conan
     #- os: osx
-     # compiler: clang
-     # env: PATH=$HOME/.local/bin:$PATH
-     # before_install:
+      #compiler: clang
+      #env: PATH=$HOME/.local/bin:$PATH
+      #before_install:
         #- pip install python
         #- python -m pip install --upgrade pip
         #- pip install conan

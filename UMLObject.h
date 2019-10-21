@@ -211,6 +211,9 @@ public:
 	bool EditField(std::string oldName, std::string newName);
 	bool DeleteMethod(std::string in);
 	bool DeleteField(std::string in);
+	
+	bool DoesMethodExist(std::string in);
+	bool DoesFieldExist(std::string in);
 
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
@@ -236,6 +239,12 @@ struct UMLRelationship
 	std::string GetObject() { return object->ReturnTitle(); }
 	std::string ToString()
 	{
-		return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
+		if (parent == true)
+		  return "{Type: " + std::to_string(type) + ", Parent of: " + object->ReturnTitle() + "}";
+		
+		else
+		  return "{Type: " + std::to_string(type) + ", Child of: " + object->ReturnTitle() + "}";
+		
+		//return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
 	}
 };

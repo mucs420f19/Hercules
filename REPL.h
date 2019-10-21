@@ -1,5 +1,9 @@
 #pragma once
 
+#include "SavingLoadingIO.h"
+#include "UMLObject.h"
+#include "UMLObjectsHolder.h"
+
 void help();
 void fail();
 void RunREPL(UMLObjectsHolder* holder, std::string input = "");
@@ -8,16 +12,16 @@ void help()
 {
 	std::cout << "Usable Commands:" << std::endl << "================" << std::endl;
 
-	std::cout << "help - Display a list of usable commands." << std::endl; //
-	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl; //
-	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; //
+	std::cout << "help - Display a list of usable commands." << std::endl; 
+	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl; 
+	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; 
 
 	std::cout << "save [file name] - Saves the current project to the given file." << std::endl;
 	std::cout << "load [file name] - Loads a previous project from the given file." << std::endl << std::endl;
 
-	std::cout << "add class [class name]    - " << std::endl; //
-	std::cout << "edit class [old class name] [new class name] - " << std::endl; //
-	std::cout << "delete class [class name] - " << std::endl << std::endl; //
+	std::cout << "add class [class name]    - " << std::endl;
+	std::cout << "edit class [old class name] [new class name] - " << std::endl; 
+	std::cout << "delete class [class name] - " << std::endl << std::endl; 
 
 	std::cout << "add method [class name] [method name]    - " << std::endl;
 	std::cout << "edit method [class name] [method name]   - " << std::endl;
@@ -56,13 +60,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 	{
 		//no need to getline if we are in test mode
 		if (run)
-		{
-			// Split the user's input into substrings
 			getline(std::cin, input);
-		}
+		
 		int length = input.length();
 		std::vector<std::string> substrings;
 
+		// Split the user's input into substrings
 		for (int x = 0, y = 0; x < length; ++x)
 		{
 			if (input[x] == ' ')
