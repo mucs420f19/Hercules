@@ -80,8 +80,8 @@ TEST_CASE("Add relationship between classes", "0")
 
 	SECTION("Verify relationship", "0")
 	{
-		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{ type: 6, object: Tire, parent: 1}, ");
-		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{ type: 6, object: Vehicle, parent: 0}, ");
+		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{Type: 6, Parent of: Tire}, }");
+		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{Type: 6, Child of: Vehicle}, }");
 	}
 
 }
@@ -139,7 +139,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		REQUIRE(c[0]->ReturnFields() == "{{Color, string, Public}, {Make, string, Public}, }");
 		REQUIRE(c[0]->ReturnFields() == d[0]->ReturnFields());
 
-		REQUIRE(c[0]->ReturnRelationships() == "{ type: 6, object: Tire, parent: 1}, ");
+		REQUIRE(c[0]->ReturnRelationships() == "{{}}Type: 6, Parent of: Tire}, }");
 		REQUIRE(c[0]->ReturnRelationships() == d[0]->ReturnRelationships());
 	   
 		REQUIRE(c[1]->ReturnTitle() == "Tire");
@@ -153,7 +153,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		REQUIRE(c[1]->ReturnFields() == "{{Manufacturer, string, Public}, {Diameter, unsigned int, Public}, }");
 		REQUIRE(c[1]->ReturnFields() == d[1]->ReturnFields());
 		
-		REQUIRE(c[1]->ReturnRelationships() == "{ type: 6, object: Car, parent: 0}, ");
+		REQUIRE(c[1]->ReturnRelationships() == "{{Type: 6, Child of: Car}, }");
 		REQUIRE(c[1]->ReturnRelationships() == d[1]->ReturnRelationships());
 
 	}
