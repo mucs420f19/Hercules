@@ -58,7 +58,7 @@ std::string UMLObject::ReturnMethods()
 //concatenates all the objects return types
 std::string UMLObject::ToString()
 {
-	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
+	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods() + ", Relationships: " + ReturnRelationships();
 	
 }
 //iterates to return the relationship
