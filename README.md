@@ -113,7 +113,7 @@ enter method/field name button
 -RelationshipGeneralization = 12
 -RelationshipInterfaceRealization = 13
 -RelationshipInclude = 14
--
+-RelationshipManifestation = 15
 
 
 
