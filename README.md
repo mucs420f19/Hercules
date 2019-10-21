@@ -97,7 +97,8 @@ enter method/field name button
 -To List you Classes,Field, and Methods click the List you Classes,Field, and Methods button.
 ```
 ## Relationship Types
--Relationship abstraction =1
+-When prompted for a relationship type input the number asscoiated with the type you want, types and numbers are listed below.
+--RelationshipAbstraction =1
 
 ## Tests
 
