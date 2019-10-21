@@ -1,4 +1,6 @@
-#pragma once
+#include "SavingLoadingIO.h"
+#include "UMLObject.h"
+#include "UMLObjectsHolder.h"
 
 void help();
 void fail();
@@ -8,16 +10,16 @@ void help()
 {
 	std::cout << "Usable Commands:" << std::endl << "================" << std::endl;
 
-	std::cout << "help - Display a list of usable commands." << std::endl; //
-	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl; //
-	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; //
+	std::cout << "help - Display a list of usable commands." << std::endl; 
+	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl; 
+	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; 
 
 	std::cout << "save [file name] - Saves the current project to the given file." << std::endl;
 	std::cout << "load [file name] - Loads a previous project from the given file." << std::endl << std::endl;
 
-	std::cout << "add class [class name]    - " << std::endl; //
-	std::cout << "edit class [old class name] [new class name] - " << std::endl; //
-	std::cout << "delete class [class name] - " << std::endl << std::endl; //
+	std::cout << "add class [class name]    - " << std::endl;
+	std::cout << "edit class [old class name] [new class name] - " << std::endl; 
+	std::cout << "delete class [class name] - " << std::endl << std::endl; 
 
 	std::cout << "add method [class name] [method name]    - " << std::endl;
 	std::cout << "edit method [class name] [method name]   - " << std::endl;
@@ -82,204 +84,204 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		// Check number of substrings, fail if invalid
 		switch (substrings.size())
 		{
-		case 1:
-		{
-			// 'help' - Output contained in method 'help()'
-			if (substrings[0] == "help")
-				help();
+		  case 1:
+		  {
+			  // 'help' - Output contained in method 'help()'
+			  if (substrings[0] == "help")
+				  help();
 
-			// 'list'
-			else if (substrings[0] == "list")
-				holder->UMLObjectPrintContents();
+			  // 'list'
+			  else if (substrings[0] == "list")
+				  holder->UMLObjectPrintContents();
 
-			// 'exit'
-			else if (substrings[0] == "exit")
-			{
-				std::cout << "Thank you for using the Hercules UML Editor!" << std::endl;
-				std::cout << "Have a nice day!" << std::endl;
-				run = false;
-			}
+			  // 'exit'
+			  else if (substrings[0] == "exit")
+			  {
+				  std::cout << "Thank you for using the Hercules UML Editor!" << std::endl;
+				  std::cout << "Have a nice day!" << std::endl;
+				  run = false;
+			  }
 
-			// Fail is none of the above commands are used
-			else
-				fail();
+			  // Fail is none of the above commands are used
+			  else
+				  fail();
 
-			break;
-		}
+			  break;
+		  }
 
-		case 2:
-		{
-			// 'save _____' - NOT COMPLETE ==================================================================================================================
-			if (substrings[0] == "save")
-			{
-				// Save successful
-				if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveSuccess)
-					std::cout << "File saved successfully." << std::endl;
+		  case 2:
+		  {
+			  // 'save _____' - NOT COMPLETE ==================================================================================================================
+			  if (substrings[0] == "save")
+			  {
+				  // Save successful
+				  if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveSuccess)
+					  std::cout << "File saved successfully." << std::endl;
 
-				// Save file already exists
-				else if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveAlreadyExists)
-				{
-					std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
+				  // Save file already exists
+				  else if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveAlreadyExists)
+				  {
+					  std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
 
-					std::string yn;
-					std::cin >> yn;
+					  std::string yn;
+					  std::cin >> yn;
 
-					if (yn == "y")
-					{
-						SavingLoadingIO::SaveProjectToFile(holder, substrings[1], true);
+					  if (yn == "y")
+					  {
+						  SavingLoadingIO::SaveProjectToFile(holder, substrings[1], true);
 
-						std::cout << "File saved successfully." << std::endl;
-					}
+						  std::cout << "File saved successfully." << std::endl;
+					  }
 
-					else
-						std::cout << "File not saved." << std::endl;
-				}
-			}
+					  else
+					  	std::cout << "File not saved." << std::endl;
+			  	}
+			  }
 
-			break;
-		}
+			  break;
+		  }
 
-		case 3:
-		{
-			// '_____ class _____' - Only possible option for the second substring
-			if (substrings[1] == "class")
-			{
-				// 'add class _____' // ===== Verify class doesn't already exist ============================================
-				if (substrings[0] == "add")
-				{
-					holder->CreateNewClass(substrings[2]);
-					std::cout << "Successfully created class " << substrings[2] << "." << std::endl;
-				}
+		  case 3:
+		  {
+			  // '_____ class _____' - Only possible option for the second substring
+			  if (substrings[1] == "class")
+			  {
+				  // 'add class _____' // ===== Verify class doesn't already exist ============================================
+				  if (substrings[0] == "add")
+				  {
+					  holder->CreateNewClass(substrings[2]);
+					  std::cout << "Successfully created class " << substrings[2] << "." << std::endl;
+				  }
 
-				// 'delete class _____'
-				else if (substrings[0] == "delete")
-				{
-					// Class exists and is deleted
-					if (holder->DeleteUMLObject(substrings[2]))
-						std::cout << "Successfully deleted class " << substrings[2] << "." << std::endl;
+				  // 'delete class _____'
+				  else if (substrings[0] == "delete")
+				  {
+					  // Class exists and is deleted
+					  if (holder->DeleteUMLObject(substrings[2]))
+						  std::cout << "Successfully deleted class " << substrings[2] << "." << std::endl;
 
-					// Class does not exist
-					else
-						std::cout << "Could not find a class called " << substrings[2] << "." << std::endl;
-				}
+					  // Class does not exist
+					  else
+						  std::cout << "Could not find a class called " << substrings[2] << "." << std::endl;
+				  }
 
-				// Fail if 'add' or 'delete' are not first substring
-				else
-					fail();
-			}
+				  // Fail if 'add' or 'delete' are not first substring
+				  else
+					  fail();
+			  }
 
-			// Fail if second substring is not 'class'
-			else
-				fail();
+			  // Fail if second substring is not 'class'
+			  else
+				  fail();
 
-			break;
-		}
+			  break;
+		  }
 
-		case 4:
-		{
-			// 'add _____ ...'
-			if (substrings[0] == "add")
-			{
-				// 'add method _____ _____'
-				if (substrings[1] == "method")
-				{
-					UMLMethod newMethod;
-					newMethod.SetName(substrings[3]);
+		  case 4:
+		  {
+			  // 'add _____ ...'
+			  if (substrings[0] == "add")
+			  { 
+				  // 'add method _____ _____'
+				  if (substrings[1] == "method")
+				  {
+					  UMLMethod newMethod;
+					  newMethod.SetName(substrings[3]);
 
-					holder->GetUMLObject(substrings[2])->AddMethod(newMethod);
+					  holder->GetUMLObject(substrings[2])->AddMethod(newMethod);
 
-					// ===== Check if class (substrings[3]) exists ============================================================
-				}
+					  // ===== Check if class (substrings[3]) exists ============================================================
+				  }
 
-				// 'add field _____ _____'
-				else if (substrings[1] == "field")
-				{
-					UMLField newField;
-					newField.SetName(substrings[3]);
+				  // 'add field _____ _____'
+				  else if (substrings[1] == "field")
+				  {
+					  UMLField newField;
+					  newField.SetName(substrings[3]);
 
-					holder->GetUMLObject(substrings[2])->AddField(newField);
+					  holder->GetUMLObject(substrings[2])->AddField(newField);
 
-					// ===== Check if class (substrings[3]) exists ============================================================
-				}
+					  // ===== Check if class (substrings[3]) exists ============================================================
+				  }
 
-				// 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
-				else if (substrings[1] == "relationship")
-				{
-					// Relationship acceptable
-					if (holder->AddRelationship(substrings[2], substrings[3], 0))
-						std::cout << "Relationship created successfully." << std::endl;
+				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
+				  else if (substrings[1] == "relationship")
+				  {
+					  // Relationship acceptable
+					  if (holder->AddRelationship(substrings[2], substrings[3], 0))
+						  std::cout << "Relationship created successfully." << std::endl;
 
-					// Relationship not acceptable and not created
-					else
-						std::cout << "An error has occurred, relationship not created." << std::endl;
-				}
+					  // Relationship not acceptable and not created
+					  else
+						  std::cout << "An error has occurred, relationship not created." << std::endl;
+				  }
 
-				// Fail if second substring is not 'method', 'field', or 'relationship'
-				else
-					fail();
-			}
+				  // Fail if second substring is not 'method', 'field', or 'relationship'
+				  else
+					  fail();
+			  }
 
-			// 'edit _____ ...'
-			else if (substrings[0] == "edit")
-			{
-				// 'edit class _____ _____'
-				if (substrings[1] == "class")
-				{
-					// Class name change is acceptable
-					if (holder->EditClassTitle(substrings[3], substrings[2]))
-						std::cout << "Class name changed successfully." << std::endl;
-					// Class name change is not acceptable - Either the class doesn't exist or the new title is taken
-					else
-					{
-						std::cout << "An error has occurred." << std::endl;
-						std::cout << "Make sure that the class exists and that the new title is not already in use." << std::endl;
-					}
-				}
-				
-			}
-
-			case 5:
-			{
-				// 0 = edit, 1 = method, 2 = classname, 3 = old method, 4 = new method
-				if (substrings[0] == "edit")
-				{
-					//edit method
-					if (substrings[1] == "method")
-					{
-
-						// Method name change is acceptable
-						if (holder->GetUMLObject(substrings[2])->EditMethod(substrings[3], substrings[4]))// (old, new)
-							std::cout << "method name changed successfully." << std::endl;
-						// Method name change is not acceptable - Either the field doesn't exist or the new title is taken
-						else
-						{
-							std::cout << "An error has occurred." << std::endl;
-							std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
-						}
-					}
-					//edit field
-					else if (substrings[1] == "field")
-					{
-
-						// Field name change is acceptable
-						if (holder->GetUMLObject(substrings[2])->EditField(substrings[3], substrings[4]))// (old, new)
-							std::cout << "Field name changed successfully." << std::endl;
-						// Field name change is not acceptable - Either the field doesn't exist or the new title is taken
-						else
-						{
-							std::cout << "An error has occurred." << std::endl;
-							std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
-						}
-					}
-				}
-
-			// Fail if first substring is not 'add', 'edit', or 'delete'
-			else
-				fail();
-
-			break;
-		}
-	}
+			  // 'edit _____ ...'
+			  else if (substrings[0] == "edit")
+			  {
+				  // 'edit class _____ _____'
+				  if (substrings[1] == "class")
+				  {
+					  // Class name change is acceptable
+					  if (holder->EditClassTitle(substrings[3], substrings[2]))
+						  std::cout << "Class name changed successfully." << std::endl;
+					  // Class name change is not acceptable - Either the class doesn't exist or the new title is taken
+					  else
+					  {
+						  std::cout << "An error has occurred." << std::endl;
+						  std::cout << "Make sure that the class exists and that the new title is not already in use." << std::endl;
+					  }
+				  }
+			  }
+	    }
+		    
+		  case 5:
+		  {
+		    // 0 = edit, 1 = method, 2 = classname, 3 = old method, 4 = new method
+		    if (substrings[0] == "edit")
+		    {
+		      //edit method
+		      if (substrings[1] == "method")
+		      {
+		      
+		        // Method name change is acceptable
+		        if (holder->GetUMLObject(substrings[2])->EditMethod(substrings[3], substrings[4]))// (old, new)
+		          std::cout << "method name changed successfully." << std::endl;
+		        // Method name change is not acceptable - Either the field doesn't exist or the new title is taken
+		        else
+		        {
+		          std::cout << "An error has occurred." << std::endl;
+		          std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
+		        }
+		      }
+		      //edit field
+		      else if (substrings[1] == "field")
+		      {
+		      
+		        // Field name change is acceptable
+		        if (holder->GetUMLObject(substrings[2])->EditField(substrings[3], substrings[4]))// (old, new)
+		          std::cout << "Field name changed successfully." << std::endl;
+		        // Field name change is not acceptable - Either the field doesn't exist or the new title is taken
+		        else
+		        {
+		          std::cout << "An error has occurred." << std::endl;
+		          std::cout << "Make sure that the method exists and that the new title is not already in use." << std::endl;
+		        }
+		      }
+		    }
+		    
+		    // Fail if first substring is not 'add', 'edit', or 'delete'
+		    else
+		      fail();
+		    
+		    break;
+		  } 
+		    
 		// Fail if too many commands are entered
 		default:
 		{
