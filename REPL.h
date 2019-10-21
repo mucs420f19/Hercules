@@ -142,6 +142,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				    std::cout << "An error has occurred while trying to save. File not saved." << std::endl;
 			  }
 			  
+			  // 'load _____'
 			  else if (substrings[0] == "load")
 			  {
 			    // Load unsuccessful
@@ -165,11 +166,16 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			  // '_____ class _____' - Only possible option for the second substring
 			  if (substrings[1] == "class")
 			  {
-				  // 'add class _____' // ===== Verify class doesn't already exist ============================================
+				  // 'add class _____' 
 				  if (substrings[0] == "add")
 				  {
-					  holder->CreateNewClass(substrings[2]);
-					  std::cout << "Successfully created class " << substrings[2] << "." << std::endl;
+				    // Verify that the class does not already exist
+				    if (holder->CreateNewClass(substrings[2]) == 0)
+				      std::cout << "Class already exists." << std::endl;
+				    
+				    // Class does not exist, created successfully
+				    else
+					    std::cout << "Successfully created class " << substrings[2] << "." << std::endl;
 				  }
 
 				  // 'delete class _____'
