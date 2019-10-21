@@ -286,7 +286,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  {
 					  // Class name change is acceptable
 					  if (holder->EditClassTitle(substrings[3], substrings[2]))
-						  std::cout << "Class name changed successfully." << std::endl;
+					    std::cout << "Class name changed successfully." << std::endl;
+					  
 					  // Class name change is not acceptable - Either the class doesn't exist or the new title is taken
 					  else
 					  {
@@ -295,6 +296,38 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					  }
 				  }
 			  }
+			  
+			  // 'delete _____ ...'
+			  else if (substrings[0] == "delete")
+			  {
+			    // 'delete method _____ _____'
+			    if (substrings[1] == "method")
+			    {
+			      
+			    }
+			    
+			    // 'delete field _____ _____'
+			    else if (substrings[1] == "field")
+			    {
+			      
+			    }
+			    
+			    // 'delete relationship _____ _____' 
+			    else if (substrings[1] == "relationship")
+			    {
+			      
+			    }
+			    
+			    // Fail if second substring is not 'method', 'field', or 'relationship'
+			    else
+			      fail();
+			  }
+			  
+			  // Fail if first substring is not 'add', 'edit', or 'delete'
+			  else
+			    fail();
+			  
+			  break;
 	    }
 		    
 		  case 5:
