@@ -139,7 +139,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		REQUIRE(c[0]->ReturnFields() == "{{Color, string, Public}, {Make, string, Public}, }");
 		REQUIRE(c[0]->ReturnFields() == d[0]->ReturnFields());
 
-		REQUIRE(c[0]->ReturnRelationships() == "{{}}Type: 6, Parent of: Tire}, }");
+		REQUIRE(c[0]->ReturnRelationships() == "{{Type: 6, Parent of: Tire}, }");
 		REQUIRE(c[0]->ReturnRelationships() == d[0]->ReturnRelationships());
 	   
 		REQUIRE(c[1]->ReturnTitle() == "Tire");
