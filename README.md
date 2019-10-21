@@ -108,6 +108,8 @@ enter method/field name button
 -RelationshipControlFlow = 7
 -RelationshipDependency = 8
 -RelationshipDeploy = 9
+-RelationshipDirectedAssociation = 10
+-RelationshipExtend = 11
 
 
 ```
