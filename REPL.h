@@ -303,7 +303,21 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			    // 'delete method _____ _____'
 			    if (substrings[1] == "method")
 			    {
+			      // Check that the class exists
+			      if (holder->IsTitleUnique(substrings[2]) == false)
+			      {
+			        // Check that the method exists
+			        if (holder->GetUMLObject(substrings[2])->DeleteMethod(substrings[3]) == true)
+			          std::cout << "Method successfully deleted." << std::endl;
+			        
+			        // Method does not exist
+			        else
+			          std::cout << "Could not find a method by that name." << std::endl;
+			      }
 			      
+			      // Class does not exist
+			      else
+			        std::cout << "Could not find a class by that name." << std::endl;
 			    }
 			    
 			    // 'delete field _____ _____'
