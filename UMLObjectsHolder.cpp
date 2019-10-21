@@ -64,12 +64,12 @@ void UMLObjectsHolder::UMLObjectPrintContents()
 		std::cout << i->ToString() << std::endl;
 }
 
-std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
+std::vector<const char*> UMLObjectsHolder::UMLObjectReturnTitles()
 {
-	std::vector<std::string> out;
-	for (auto i : UMLObjects_holder)
+	std::vector<const char*> out;
+	for (auto & i : UMLObjects_holder)
 	{
-		out.push_back(i->ToString());
+		out.push_back(i->ReturnTitle().c_str());
 	}
 	return out;
 }
@@ -100,13 +100,6 @@ bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 	{
 		if (UMLObjects_holder[i]->ReturnTitle() == title)
 		{
-			for (auto j : UMLObjects_holder)
-			{
-				size_t del = j->GetIndexRelationshipWith(title);
-				if (del != -1)
-					j->DeleteRelationship(del);
-			}
-
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
 			return true;
 		}
@@ -138,7 +131,7 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 
 bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type)
 {
-	UMLObject* p, *c;
+	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
@@ -155,7 +148,7 @@ bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, in
 
 bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type)
 {
-	UMLObject* p, *c;
+	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
@@ -171,7 +164,7 @@ bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, i
 
 bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 {
-	UMLObject* p, *c;
+	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
