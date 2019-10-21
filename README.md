@@ -99,8 +99,10 @@ enter method/field name button
 ## Relationship Types
 -When prompted for a relationship type input the number asscoiated with the type you want, types and numbers are listed below.
 ```
--RelationshipAbstraction =1
+-RelationshipAbstraction = 1
 -RelationshipAggregation = 2
+-RelationshipAssociation = 3
+
 ```
 
 ## Tests
