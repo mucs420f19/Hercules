@@ -114,6 +114,9 @@ enter method/field name button
 -RelationshipInterfaceRealization = 13
 -RelationshipInclude = 14
 -RelationshipManifestation = 15
+-RelationshipNoteAttachment = 16
+-RelationshipObjectFlow = 17
+-
 
 
 
