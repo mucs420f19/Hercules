@@ -44,7 +44,7 @@ TEST_CASE("Edit a class", "0")
 
 }
 
-
+/*
 TEST_CASE("Add multiple classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
@@ -61,7 +61,7 @@ TEST_CASE("Add multiple classes", "0")
 		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
 	}
 }
-/*
+*/
 TEST_CASE("Add relationship between classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
@@ -85,7 +85,7 @@ TEST_CASE("Add relationship between classes", "0")
 	}
 
 }
-*/
+
 TEST_CASE("Test Saving Loading All Items", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
