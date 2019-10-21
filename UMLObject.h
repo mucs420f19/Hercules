@@ -196,7 +196,7 @@ public:
 	void SetTitle(std::string in);
 	void AddField(UMLField in);
 	void AddMethod(UMLMethod in);
-	std::string ReturnTitle();
+	const std::string & ReturnTitle() const;
 	std::string ReturnFields();
 	std::string ReturnMethods();
 	std::string ToString();

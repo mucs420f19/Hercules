@@ -19,7 +19,8 @@ public:
 	//print to console the entire contents of a class (using its ToString method)
 	void UMLObjectPrintContents();
 	//Returns a vector containing just the object titles
-	std::vector<std::string> UMLObjectReturnTitles();
+	std::vector<const char*> UMLObjectReturnTitles();
+	std::vector<std::string> UMLObjectReturnTitlesString();
 	//returns a vector containing pointers to the classes
 	//this allows direct access to the objects and might not be best practice
 	std::vector<UMLObject*> ReturnPtrToVector();

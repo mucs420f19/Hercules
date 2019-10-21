@@ -26,7 +26,7 @@ void UMLObject::AddMethod(UMLMethod in)
 	methods.push_back(in);
 }
 
-std::string UMLObject::ReturnTitle()
+const std::string & UMLObject::ReturnTitle() const
 {
 	return title;
 }
@@ -58,6 +58,7 @@ std::string UMLObject::ReturnMethods()
 std::string UMLObject::ToString()
 {
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods();
+	
 }
 
 std::string UMLObject::ReturnRelationships()
@@ -208,12 +209,12 @@ bool UMLMethod::AddParameter(UMLParameter in)
 
 bool UMLObject::EditMethod(std::string oldName, std::string newName)
 {
-  for (auto i : methods)
+  for (auto &i : methods)
   {
     if (i.ReturnName() == newName) 
       return false;
   }
-  for (auto i : methods)
+  for (auto &i : methods)
   {
     if (i.ReturnName() == oldName)
     {
@@ -226,12 +227,12 @@ bool UMLObject::EditMethod(std::string oldName, std::string newName)
 
 bool UMLObject::EditField(std::string oldName, std::string newName)
 {
-  for (auto i : fields)
+  for (auto &i : fields)
   {
     if (i.ReturnName() == newName)
       return false;
   }
-  for (auto i : fields)
+  for (auto &i : fields)
   {
     if (i.ReturnName() == oldName)
     {
