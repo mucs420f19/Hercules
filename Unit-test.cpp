@@ -379,3 +379,30 @@ TEST_CASE("Test Terminal Method & Field Functionality", "0")
 	RunREPL(holder, "delete field test_class1");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
 }
+
+TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	RunREPL(holder, "add class test_class1");
+	RunREPL(holder, "add class test_class2");
+	RunREPL(holder, "add class test_class3");
+
+	RunREPL(holder, "add relationship test_class1 test_class2");
+	RunREPL(holder, "add relationship test_class2 test_class3");
+
+	RunREPL(holder, "delete relationship test_class1 test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+
+	RunREPL(holder, "delete relationship test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+
+	RunREPL(holder, "delete relationship");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+}
