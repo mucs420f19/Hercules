@@ -175,7 +175,7 @@ int main(int argc, char** argv)
 				{
 					UMLMethod newMethod;
 					newMethod.SetName(method);
-					holder->GetUMLObject(classname)->AddMethod(newMethod);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
 					strcpy(classname, overwrite);
 				}
 
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
 				if (nk_button_label(ctx, "Enter New Method Name"))
 				{
-					holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
 					strcpy(tempName, overwrite);
 					strcpy(classname, overwrite);
 				}
@@ -223,7 +223,7 @@ int main(int argc, char** argv)
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 				if (nk_button_label(ctx, "Enter Method Name"))
 				{
-					holder->GetUMLObject(classname)->DeleteMethod(method);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteMethod(method);
 					strcpy(classname, overwrite);
 				}
 
@@ -246,7 +246,7 @@ int main(int argc, char** argv)
 				{
 					UMLField newField;
 					newField.SetName(field);
-					holder->GetUMLObject(classname)->AddField(newField);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
 					strcpy(classname, overwrite);
 				}
 
@@ -272,7 +272,7 @@ int main(int argc, char** argv)
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
 				if (nk_button_label(ctx, "Enter New field Name"))
 				{
-					holder->GetUMLObject(classname)->EditField(tempName, editField);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditField(tempName, editField);
 					strcpy(tempName, overwrite);
 					strcpy(classname, overwrite);
 				}
@@ -294,7 +294,7 @@ int main(int argc, char** argv)
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 				if (nk_button_label(ctx, "Enter Field Name"))
 				{
-					holder->GetUMLObject(classname)->DeleteField(field);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteField(field);
 					strcpy(classname, overwrite);
 				}
 
