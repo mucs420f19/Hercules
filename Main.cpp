@@ -2,343 +2,381 @@
 //
 
 #include <iostream>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+#include "GL/glew.h"
+#include "GLFW/glfw3.h"
+
+#define NK_INCLUDE_FIXED_TYPES
+#define NK_INCLUDE_STANDARD_IO
+#define NK_INCLUDE_STANDARD_VARARGS
+#define NK_INCLUDE_DEFAULT_ALLOCATOR
+#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
+#define NK_INCLUDE_FONT_BAKING
+#define NK_INCLUDE_DEFAULT_FONT
+#define NK_IMPLEMENTATION
+#define NK_GLFW_GL3_IMPLEMENTATION
+#define NK_KEYSTATE_BASED_INPUT
+#define INCLUDE_STYLE
+
+#include "nuklear.h"
+#include "nuklear_glfw_gl3.h"
 #include "SavingLoadingIO.h"
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
+#include "style.c"
+#include "REPL.h"
 
-void RunUnitTest1()
+#define WINDOW_WIDTH 1200
+#define WINDOW_HEIGHT 800
+
+#define MAX_VERTEX_BUFFER 512 * 1024
+#define MAX_ELEMENT_BUFFER 128 * 1024
+
+
+static void error_callback(int e, const char* d)
 {
-	std::cout << "---------------\nRunning test 1...---------------\n\n\n\n";
-
-
-	UMLObjectsHolder* holder = new UMLObjectsHolder();
-
-	std::cout << "Creating example UMLObjects...\n\n\n";
-
-	std::string before1 = "empty string", before2 = "empty string", after1, after2;
-	UMLObject* a = NULL, * b = NULL;
-
-	if (holder->CreateNewClass("Car"))
-	{
-		std::cout << "Successfully created class" << std::endl;
-
-		a = holder->ReturnPtrToVector()[0];
-
-		std::vector<std::string> testVec;
-
-		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-		std::cout << a->ToString() << std::endl << std::endl;
-		before1 = a->ToString();
-
-	}
-	else
-	{
-		std::cout << "Unable to create class due to duplicate name" << std::endl;
-	}
-
-	if (holder->CreateNewClass("Wheel"))
-	{
-		std::cout << "Successfully created class" << std::endl;
-
-		b = holder->ReturnPtrToVector()[1];
-
-		std::vector<std::string> testVec;
-		testVec.push_back("Dummy param 1");
-		testVec.push_back("Dummy param 2");
-
-		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-		std::cout << b->ToString() << std::endl << std::endl;
-		before2 = b->ToString();
-
-	}
-	else
-	{
-		std::cout << "Unable to create class due to duplicate name" << std::endl;
-	}
-
-	std::cout << "Saving and destroying these UMLObjects...\n\n\n";
-
-	//save them to file
-	SavingLoadingIO::SaveProjectToFile(holder);
-
-	//destory them out of memory
-	delete holder;
-
-	std::cout << "Reloading UMLObjects...\n\n\n";
-
-	//load them into memory again
-	holder = new UMLObjectsHolder();
-
-	if (SavingLoadingIO::LoadProject(holder))
-	{
-		std::cout << "Load successful" << std::endl;
-	}
-	else
-	{
-		std::cout << "Unable to load" << std::endl;
-	}
-
-
-
-	std::cout << "Comparing UMLObjects before and after...\n\n\n";
-
-	if (a != NULL)
-	{
-		a = holder->ReturnPtrToVector()[0];
-		std::cout << a->ToString() << std::endl << std::endl;
-		after1 = a->ToString();
-	}
-
-	if (b != NULL)
-	{
-		b = holder->ReturnPtrToVector()[1];
-		std::cout << b->ToString() << std::endl << std::endl;
-		after2 = b->ToString();
-	}
-
-	if (before1 == after1)
-	{
-		std::cout << "UMLObject1 is correct" << std::endl;
-	}
-	else std::cout << "UMLObject1 is not correct" << std::endl;
-
-	if (before2 == after2)
-	{
-		std::cout << "UMLObject2 is correct" << std::endl;
-	}
-	else std::cout << "UMLObject2 is not correct" << std::endl;
-
-	std::cout << "---------------\nTest 1 completed...---------------\n\n\n\n";
-
+	printf("Error %d: %s\n", e, d);
 }
 
-void RunUnitTest2()
+int main(int argc, char** argv)
 {
-	std::cout << "---------------\nRunning test 2...\n---------------\n\n\n\n";
 
+	//Vars for class holders
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-
-	UMLObject* a = NULL, * b = NULL;
-
-	if (holder->CreateNewClass("Car"))
+	if (argc == 1)
 	{
-		std::cout << "Successfully created class" << std::endl;
+		/* Platform */
+		static GLFWwindow *win;
+		int width = 0, height = 0;
+		struct nk_context *ctx;
+		struct nk_colorf bg;
+		char add[256] = { 0 };
+		char edit[256] = { 0 };
+		char del[256] = { 0 };
+		char save[256] = { 0 };
+		char load[256] = { 0 };
+		char method[256] = { 0 };
+		char editMethod[256] = { 0 };
+		char tempName[256] = { 0 };
+		char field[256] = { 0 };
+		char editField[256] = { 0 };
+		char classname[256] = { 0 };
+		char overwrite[256] = { 0 };
+		char type[256] = { 0 };
 
-		a = holder->ReturnPtrToVector()[0];
-
-		std::vector<std::string> testVec;
-
-		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-		std::cout << a->ToString() << std::endl << std::endl;
-
-	}
-	else
-	{
-		std::cout << "Unable to create class due to duplicate name" << std::endl;
-	}
-
-	if (holder->CreateNewClass("Wheel"))
-	{
-		std::cout << "Successfully created class" << std::endl;
-
-		b = holder->ReturnPtrToVector()[1];
-
-		std::vector<std::string> testVec;
-		testVec.push_back("Dummy param 1");
-		testVec.push_back("Dummy param 2");
-
-		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-		std::cout << b->ToString() << std::endl << std::endl;
-
-	}
-	else
-	{
-		std::cout << "Unable to create class due to duplicate name" << std::endl;
-	}
-
-
-	if (b != NULL)
-	{
-		if (holder->EditClassTitle("Car", "Wheel"))
+		/* GLFW */
+		glfwSetErrorCallback(error_callback);
+		if (!glfwInit())
 		{
-			std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
-			std::cout << "TEST 2 FAILED\n\n\n";
+			fprintf(stdout, "[GFLW] failed to init!\n");
+			exit(1);
 		}
-		else
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+#ifdef __APPLE__
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
+		win = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Hercules UML Editor", NULL, NULL);
+		glfwMakeContextCurrent(win);
+		glfwGetWindowSize(win, &width, &height);
+
+		/* OpenGL */
+		glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+		glewExperimental = 1;
+		if (glewInit() != GLEW_OK)
 		{
-			std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
+			fprintf(stderr, "Failed to setup GLEW\n");
+			exit(1);
 		}
 
-		std::cout << b->ToString() << std::endl << std::endl;
-
-
-		if (holder->EditClassTitle("Tire", "Wheel"))
+		ctx = nk_glfw3_init(win, NK_GLFW3_INSTALL_CALLBACKS);
+		/* Load Fonts: if none of these are loaded a default font will be used  */
+		/* Load Cursor: if you uncomment cursor loading please hide the cursor */
 		{
-			std::cout << "Rename succeeded....\n\n\n";
-		}
-		else
-		{
-			std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
-			std::cout << "TEST 2 FAILED\n\n\n";
+			struct nk_font_atlas *atlas;
+			nk_glfw3_font_stash_begin(&atlas);
+			nk_glfw3_font_stash_end();
 		}
 
-		std::cout << b->ToString() << std::endl << std::endl;
-	}
-	else
-	{
-		std::cout << "TEST 2 FAILED\n\n\n";
+#ifdef INCLUDE_STYLE
+		set_style(ctx, THEME_DARK);
 
-	}
-
-
-	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
-}
-
-int main()
-{
-	//RunUnitTest1();
-	//RunUnitTest2();
-
-	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	bool run = true;
-	int choice;
-	std::string input, input2;
-
-	std::cout << std::endl << "********************Welcome to Hercules********************" << std::endl;
-
-	while (run)
-	{
-		std::cout << std::endl << "********************" << std::endl;
-		std::cout << "1. View Class List" << std::endl;
-		std::cout << "2. Create New Class" << std::endl;
-		std::cout << "3. Delete A Class" << std::endl;
-		std::cout << "4. Edit A Class" << std::endl;
-		std::cout << "5. Save" << std::endl;
-		std::cout << "6. Load" << std::endl;
-		std::cout << "7. Exit" << std::endl;
-		std::cout << "********************" << std::endl << std::endl;
-		std::cout << "Which task would you like to run?" << std::endl;
-
-		std::cin >> choice;
-
-		switch (choice)
+#endif
+		//Background window color
+		bg.r = 0.00f, bg.g = 0.00f, bg.b = 0.00f, bg.a = 0.00f;
+		while (!glfwWindowShouldClose(win))
 		{
-		case 1:
-		{
-			std::cout << std::endl << "Class List:" << std::endl;
+			/* Input */
+			glfwPollEvents();
+			nk_glfw3_new_frame();
 
-			holder->UMLObjectPrintTitles();
+			/* GUI */
+			if (nk_begin(ctx, " ", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+				NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
+				NK_WINDOW_TITLE))
 
-			break;
-		}
+				//Begin menubar here or core dump later on		
+				nk_menubar_begin(ctx);
 
-		case 2:
-		{
-			std::cout << std::endl << "Please enter the name of the new class." << std::endl;
-			std::cin >> input;
-			std::cout << std::endl;
-
-			if (holder->CreateNewClass(input))
-				std::cout << "Class created sucessfully." << std::endl;
-			else
-				std::cout << "Class creation failed." << std::endl;
-
-			break;
-		}
-
-		case 3:
-		{
-			if (holder->Size())
+			//Saving and Loading buttons
 			{
-				std::cout << std::endl;
-
-				holder->UMLObjectPrintTitles();
-
-				std::cout << std::endl << "Please enter the number of the class you wish to delete." << std::endl;
-				std::cin >> input;
-
-				if (holder->DeleteUMLObject(input))
-					std::cout << "Delete successful." << std::endl << std::endl;
-				else
-					std::cout << "Unable to delete class." << std::endl << std::endl;
+				nk_layout_row_static(ctx, 50, 200, 2);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Save"))
+					SavingLoadingIO::SaveProjectToFile(holder, save, true);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Load"))
+					SavingLoadingIO::LoadProject(holder, load);
 			}
-			else
-				std::cout << std::endl << "You have no classes to delete." << std::endl;
+			//Creates Buttons for class control
+			{
+				nk_layout_row_static(ctx, 0, 100, 2);
+				//Adds new class to holder
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Add Class"))
+				{
+					(holder->CreateNewClass(add));
+				}
+				//Edits a class in the holder
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Edit Class"))
+				{
+					(holder->EditClassTitle(edit, add));
+				}
+				//Deletes a class in the holder
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Delete Class"))
+				{
+					(holder->DeleteUMLObject(del));
+				}
 
-			break;
+			}
+
+			//Add method
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter Method Name"))
+				{
+					UMLMethod newMethod;
+					newMethod.SetName(method);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+
+			//Edit method
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Edit method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter Method Name"))
+				{
+					strcpy(tempName, method);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter New Method Name"))
+				{
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
+					strcpy(tempName, overwrite);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+
+			//Delete method
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Delete method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter Method Name"))
+				{
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteMethod(method);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+
+			//Add field
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Add field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter field Name"))
+				{
+					UMLField newField;
+					newField.SetName(field);
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+
+			//Edit field
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Edit field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter Field Name"))
+				{
+					strcpy(tempName, field);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter New field Name"))
+				{
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditField(tempName, editField);
+					strcpy(tempName, overwrite);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+
+			//Delete field
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Delete field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Enter Field Name"))
+				{
+					if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteField(field);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+			// Add Relationship
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Add Relationship", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					holder->AddRelationship(classname, field, 0);
+					strcpy(classname, overwrite);
+				}
+				nk_menu_end(ctx);
+			}
+
+			//Delete Relationship
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 200);
+			if (nk_menu_begin_label(ctx, "Delete Relationship", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+			{
+				nk_layout_row_static(ctx, 0, 150, 1);
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					strcpy(classname, add);
+				}
+				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+				if (nk_button_label(ctx, "Confirm Class Name"))
+				{
+					holder->DeleteRelationship(classname, field);
+					strcpy(classname, overwrite);
+				}
+
+				nk_menu_end(ctx);
+			}
+			//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
+			nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+			nk_layout_row_push(ctx, 405);
+			if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_CENTERED, nk_vec2(600, 200)))
+			{
+				nk_layout_row_dynamic(ctx, 20, 1);
+				for (auto i : holder->UMLObjectReturnTitles())
+				{
+					nk_label(ctx, i.c_str(), NK_TEXT_LEFT);
+				}
+				nk_menu_end(ctx);
+			}
+
+			//nk_label(ctx, holder->UMLObjectPrintContents(), NK_TEXT_LEFT);
+
+			//Close the ctx struct context
+			nk_end(ctx);
+
+			/* Draw */
+			glfwGetWindowSize(win, &width, &height);
+			glViewport(0, 0, width, height);
+			glClear(GL_COLOR_BUFFER_BIT);
+			glClearColor(bg.r, bg.g, bg.b, bg.a);
+			/* IMPORTANT: `nk_glfw_render` modifies some global OpenGL state
+			* with blending, scissor, face culling, depth test and viewport and
+			* defaults everything back into a default state.
+			* Make sure to either a.) save and restore or b.) reset your own state after
+			* rendering the UI. */
+			nk_glfw3_render(NK_ANTI_ALIASING_ON, MAX_VERTEX_BUFFER, MAX_ELEMENT_BUFFER);
+			glfwSwapBuffers(win);
 		}
-
-		case 4:
-		{
-			std::cout << std::endl << "Please enter the name of the class you wish to edit." << std::endl;
-
-			std::cin >> input;
-
-			std::cout << std::endl << "Please enter the new name for the class." << std::endl;
-
-			std::cin >> input2;
-
-			if (holder->EditClassTitle(input2, input))
-				std::cout << "Rename successful." << std::endl << std::endl;
-			else
-				std::cout << "Unable to rename class." << std::endl << std::endl;
-
-			break;
-		}
-
-		case 5:
-		{
-			std::cout << std::endl << "Please enter the name of the save file." << std::endl;
-
-			std::cin >> input;
-
-			SavingLoadingIO::SaveProjectToFile(holder, input);
-
-			std::cout << std::endl << "File saved successfully as: " << input << std::endl;
-
-			break;
-		}
-
-		case 6:
-		{
-			std::cout << std::endl << "Please enter the name of the file you wish to load." << std::endl;
-
-			std::cin >> input;
-
-			if (SavingLoadingIO::LoadProject(holder, input))
-				std::cout << "Load successful." << std::endl << std::endl;
-			else
-				std::cout << "Unable to load." << std::endl << std::endl;
-
-			break;
-		}
-
-		case 7:
-		{
-			run = false;
-
-			std::cout << std::endl << "********************" << std::endl;
-			std::cout << "Thank you for using Hercules!" << std::endl;
-			std::cout << "********************" << std::endl << std::endl;
-
-			break;
-		}
-
-		default:
-		{
-			std::cout << std::endl << "Invalid entry, please enter a number from 1 to 7." << std::endl << std::endl;
-		}
-		}
+		nk_glfw3_shutdown();
+		glfwTerminate();
+	}
+	else
+	{
+		RunREPL(holder);
 	}
 
 	return 0;

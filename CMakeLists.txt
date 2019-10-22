@@ -1,24 +1,23 @@
 cmake_minimum_required (VERSION 3.8)
 project (Hercules)
 set(CMAKE_CXX_STANDARD 17)
-MESSAGE( STATUS "PROJECT_NAME: " ${PROJECT_NAME} )
 
-# Check platforms
-if (CMAKE_HOST_WIN32)
-    set(WINDOWS 1)
-elseif(CMAKE_HOST_APPLE)
-    set(MACOS 1)
-elseif(CMAKE_HOST_UNIX)
-    set(LINUX 1)
-endif()
+include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+conan_basic_setup()
 
 # Set RPATH
-if(WINDOWS)
-else()
-    set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
-    MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
-    set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
-endif()
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
+MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# Add the executable
-add_executable (Hercules Main.cpp UMLObject.h UMLObject.cpp SavingLoadingIO.h SavingLoadingIO.cpp UMLObjectsHolder.h UMLObjectsHolder.cpp)
+
+# WKK - header files do not belong in source list; source files != header files
+add_executable (Hercules Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
+add_executable (HerculesTest UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Unit-test.cpp)
+
+enable_testing()
+
+target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
+target_link_libraries(Hercules PUBLIC ${CONAN_LIBS})
+
+add_test (NAME mytest COMMAND HerculesTest)
