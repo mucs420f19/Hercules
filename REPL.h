@@ -19,20 +19,20 @@ void help()
 	std::cout << "save [file name] - Saves the current project to the given file." << std::endl;
 	std::cout << "load [file name] - Loads a previous project from the given file." << std::endl << std::endl;
 
-	std::cout << "add class [class name]    - " << std::endl;
-	std::cout << "edit class [old class name] [new class name] - " << std::endl; 
-	std::cout << "delete class [class name] - " << std::endl << std::endl; 
+	std::cout << "add class [class name]    - Creates a new class." << std::endl;
+	std::cout << "edit class [old class name] [new class name] - Changes the name of a class." << std::endl; 
+	std::cout << "delete class [class name] - Deletes a class." << std::endl << std::endl; 
 
-	std::cout << "add method [class name] [method name]    - " << std::endl;
-	std::cout << "edit method [class name] [method name]   - " << std::endl;
-	std::cout << "delete method [class name] [method name] - " << std::endl << std::endl;
+	std::cout << "add method [class name] [method name]    - Adds a new method to a given class." << std::endl;
+	std::cout << "edit method [class name] [method name]   - Changes the name of a method to a given class." << std::endl;
+	std::cout << "delete method [class name] [method name] - Deletes the name of a method to a given class." << std::endl << std::endl;
 
-	std::cout << "add field [class name] [field name]    - " << std::endl;
-	std::cout << "edit field [class name] [field name]   - " << std::endl;
-	std::cout << "delete field [class name] [field name] - " << std::endl << std::endl;
+	std::cout << "add field [class name] [field name]    - Adds a new field to a given class." << std::endl;
+	std::cout << "edit field [class name] [field name]   - Changes the name of a field to a given class." << std::endl;
+	std::cout << "delete field [class name] [field name] - Deletes the name of a field to a given class." << std::endl << std::endl;
 
-	std::cout << "add relationship [parent class] [child class]    - " << std::endl;
-	std::cout << "delete relationship [parent class] [child class] - " << std::endl << std::endl;
+	std::cout << "add relationship [parent class] [child class]    - Adds a relationship between the parent and child classes." << std::endl;
+	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl << std::endl;
 }
 
 void fail()
