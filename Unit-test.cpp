@@ -328,7 +328,8 @@ TEST_CASE("Test Terminal Method & Field Functionality", "0")
 
 	// ===
 
-	RunREPL(holder, "edit method test_class2 test_method3 test_methodA");
+	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+	//RunREPL(holder, "edit method test_class2 test_method3 test_methodA");
 }
 
 //
