@@ -306,19 +306,29 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
 }
 
-TEST_CASE("REPL Test 2", "0")
+TEST_CASE("Test Terminal Method & Field Functionality", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	//write more here
-}
+	RunREPL(holder, "add class test_class1");
+	RunREPL(holder, "add method test_class1 test_method1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, }");
 
-TEST_CASE("Test Terminal Misc.")
-{
-	UMLObjectsHolder* holder = new UMLObjectsHolder();
+	RunREPL(holder, "add method test_class1 test_method2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
 
-    RunREPL(holder, "add");
-    REQUIRE(holder->Size() == 0);
+	RunREPL(holder, "add method test_class2 test_method3");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "add method test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+	
+	RunREPL(holder, "add method test_class2");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnMethods() == "{{test_method3, , {}, Private}, }");
+
+	// ===
+
+	RunREPL(holder, "edit method test_class2 test_method3 test_methodA");
 }
 
 //
