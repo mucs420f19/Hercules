@@ -29,6 +29,7 @@ const int RelationshipUsage = 19;
 //forward declaration
 struct UMLRelationship;
 
+//structure for the field
 struct UMLField
 {
 	UMLField();
@@ -82,7 +83,7 @@ private:
 	std::string type;
 	int visibility;
 };
-
+//structure for the parameters
 struct UMLParameter
 {
 	UMLParameter(std::string in_type, std::string in_name, std::string in_opt = "", std::string in_deflt = "")
@@ -120,7 +121,7 @@ struct UMLParameter
 		return out;
 	}
 };
-
+//structure for the methods
 struct UMLMethod
 {
 	UMLMethod();
