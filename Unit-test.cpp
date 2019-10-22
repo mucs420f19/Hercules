@@ -306,242 +306,103 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
 }
 
-TEST_CASE("REPL Test 2", "0")
+TEST_CASE("Test Terminal Method & Field Functionality", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	//write more here
+	RunREPL(holder, "add class test_class1");
+	RunREPL(holder, "add method test_class1 test_method1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, }");
+
+	RunREPL(holder, "add method test_class1 test_method2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "add method test_class2 test_method3");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "add method test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+	
+	RunREPL(holder, "add method test_class2");
+	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+
+	RunREPL(holder, "add method test_class2 newMethod");
+	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+
+	RunREPL(holder, "edit method test_class1 test_method1 test_methodA");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "edit method test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "edit method test_class1 test_methodA");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
+
+	RunREPL(holder, "delete method test_class1 test_method2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, }");
+
+	RunREPL(holder, "delete method test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, }");
+
+	// ===
+
+	RunREPL(holder, "add field test_class1 test_field1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, }");
+
+	RunREPL(holder, "add field test_class1 test_field2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
+
+	RunREPL(holder, "add field test_class2 test_field3");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
+
+	RunREPL(holder, "add field test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
+	
+	RunREPL(holder, "add field test_class2");
+	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+
+	RunREPL(holder, "add field test_class2 newField");
+	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+
+	RunREPL(holder, "edit field test_class1 test_field1 test_fieldA");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
+
+	RunREPL(holder, "edit field test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
+
+	RunREPL(holder, "edit field test_class1 test_fieldA");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
+
+	RunREPL(holder, "delete field test_class1 test_field2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
+
+	RunREPL(holder, "delete field test_class1");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
 }
 
-TEST_CASE("Test Terminal Misc.")
+TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-    RunREPL(holder, "add");
-    REQUIRE(holder->Size() == 0);
-}
+	RunREPL(holder, "add class test_class1");
+	RunREPL(holder, "add class test_class2");
+	RunREPL(holder, "add class test_class3");
 
-//
-//void RunUnitTest1()
-//{
-//	std::cout << "---------------\nRunning test 1...---------------\n\n\n\n";
-//
-//
-//	UMLObjectsHolder* holder = new UMLObjectsHolder();
-//
-//	std::cout << "Creating example UMLObjects...\n\n\n";
-//
-//	std::string before1 = "empty string", before2 = "empty string", after1, after2;
-//	UMLObject* a = NULL, * b = NULL;
-//
-//	if (holder->CreateNewClass("Car"))
-//	{
-//		std::cout << "Successfully created class" << std::endl;
-//
-//		a = holder->ReturnPtrToVector()[0];
-//
-//		std::vector<std::string> testVec;
-//
-//		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-//		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-//		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-//		std::cout << a->ToString() << std::endl << std::endl;
-//		before1 = a->ToString();
-//
-//	}
-//	else
-//	{
-//		std::cout << "Unable to create class due to duplicate name" << std::endl;
-//	}
-//
-//	if (holder->CreateNewClass("Wheel"))
-//	{
-//		std::cout << "Successfully created class" << std::endl;
-//
-//		b = holder->ReturnPtrToVector()[1];
-//
-//		std::vector<std::string> testVec;
-//		testVec.push_back("Dummy param 1");
-//		testVec.push_back("Dummy param 2");
-//
-//		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-//		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-//		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-//		std::cout << b->ToString() << std::endl << std::endl;
-//		before2 = b->ToString();
-//
-//	}
-//	else
-//	{
-//		std::cout << "Unable to create class due to duplicate name" << std::endl;
-//	}
-//
-//	std::cout << "Saving and destroying these UMLObjects...\n\n\n";
-//
-//	//save them to file
-//	SavingLoadingIO::SaveProjectToFile(holder);
-//
-//	//destory them out of memory
-//	delete holder;
-//
-//	std::cout << "Reloading UMLObjects...\n\n\n";
-//
-//	//load them into memory again
-//	holder = new UMLObjectsHolder();
-//
-//	if (SavingLoadingIO::LoadProject(holder))
-//	{
-//		std::cout << "Load successful" << std::endl;
-//	}
-//	else
-//	{
-//		std::cout << "Unable to load" << std::endl;
-//	}
-//
-//
-//
-//	std::cout << "Comparing UMLObjects before and after...\n\n\n";
-//
-//	if (a != NULL)
-//	{
-//		a = holder->ReturnPtrToVector()[0];
-//		std::cout << a->ToString() << std::endl << std::endl;
-//		after1 = a->ToString();
-//	}
-//
-//	if (b != NULL)
-//	{
-//		b = holder->ReturnPtrToVector()[1];
-//		std::cout << b->ToString() << std::endl << std::endl;
-//		after2 = b->ToString();
-//	}
-//
-//	if (before1 == after1)
-//	{
-//		std::cout << "UMLObject1 is correct" << std::endl;
-//	}
-//	else std::cout << "UMLObject1 is not correct" << std::endl;
-//
-//	if (before2 == after2)
-//	{
-//		std::cout << "UMLObject2 is correct" << std::endl;
-//	}
-//	else std::cout << "UMLObject2 is not correct" << std::endl;
-//
-//	std::cout << "---------------\nTest 1 completed...---------------\n\n\n\n";
-//
-//}
-//
-//void RunUnitTest2()
-//{
-//	std::cout << "---------------\nRunning test 2...\n---------------\n\n\n\n";
-//
-//	UMLObjectsHolder* holder = new UMLObjectsHolder();
-//
-//
-//	UMLObject* a = NULL, * b = NULL;
-//
-//	if (holder->CreateNewClass("Car"))
-//	{
-//		std::cout << "Successfully created class" << std::endl;
-//
-//		a = holder->ReturnPtrToVector()[0];
-//
-//		std::vector<std::string> testVec;
-//
-//		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-//		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-//		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-//		std::cout << a->ToString() << std::endl << std::endl;
-//
-//	}
-//	else
-//	{
-//		std::cout << "Unable to create class due to duplicate name" << std::endl;
-//	}
-//
-//	if (holder->CreateNewClass("Wheel"))
-//	{
-//		std::cout << "Successfully created class" << std::endl;
-//
-//		b = holder->ReturnPtrToVector()[1];
-//
-//		std::vector<std::string> testVec;
-//		testVec.push_back("Dummy param 1");
-//		testVec.push_back("Dummy param 2");
-//
-//		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-//		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-//		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-//		std::cout << b->ToString() << std::endl << std::endl;
-//
-//	}
-//	else
-//	{
-//		std::cout << "Unable to create class due to duplicate name" << std::endl;
-//	}
-//
-//
-//	if (b != NULL)
-//	{
-//		if (holder->EditClassTitle("Car", "Wheel"))
-//		{
-//			std::cout << "Rename succeeded.... this should not have worked!\n\n\n";
-//			std::cout << "TEST 2 FAILED\n\n\n";
-//		}
-//		else
-//		{
-//			std::cout << "Unable to rename \"Wheel\" to \"Car\", class name already exists\n\n\n";
-//		}
-//
-//		std::cout << b->ToString() << std::endl << std::endl;
-//
-//
-//		if (holder->EditClassTitle("Tire", "Wheel"))
-//		{
-//			std::cout << "Rename succeeded....\n\n\n";
-//		}
-//		else
-//		{
-//			std::cout << "Unable to rename \"Wheel\" to \"Tire\", class name already exists\n\n\n";
-//			std::cout << "TEST 2 FAILED\n\n\n";
-//		}
-//
-//		std::cout << b->ToString() << std::endl << std::endl;
-//	}
-//	else
-//	{
-//		std::cout << "TEST 2 FAILED\n\n\n";
-//
-//	}
-//
-//
-//	std::cout << "---------------\nTest 2 completed...\n---------------\n\n\n\n";
-//}
-//
-//
-//void RunUnitTest3()
-//{
-//	std::cout << "---------------\nRunning test 3...\n---------------\n\n\n\n";
-//
-//
-//	UMLObject* a = NULL, * b = NULL;
-//	UMLObjectsHolder* holder = new UMLObjectsHolder();
-//
-//	a = holder->CreateNewClass("Car");
-//	b = holder->CreateNewClass("Wheel");
-//
-//	holder->AddRelationship("Car", "Wheel", RelationshipAggregation);
-//
-//	std::cout << a->ReturnRelationships() << std::endl;
-//	std::cout << b->ReturnRelationships() << std::endl;
-//
-//	holder->EditRelationship("Car", "Wheel", RelationshipComposition);
-//	std::cout << a->ReturnRelationships() << std::endl;
-//	std::cout << b->ReturnRelationships() << std::endl;
-//
-//	holder->DeleteRelationship("Car", "Wheel");
-//	std::cout << a->ReturnRelationships() << std::endl;
-//	std::cout << b->ReturnRelationships() << std::endl;
-//
-//}
+	RunREPL(holder, "add relationship test_class1 test_class2");
+	RunREPL(holder, "add relationship test_class2 test_class3");
+
+	RunREPL(holder, "delete relationship test_class1 test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+
+	RunREPL(holder, "delete relationship test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+
+	RunREPL(holder, "delete relationship");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+}
