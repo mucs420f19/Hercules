@@ -9,7 +9,7 @@
 const int SaveSuccess = 0;
 const int SaveError = 1;
 const int SaveAlreadyExists = 2;
-
+//header file defines the parent and children to provide saving and loading functionality.
 namespace SavingLoadingIO
 {
 	struct Node
