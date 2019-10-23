@@ -1,6 +1,6 @@
 # Hercules
 
-[![Build Status](https://travis-ci.org/mucs420f19/Hercules.svg?branch=Develop)](https://travis-ci.org/mucs420f19/Hercules)
+[![Build Status](https://travis-ci.org/mucs420f19/Hercules.svg?branch=develop)](https://travis-ci.org/mucs420f19/Hercules)
 
 ## Description
 
