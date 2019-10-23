@@ -1,5 +1,7 @@
 # Hercules
 
+[![Build Status](https://travis-ci.org/mucs420f19/Hercules.svg?branch=Develop)](https://travis-ci.org/mucs420f19/Hercules)
+
 ## Description
 
 Team Hercules UML editor written in C++
