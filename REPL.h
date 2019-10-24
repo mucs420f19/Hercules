@@ -65,20 +65,32 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		int length = input.length();
 		std::vector<std::string> substrings;
 
-		// Split the user's input into substrings
-		for (int x = 0, y = 0; x < length; ++x)
-		{
-			if (input[x] == ' ')
-			{
-				std::string substring = input.substr(y, x - y);
-				y = x + 1;
-				substrings.push_back(substring);
-			}
+		// Check for end of file
+		if (!std::cin)
+ 		{
+     		if(std::cin.eof())
+         		std::cout << "End of file reached." << std::endl;
+			
+			run = false;
+ 		}
 
-			if (x == length - 1)
+		// Split the user's input into substrings if eof is not reached
+		else
+		{
+			for (int x = 0, y = 0; x < length; ++x)
 			{
-				std::string substring = input.substr(y, x - y + 1);
-				substrings.push_back(substring);
+				if (input[x] == ' ')
+				{
+					std::string substring = input.substr(y, x - y);
+					y = x + 1;
+					substrings.push_back(substring);
+				}
+
+				if (x == length - 1)
+				{
+					std::string substring = input.substr(y, x - y + 1);
+					substrings.push_back(substring);
+				}
 			}
 		}
 
