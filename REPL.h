@@ -72,6 +72,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
          		std::cout << "End of file reached." << std::endl;
 			
 			run = false;
+
+			break;
  		}
 
 		// Split the user's input into substrings if eof is not reached
