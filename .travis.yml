@@ -27,24 +27,28 @@ matrix:
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
         - pip install --user conan
+        - pip install --user cpp-coveralls
     - os: linux
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
         - pip install --user conan
-    #- os: osx
-      #compiler: clang
-      #env: PATH=$HOME/.local/bin:$PATH
-      #before_install:
-        #- pip install python
-        #- python -m pip install --upgrade pip
-        #- pip install conan
+        - pip install --user cpp-coveralls
+    - os: osx
+      compiler: clang
+      env: PATH=$HOME/.local/bin:$PATH
+      before_install:
+        - pip install python
+        - python -m pip install --upgrade pip
+        - pip install conan
+        - pip install cpp-coveralls
     - os: windows
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
+        - pip install cpp-coveralls
       install:
         - conan user
         - mkdir build
@@ -72,3 +76,5 @@ script:
 
 notifications:
   email: false
+
+#https://github.com/JoakimSoderberg/coveralls-cmake-example
