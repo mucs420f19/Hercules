@@ -216,6 +216,11 @@ public:
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
+	int GetLargestStringSize();
+	std::string ReturnFieldsPretty();
+	std::string ReturnMethodsPretty();
+	std::string ToStringPretty();
+	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
 	std::vector<UMLRelationship> ReturnRelationshipsRaw();

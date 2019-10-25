@@ -61,6 +61,159 @@ std::string UMLObject::ToString()
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods() + ", Relationships: " + ReturnRelationships();
 	
 }
+
+int UMLObject::GetLargestStringSize()
+{
+	int maxSize = 0;
+	int temp = 0;
+
+	// Check title string size
+	temp = title.size();
+	if (temp > maxSize)
+		maxSize = temp;
+
+		// Check field string sizes
+		for (auto f : fields)
+		{
+			temp = f.ReturnName().size();
+
+			if (temp > maxSize)
+				maxSize = temp;
+		}
+	
+	// Check method string sizes
+	for (auto m : methods)
+	{
+		temp = m.ReturnName().size();
+
+		if (temp > maxSize)
+			maxSize = temp;
+	}
+
+	//maxSize += 2;
+
+	return maxSize;
+}
+
+std::string UMLObject::ReturnFieldsPretty()
+{
+	std::string out;
+	int temp = 0;
+	int addSpace = 0;
+
+	for (auto a : fields)
+	{
+		temp = a.ReturnName().size();
+		addSpace = GetLargestStringSize() - temp;
+
+		out += "\xB3 - " + a.ReturnName();
+
+		for (int x = 0; x < addSpace; ++x)
+		out += " ";
+
+		out += " \xB3\n";
+	}
+
+	return out;
+}
+
+std::string UMLObject::ReturnMethodsPretty()
+{
+	std::string out;
+	int temp = 0;
+	int addSpace = 0;
+
+	for (auto a : methods)
+	{
+		temp = a.ReturnName().size();
+		addSpace = GetLargestStringSize() - temp;
+
+		out += "\xB3 + " + a.ReturnName();
+
+		for (int x = 0; x < addSpace; ++x)
+		out += " ";
+
+		out += " \xB3\n";
+	}
+
+	return out;
+}
+
+std::string UMLObject::ToStringPretty()
+{
+	std::string out;
+	std::string breakLine;
+	int temp = 0;
+	int addSpace = 0;
+
+	// ==========================================================================================
+
+	// ┌────────────────────┐
+
+	out += "\xDA";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		out += "\xC4";
+
+	out += "\xBF\n";
+
+	// ==========================================================================================
+
+	// │ Title              │
+
+	temp = title.size();
+	addSpace = GetLargestStringSize() - temp;
+
+	out += "\xB3 " + ReturnTitle();
+
+	for (int x = 0; x < addSpace + 2; ++x)
+		out += " ";
+
+	out += " \xB3\n";
+
+	// ==========================================================================================
+
+	// ├────────────────────┤
+
+	breakLine += "\xC3";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		breakLine += "\xC4";
+
+	breakLine += "\xB4\n";
+
+	out += breakLine;
+
+	// ==========================================================================================
+
+	// Print fields
+	out += ReturnFieldsPretty();
+
+	// ==========================================================================================
+
+	// ├────────────────────┤
+
+	out += breakLine;
+
+	// ==========================================================================================
+
+	// Print methods
+	out += ReturnMethodsPretty();
+
+	// ==========================================================================================
+
+	// └────────────────────┘
+
+	out += "\xC0";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		out += "\xC4";
+
+	out += "\xD9\n";
+
+	return out;
+}
+
 //iterates to return the relationship
 std::string UMLObject::ReturnRelationships()
 {
