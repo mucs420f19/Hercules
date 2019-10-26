@@ -85,13 +85,17 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				{
 					std::string substring = input.substr(y, x - y);
 					y = x + 1;
-					substrings.push_back(substring);
+
+					if (substring != "")
+						substrings.push_back(substring);
 				}
 
 				if (x == length - 1)
 				{
 					std::string substring = input.substr(y, x - y + 1);
-					substrings.push_back(substring);
+
+					if (substring != "")
+						substrings.push_back(substring);
 				}
 			}
 		}
