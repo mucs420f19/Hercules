@@ -277,7 +277,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					    std::cout << "Could not find a class by that name." << std::endl;
 				  }
 
-				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
+				  // 'add relationship _____ _____' // Currently set to aggregation by default
 				  else if (substrings[1] == "relationship")
 				  {
 				    // Check that the objects are not identical - Object cannot have relationship to itself
@@ -285,7 +285,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				      std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
 				    
 					  // Relationship acceptable
-					  else if (holder->AddRelationship(substrings[2], substrings[3], 0))
+					  else if (holder->AddRelationship(substrings[2], substrings[3], 2))
 						  std::cout << "Relationship created successfully." << std::endl;
 
 					  // Relationship not acceptable and not created

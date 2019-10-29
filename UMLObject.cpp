@@ -139,6 +139,69 @@ std::string UMLObject::ReturnMethodsPretty()
 	return out;
 }
 
+std::string UMLObject::ReturnRelationshipsPretty()
+{
+	std::string out;
+	std::vector<UMLRelationship> Ag;
+	std::vector<UMLRelationship> Co;
+	std::vector<UMLRelationship> Ge;
+	std::vector<UMLRelationship> Re;
+  	
+	out += "\n" + ReturnTitle() + " Relationships:\n";
+
+	for (auto r : relationships)	
+	{
+		if (r.GetType() == RelationshipAggregation)
+			Ag.push_back(r);
+
+		if (r.GetType() == RelationshipComposition)
+			Co.push_back(r);
+
+		if (r.GetType() == RelationshipGeneralization)
+			Ge.push_back(r);
+
+		if (r.GetType() == RelationshipRealization)
+			Re.push_back(r);
+	}
+
+	if (Ag.size() != 0)
+	{
+		out += "\tAggregation:\n";
+
+		for (auto x : Ag)
+			out += "\t\t" + x.ToString() + "\n";
+	}
+
+	if (Co.size() != 0)
+	{
+		out += "\tComposition:\n";
+
+		for (auto x : Co)
+			out += "\t\t" + x.ToString() + "\n";
+	}
+
+	if (Ge.size() != 0)
+	{
+		out += "\tGeneralization:\n";
+
+		for (auto x : Ge)
+			out += "\t\t" + x.ToString() + "\n";
+	}
+
+	if (Re.size() != 0)
+	{
+		out += "\tRealization:\n";
+
+		for (auto x : Re)
+			out += "\t\t" + x.ToString() + "\n";
+	}
+
+	
+
+
+	return out;
+}
+
 std::string UMLObject::ToStringPretty()
 {
 	std::string out;
@@ -209,8 +272,16 @@ std::string UMLObject::ToStringPretty()
 	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
 		out += "\xC4";
 
-	out += "\xD9\n";
+	out += "\xD9";
 
+	// ==========================================================================================
+
+	// Print relationships
+	out += ReturnRelationshipsPretty();
+
+	// ==========================================================================================
+
+	out += "\n";
 	return out;
 }
 

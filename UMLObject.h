@@ -220,6 +220,7 @@ public:
 	std::string ReturnFieldsPretty();
 	std::string ReturnMethodsPretty();
 	std::string ToStringPretty();
+	std::string ReturnRelationshipsPretty();
 	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
@@ -243,13 +244,14 @@ struct UMLRelationship
 	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
 	std::string GetObject() { return object->ReturnTitle(); }
+	int GetType() { return type; }
 	std::string ToString()
 	{
 		if (parent == true)
-		  return "{Type: " + std::to_string(type) + ", Parent of: " + object->ReturnTitle() + "}";
+		  return "Parent of: " + object->ReturnTitle();
 		
 		else
-		  return "{Type: " + std::to_string(type) + ", Child of: " + object->ReturnTitle() + "}";
+		  return "Child of: " + object->ReturnTitle();
 		
 		//return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
 	}
