@@ -16,14 +16,30 @@ void UMLObject::SetTitle(std::string in)
 	title = in;
 }
 //adds the fields into the vector
-void UMLObject::AddField(UMLField in)
+bool UMLObject::AddField(UMLField in)
 {
+	for (auto i : fields)
+	{
+		if (i.ReturnName() == in.ReturnName())
+		{
+			return false;
+		}
+	}
 	fields.push_back(in);
+	return true;
 }
 //adds the methods to the vector
-void UMLObject::AddMethod(UMLMethod in)
+bool UMLObject::AddMethod(UMLMethod in)
 {
+	for (auto i : methods)
+	{
+		if (i.ReturnName() == in.ReturnName())
+		{
+			return false;
+		}
+	}
 	methods.push_back(in);
+	return true;
 }
 //returns title of object
 const std::string & UMLObject::ReturnTitle() const

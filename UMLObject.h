@@ -5,6 +5,7 @@
 
 const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
+const int UMLFieldVisibilityProtected = 3;
 
 const int RelationshipAggregation = 2;
 const int RelationshipComposition = 6;
@@ -21,21 +22,11 @@ struct UMLRelationship;
 struct UMLField
 {
 	UMLField();
-	UMLField(std::string inName, std::string inType, int inVisibility)
+	UMLField(std::string inName, std::string inType, int inVisibility = 1)
 	{
 		name = inName;
 		type = inType;
 		visibility = inVisibility;
-	}
-	UMLField(std::string in_name, std::string in_type, std::string in_visiblity = "1")
-	{
-		name = in_name;
-		type = in_type;
-		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
-		{
-			visibility = UMLFieldVisibilityPublic;
-		}
-		else visibility = UMLFieldVisibilityPrivate;
 	}
 	std::string GetVisibilityString()
 	{
@@ -52,6 +43,13 @@ struct UMLField
 				out = "Private";
 				break;
 			}
+			case UMLFieldVisibilityProtected:
+			{
+				out = "Protected";
+				break;
+			}
+			default:
+				out = "Invalid Visiblity";
 		}
 		return out;
 	}
@@ -120,17 +118,6 @@ struct UMLMethod
 		parameters = inParameters;
 		visibility = inVisibility;
 	}
-	UMLMethod(std::string in_name, std::string in_type, std::vector<UMLParameter> in_parameters, std::string in_visiblity = "1")
-	{
-		name = in_name;
-		return_type = in_type;
-		parameters = in_parameters;
-		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
-		{
-			visibility = UMLFieldVisibilityPublic;
-		}
-		else visibility = UMLFieldVisibilityPrivate;
-	}
 	std::string GetVisibilityString()
 	{
 		std::string out;
@@ -146,6 +133,13 @@ struct UMLMethod
 			out = "Private";
 			break;
 		}
+		case UMLFieldVisibilityProtected:
+		{
+			out = "Protected";
+			break;
+		}
+		default:
+			out = "Invalid Visiblity";
 		}
 		return out;
 	}
@@ -183,8 +177,8 @@ public:
 	UMLObject();
 	UMLObject(UMLObject * copy);
 	void SetTitle(std::string in);
-	void AddField(UMLField in);
-	void AddMethod(UMLMethod in);
+	bool AddField(UMLField in);
+	bool AddMethod(UMLMethod in);
 	const std::string & ReturnTitle() const;
 	std::string ReturnFields();
 	std::string ReturnMethods();

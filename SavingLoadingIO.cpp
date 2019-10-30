@@ -233,7 +233,7 @@ namespace SavingLoadingIO
 					{
 						if (j->key == "UMLField")
 						{
-							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), FindChildWhere(j, "Visibility"));
+							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), std::stoi(FindChildWhere(j, "Visibility")));
 							a->AddField(field);
 						}
 						else if (j->key == "UMLMethod")
@@ -250,7 +250,7 @@ namespace SavingLoadingIO
 								}
 								
 							}
-							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, FindChildWhere(j, "Visibility"));
+							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, std::stoi(FindChildWhere(j, "Visibility")));
 							a->AddMethod(method);
 						}
 						else if (j->key == "UMLRelationship")
