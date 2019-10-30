@@ -34,31 +34,31 @@ matrix:
         - cmake --build .
         - ctest -C Debug --verbose        
       after_success:
-        - coveralls
-    - os: linux
-      compiler: clang
-      env: PATH=$HOME/.local/bin:$PATH
-      before_install:
-        - pip install --user conan
-    - os: osx
-      compiler: clang
-      env: PATH=$HOME/.local/bin:$PATH
-      before_install:
-        - pip install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-    - os: windows
-      env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
-      before_install:
-        - choco install python
-        - python -m pip install --upgrade pip
-        - pip install conan
-      install:
-        - conan user
-        - mkdir build
-        - cd build
-        - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
-        - cd ..
+        - coveralls --exclude /usr/include/c++
+    # - os: linux
+    #   compiler: clang
+    #   env: PATH=$HOME/.local/bin:$PATH
+    #   before_install:
+    #     - pip install --user conan
+    # - os: osx
+    #   compiler: clang
+    #   env: PATH=$HOME/.local/bin:$PATH
+    #   before_install:
+    #     - pip install python
+    #     - python -m pip install --upgrade pip
+    #     - pip install conan
+    # - os: windows
+    #   env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
+    #   before_install:
+    #     - choco install python
+    #     - python -m pip install --upgrade pip
+    #     - pip install conan
+    #   install:
+    #     - conan user
+    #     - mkdir build
+    #     - cd build
+    #     - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
+    #     - cd ..
 
 install:
   - conan user
