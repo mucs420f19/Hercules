@@ -274,6 +274,6 @@ struct UMLRelationship
 	}
 	std::string ToString()
 	{
-		return "{ " + thisObject->ReturnTitle() + " has relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
+		return "{" + thisObject->ReturnTitle() + " has relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
 	}
 };

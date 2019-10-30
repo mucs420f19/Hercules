@@ -80,11 +80,184 @@ TEST_CASE("Add relationship between classes", "0")
 
 	SECTION("Verify relationship", "0")
 	{
-		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{ Vehicle has relationship Composition One-to-Many with Tire}, }");
-		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{ Tire has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{Vehicle has relationship Composition One-to-Many with Tire}, }");
+		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{Tire has relationship Composition Many-to-One with Vehicle}, }");
 	}
 
 }
+
+TEST_CASE("Relationships functionality test multiple relationships on item", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	holder->CreateNewClass("Vehicle");
+
+	for (unsigned int i = 0; i < 4; i++)
+	{
+		holder->CreateNewClass("Door" + std::to_string(i + 1));
+		holder->AddRelationship("Vehicle", "Door" + std::to_string(i + 1), RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+
+		holder->CreateNewClass("Tire" + std::to_string(i + 1));
+		holder->AddRelationship("Vehicle", "Tire" + std::to_string(i + 1), RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+	}
+
+	SECTION("Create classes", "0")
+	{
+		REQUIRE(holder->Size() == 9);
+		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
+		for (unsigned int i = 0; i < 4; i++)
+		{
+			REQUIRE(holder->UMLObjectReturnTitlesString()[1+(i*2)] == "Door" + std::to_string(i + 1));
+			REQUIRE(holder->UMLObjectReturnTitlesString()[2 + (i*2)] == "Tire" + std::to_string(i + 1));
+		}
+	}
+
+	SECTION("Verify relationship", "0")
+	{
+		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() ==   "{{Vehicle has relationship Composition One-to-Many with Door1}, {Vehicle has relationship Composition One-to-Many with Tire1}, {Vehicle has relationship Composition One-to-Many with Door2}, {Vehicle has relationship Composition One-to-Many with Tire2}, {Vehicle has relationship Composition One-to-Many with Door3}, {Vehicle has relationship Composition One-to-Many with Tire3}, {Vehicle has relationship Composition One-to-Many with Door4}, {Vehicle has relationship Composition One-to-Many with Tire4}, }");
+		for (unsigned int i = 0; i < 4; i++)
+		{
+			REQUIRE(holder->ReturnPtrToVector()[1 + (i * 2)]->ReturnRelationships() == "{{Door" + std::to_string(i + 1) + " has relationship Composition Many-to-One with Vehicle}, }");
+			REQUIRE(holder->ReturnPtrToVector()[2 + (i * 2)]->ReturnRelationships() == "{{Tire" + std::to_string(i + 1) + " has relationship Composition Many-to-One with Vehicle}, }");
+		}
+	}
+
+}
+
+TEST_CASE("Relationships edit functionality test", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	UMLObject* c = holder->CreateNewClass("Vehicle");
+	UMLObject* a = holder->CreateNewClass("Tire");
+	UMLObject* d = holder->CreateNewClass("Door");
+	UMLObject* e = holder->CreateNewClass("Light");
+	UMLObject* f = holder->CreateNewClass("Cylinders");
+	UMLObject* g = holder->CreateNewClass("Engine");
+	UMLObject* h = holder->CreateNewClass("Fleet");
+	UMLObject* i = holder->CreateNewClass("Driver");
+
+	//every one of these must succeed
+	REQUIRE((
+		holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Door", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Light", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Engine", "Vehicle", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
+		holder->AddRelationship("Engine", "Cylinders", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Fleet", RelationshipAggregation, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Driver", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne)
+	));
+
+	SECTION("Verify relationship", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle has relationship Composition One-to-Many with Tire}, {Vehicle has relationship Composition One-to-Many with Door}, {Vehicle has relationship Composition One-to-Many with Light}, {Vehicle has relationship Composition One-to-One with Engine}, {Vehicle has relationship Aggregation Many-to-Many with Fleet}, {Vehicle has relationship Realization One-to-One with Driver}, }");
+
+		REQUIRE(holder->GetUMLObject("Tire")->ReturnRelationships() == "{{Tire has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Door")->ReturnRelationships() == "{{Door has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Light")->ReturnRelationships() == "{{Light has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine has relationship Composition One-to-One with Vehicle}, {Engine has relationship Composition One-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders has relationship Composition Many-to-One with Engine}, }");
+		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet has relationship Aggregation Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver has relationship Realization One-to-One with Vehicle}, }");
+	}
+
+	//these values might not make sense in the real world, they are just for the purpose of the test
+	REQUIRE((
+		holder->EditRelationship("Vehicle", "Tire", RelationshipGeneralization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->EditRelationship("Door", "Vehicle", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->EditRelationship("Vehicle", "Light", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->EditRelationship("Cylinders", "Engine", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->EditRelationship("Fleet", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
+		holder->EditRelationship("Vehicle", "Driver", RelationshipGeneralization, RelationshipQuantifierMany, RelationshipQuantifierMany)
+		));
+
+	SECTION("Verify relationships after edit", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle has relationship Generalization Many-to-Many with Tire}, {Vehicle has relationship Realization Many-to-Many with Door}, {Vehicle has relationship Realization Many-to-Many with Light}, {Vehicle has relationship Composition One-to-One with Engine}, {Vehicle has relationship Realization One-to-One with Fleet}, {Vehicle has relationship Generalization Many-to-Many with Driver}, }");
+
+		REQUIRE(holder->GetUMLObject("Tire")->ReturnRelationships() == "{{Tire has relationship Generalization Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Door")->ReturnRelationships() == "{{Door has relationship Realization Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Light")->ReturnRelationships() == "{{Light has relationship Realization Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine has relationship Composition One-to-One with Vehicle}, {Engine has relationship Realization Many-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders has relationship Realization Many-to-Many with Engine}, }");
+		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet has relationship Realization One-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver has relationship Generalization Many-to-Many with Vehicle}, }");
+	}
+
+	holder->DeleteRelationship("Light", "Vehicle");
+	holder->DeleteRelationship("Vehicle", "Engine");
+
+	SECTION("Verify relationships after relationship deletion", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle has relationship Generalization Many-to-Many with Tire}, {Vehicle has relationship Realization Many-to-Many with Door}, {Vehicle has relationship Realization One-to-One with Fleet}, {Vehicle has relationship Generalization Many-to-Many with Driver}, }");
+
+		REQUIRE(holder->GetUMLObject("Tire")->ReturnRelationships() == "{{Tire has relationship Generalization Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Door")->ReturnRelationships() == "{{Door has relationship Realization Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Light")->ReturnRelationships() == "{}");
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine has relationship Realization Many-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders has relationship Realization Many-to-Many with Engine}, }");
+		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet has relationship Realization One-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver has relationship Generalization Many-to-Many with Vehicle}, }");
+	}
+}
+
+TEST_CASE("Relationships composite delete functionality test", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	UMLObject* c = holder->CreateNewClass("Vehicle");
+	UMLObject* a = holder->CreateNewClass("Tire");
+	UMLObject* d = holder->CreateNewClass("Door");
+	UMLObject* e = holder->CreateNewClass("Light");
+	UMLObject* f = holder->CreateNewClass("Cylinders");
+	UMLObject* g = holder->CreateNewClass("Engine");
+	UMLObject* h = holder->CreateNewClass("Fleet");
+	UMLObject* i = holder->CreateNewClass("Driver");
+
+	//every one of these must succeed
+	REQUIRE((
+		holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Door", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Light", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Engine", "Cylinders", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Fleet", RelationshipAggregation, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Driver", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne)
+		));
+
+	SECTION("Verify relationship", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle has relationship Composition One-to-Many with Tire}, {Vehicle has relationship Composition One-to-Many with Door}, {Vehicle has relationship Composition One-to-Many with Light}, {Vehicle has relationship Aggregation Many-to-Many with Fleet}, {Vehicle has relationship Realization One-to-One with Driver}, }");
+
+		REQUIRE(holder->GetUMLObject("Tire")->ReturnRelationships() == "{{Tire has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Door")->ReturnRelationships() == "{{Door has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Light")->ReturnRelationships() == "{{Light has relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine has relationship Composition One-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders has relationship Composition Many-to-One with Engine}, }");
+		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet has relationship Aggregation Many-to-Many with Vehicle}, }");
+		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver has relationship Realization One-to-One with Vehicle}, }");
+	}
+
+	holder->DeleteUMLObject("Vehicle");
+
+	//driver and fleet should be the same, eveything else was composed from vehichle so they should be deleted
+	SECTION("Verify relationships after class deletion", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle") == NULL);
+		//TODO implement this functionality
+		//REQUIRE(holder->GetUMLObject("Door") == NULL);
+		//REQUIRE(holder->GetUMLObject("Light") == NULL);
+		//REQUIRE(holder->GetUMLObject("Engine") == NULL);
+		//REQUIRE(holder->GetUMLObject("Cylinders") == NULL);
+		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{}");
+		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{}");
+	}
+}
+
+/*
+		std::ofstream out("out.txt");
+		out << holder->GetUMLObject("Vehicle")->ReturnRelationships();
+		out.close();
+		*/
 
 TEST_CASE("Test Saving Loading All Items", "0")
 {
@@ -139,7 +312,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		REQUIRE(c[0]->ReturnFields() == "{{Color, string, Public}, {Make, string, Public}, }");
 		REQUIRE(c[0]->ReturnFields() == d[0]->ReturnFields());
 
-		REQUIRE(c[0]->ReturnRelationships() == "{{ Car has relationship Composition One-to-Many with Tire}, }");
+		REQUIRE(c[0]->ReturnRelationships() == "{{Car has relationship Composition One-to-Many with Tire}, }");
 		REQUIRE(c[0]->ReturnRelationships() == d[0]->ReturnRelationships());
 	   
 		REQUIRE(c[1]->ReturnTitle() == "Tire");
@@ -153,7 +326,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		REQUIRE(c[1]->ReturnFields() == "{{Manufacturer, string, Public}, {Diameter, unsigned int, Public}, }");
 		REQUIRE(c[1]->ReturnFields() == d[1]->ReturnFields());
 		
-		REQUIRE(c[1]->ReturnRelationships() == "{{ Tire has relationship Composition Many-to-One with Car}, }");
+		REQUIRE(c[1]->ReturnRelationships() == "{{Tire has relationship Composition Many-to-One with Car}, }");
 		REQUIRE(c[1]->ReturnRelationships() == d[1]->ReturnRelationships());
 
 	}
