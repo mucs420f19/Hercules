@@ -87,6 +87,10 @@ namespace SavingLoadingIO
 				out << "      Quantifier:\n";
 				out << "        - " << j.quantifier << "\n";
 			}
+			out << "    X:\n";
+			out << "      - " << i->GetXPosition() << "\n";
+			out << "    Y:\n";
+			out << "      - " << i->GetYPosition() << "\n";
 		}
 		out.close();
 		return SaveSuccess;
@@ -252,6 +256,14 @@ namespace SavingLoadingIO
 						else if (j->key == "UMLRelationship")
 						{
 							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier")));
+						}
+						else if (j->key == "X")
+						{
+							a->SetXPosition(std::stoi(j->contents[0]));
+						}
+						else if (j->key == "Y")
+						{
+							a->SetYPosition(std::stoi(j->contents[0]));
 						}
 					}
 				}

@@ -61,6 +61,22 @@ std::string UMLObject::ToString()
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods() + ", Relationships: " + ReturnRelationships();
 	
 }
+int UMLObject::GetXPosition()
+{
+	return x;
+}
+int UMLObject::GetYPosition()
+{
+	return y;
+}
+void UMLObject::SetXPosition(int in)
+{
+	x = in;
+}
+void UMLObject::SetYPosition(int in)
+{
+	y = in;
+}
 //iterates to return the relationship
 std::string UMLObject::ReturnRelationships()
 {

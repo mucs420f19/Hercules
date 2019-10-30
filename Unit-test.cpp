@@ -271,6 +271,8 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
 		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
 		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+		a->SetXPosition(100);
+		a->SetYPosition(200);
 	}
 
 	if (holder->CreateNewClass("Wheel"))
@@ -282,6 +284,8 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
 		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
 		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+		b->SetXPosition(300);
+		b->SetYPosition(400);
 	}
 
 	holder->EditClassTitle("Tire", "Wheel");
@@ -314,6 +318,12 @@ TEST_CASE("Test Saving Loading All Items", "0")
 
 		REQUIRE(c[0]->ReturnRelationships() == "{{Car has relationship Composition One-to-Many with Tire}, }");
 		REQUIRE(c[0]->ReturnRelationships() == d[0]->ReturnRelationships());
+
+		REQUIRE(c[0]->GetXPosition() == 100);
+		REQUIRE(c[0]->GetXPosition() == d[0]->GetXPosition());
+
+		REQUIRE(c[0]->GetYPosition() == 200);
+		REQUIRE(c[0]->GetYPosition() == d[0]->GetYPosition());
 	   
 		REQUIRE(c[1]->ReturnTitle() == "Tire");
 		REQUIRE(c[1]->ReturnTitle() == d[1]->ReturnTitle());
@@ -328,7 +338,12 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		
 		REQUIRE(c[1]->ReturnRelationships() == "{{Tire has relationship Composition Many-to-One with Car}, }");
 		REQUIRE(c[1]->ReturnRelationships() == d[1]->ReturnRelationships());
+		
+		REQUIRE(c[1]->GetXPosition() == 300);
+		REQUIRE(c[1]->GetXPosition() == d[1]->GetXPosition());
 
+		REQUIRE(c[1]->GetYPosition() == 400);
+		REQUIRE(c[1]->GetYPosition() == d[1]->GetYPosition());
 	}
 
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder2, "tempfile2.txt", true) == SaveSuccess);

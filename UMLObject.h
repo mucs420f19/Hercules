@@ -190,6 +190,12 @@ public:
 	std::string ReturnMethods();
 	std::string ToString();
 
+	//these need to be saved every time for the GUI, so they are included here
+	int GetXPosition();
+	int GetYPosition();
+	void SetXPosition(int in);
+	void SetYPosition(int it);
+
 	std::string ReturnRelationships();
 	void AddRelationship(UMLRelationship in);
 	size_t GetIndexRelationshipWith(std::string in);
@@ -213,6 +219,8 @@ private:
 	std::vector<UMLField> fields;
 	std::vector<UMLMethod> methods;
 	std::vector<UMLRelationship> relationships;
+	//these will be used as the coordinates for display on the GUI
+	int x = 0, y = 0;
 };
 
 //Relationship objects are part of UMLObjects but they cannot be edited directly
