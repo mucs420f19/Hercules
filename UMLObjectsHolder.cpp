@@ -146,8 +146,8 @@ bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, in
 
 	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
 
-	p->AddRelationship({ type, quantifier1, c, p});
-	c->AddRelationship({ type, quantifier2, p, c });
+	p->AddRelationship({ type, quantifier1, c, p, true});
+	c->AddRelationship({ type, quantifier2, p, c, false});
 
 	return true;
 }

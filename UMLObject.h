@@ -227,6 +227,8 @@ struct UMLRelationship
 	UMLObject* object;
 	//the object this relationship belongs to
 	UMLObject* thisObject;
+	//is this the parent in the relationship?
+	bool parent;
 
 	//There is no editing allowed besides changing the type of relationship
 	//Changing who the relationship is attached to is considered a new relationship
@@ -236,6 +238,7 @@ struct UMLRelationship
 	std::string GetObject() { return object->ReturnTitle(); }
 	std::string GetQuantifier() { return GetQuantifierName(); }
 	std::string GetOtherQuantifier() { return object->GetRelationshipWith(thisObject->ReturnTitle())->GetQuantifier(); }
+	bool GetParent() { return parent; }
 	std::string GetRelationshipTypeName()
 	{
 		std::string out;
@@ -276,6 +279,6 @@ struct UMLRelationship
 	}
 	std::string ToString()
 	{
-		return "{" + thisObject->ReturnTitle() + " has relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
+		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
 	}
 };

@@ -86,6 +86,9 @@ namespace SavingLoadingIO
 
 				out << "      Quantifier:\n";
 				out << "        - " << j.quantifier << "\n";
+
+				out << "      Parent:\n";
+				out << "        - " << j.parent << "\n";
 			}
 			out << "    X:\n";
 			out << "      - " << i->GetXPosition() << "\n";
@@ -120,7 +123,7 @@ namespace SavingLoadingIO
 		ProcessResults(t, out, rela);
 		for (auto i : rela)
 		{
-			out->GetUMLObject(i.parent)->AddRelationship({ std::stoi(i.type), std::stoi(i.quantifier), out->GetUMLObject(i.child), out->GetUMLObject(i.parent) });
+			out->GetUMLObject(i.parent)->AddRelationship({ std::stoi(i.type), std::stoi(i.quantifier), out->GetUMLObject(i.child), out->GetUMLObject(i.parent), i.bparent });
 		}
 		LoadingCleanup(t);
 		return out;
@@ -255,7 +258,7 @@ namespace SavingLoadingIO
 						}
 						else if (j->key == "UMLRelationship")
 						{
-							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier")));
+							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier"), std::stoi(FindChildWhere(j, "Parent"))));
 						}
 						else if (j->key == "X")
 						{
