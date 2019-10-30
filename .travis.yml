@@ -69,6 +69,9 @@ script:
   - cmake --build .
   - ctest -C Debug --verbose
 
+after_success:
+  - coveralls
+
 notifications:
   email: false
 
