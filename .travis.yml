@@ -34,7 +34,7 @@ matrix:
         - cmake --build .
         - ctest -C Debug --verbose        
       after_success:
-        - coveralls --exclude-pattern=/usr
+        - coveralls --exclude-pattern '/usr/'
     # - os: linux
     #   compiler: clang
     #   env: PATH=$HOME/.local/bin:$PATH
