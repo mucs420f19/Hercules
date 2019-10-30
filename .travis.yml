@@ -28,12 +28,18 @@ matrix:
       before_install:
         - pip install --user conan
         - pip install --user cpp-coveralls
+      script:
+        - cd build
+        - cmake -DCOVERALLS=ON -DCMAKE_BUILD_TYPE=Debug ..
+        - cmake --build .
+        - ctest -C Debug --verbose        
+      after_success:
+        - coveralls
     - os: linux
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
         - pip install --user conan
-        - pip install --user cpp-coveralls
     - os: osx
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
@@ -41,25 +47,18 @@ matrix:
         - pip install python
         - python -m pip install --upgrade pip
         - pip install conan
-        - pip install cpp-coveralls
     - os: windows
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
         - choco install python
         - python -m pip install --upgrade pip
         - pip install conan
-        - pip install cpp-coveralls
       install:
         - conan user
         - mkdir build
         - cd build
         - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
         - cd ..
-      script:
-        - cd build
-        - cmake ..
-        - cmake --build .
-        - ctest -C Debug
 
 install:
   - conan user
@@ -70,15 +69,9 @@ install:
 
 script:
   - cd build
-  - cmake -DCOVERALLS=ON -DCMAKE_BUILD_TYPE=Debug ..
+  - cmake ..
   - cmake --build .
   - ctest -C Debug --verbose
 
-after_success:
-  - coveralls
-
 notifications:
   email: false
-
-#https://github.com/JoakimSoderberg/coveralls-cmake-example
-#https://github.com/JoakimSoderberg/coveralls-cmake
