@@ -314,7 +314,7 @@ int main(int argc, char** argv)
 				nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 				if (nk_button_label(ctx, "Confirm Class Name"))
 				{
-					holder->AddRelationship(classname, field, 0);
+					holder->AddRelationship(classname, field, 0, 0, 0);
 					strcpy(classname, overwrite);
 				}
 				nk_menu_end(ctx);
