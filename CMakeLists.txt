@@ -22,6 +22,7 @@ if (COVERALLS)
     set(COVERAGE_SRCS Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
 	coveralls_setup(
         "${COVERAGE_SRCS}"
+        ON
         )
 endif()
 
