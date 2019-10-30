@@ -70,7 +70,7 @@ install:
 
 script:
   - cd build
-  - cmake ..
+  - cmake -DCOVERALLS=ON -DCMAKE_BUILD_TYPE=Debug ..
   - cmake --build .
   - ctest -C Debug --verbose
 
@@ -78,3 +78,4 @@ notifications:
   email: false
 
 #https://github.com/JoakimSoderberg/coveralls-cmake-example
+#https://github.com/JoakimSoderberg/coveralls-cmake
