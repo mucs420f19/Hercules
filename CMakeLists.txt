@@ -19,9 +19,10 @@ MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 if (COVERALLS)
+    set(COVERAGE_SRCS Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
 	coveralls_setup(
-        "${CONAN_LIBS}"                
-        "${PROJECT_SOURCE_DIR}/cmake")
+        "${COVERAGE_SRCS}"
+        )
 endif()
 
 # WKK - header files do not belong in source list; source files != header files
