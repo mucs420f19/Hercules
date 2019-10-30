@@ -2,7 +2,6 @@
 
 #include <string>
 #include <vector>
-#include <algorithm>
 
 const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
