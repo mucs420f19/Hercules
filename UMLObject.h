@@ -2,29 +2,18 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
 
-const int RelationshipAbstraction =1;
 const int RelationshipAggregation = 2;
-const int RelationshipAssociation = 3;
-const int RelationshipBinding = 4;
-const int RelationshipCommunicationPath = 5;
 const int RelationshipComposition = 6;
-const int RelationshipControlFlow = 7;
-const int RelationshipDependency =8;
-const int RelationshipDeploy = 9;
-const int RelationshipDirectedAssociation = 10;
-const int RelationshipExtend = 11;
 const int RelationshipGeneralization = 12;
-const int RelationshipInterfaceRealization = 13;
-const int RelationshipInclude = 14;
-const int RelationshipManifestation = 15;
-const int RelationshipNoteAttachment = 16;
-const int RelationshipObjectFlow = 17;
 const int RelationshipRealization = 18;
-const int RelationshipUsage = 19;
+
+const int RelationshipQuantifierOne = 1;
+const int RelationshipQuantifierMany = 2;
 
 //forward declaration
 struct UMLRelationship;
@@ -205,7 +194,8 @@ public:
 	std::string ReturnRelationships();
 	void AddRelationship(UMLRelationship in);
 	size_t GetIndexRelationshipWith(std::string in);
-	void UpdateRelationship(size_t index, int type);
+	UMLRelationship * GetRelationshipWith(std::string in);
+	void UpdateRelationship(size_t index, int type, int quantifier);
 	void DeleteRelationship(size_t index);
 	
 	bool EditMethod(std::string oldName, std::string newName);
@@ -231,21 +221,60 @@ private:
 struct UMLRelationship
 {
 	int type;
+	int quantifier;
+	//the other object it has a relationship with
 	UMLObject* object;
-	bool parent;
+	//the object this relationship belongs to
+	UMLObject* thisObject;
+
 	//There is no editing allowed besides changing the type of relationship
 	//Changing who the relationship is attached to is considered a new relationship
 	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
+	void SetQuantifier(int in) { quantifier = in; }
 	std::string GetObject() { return object->ReturnTitle(); }
+	std::string GetQuantifier() { return GetQuantifierName(); }
+	std::string GetOtherQuantifier() { return object->GetRelationshipWith(thisObject->ReturnTitle())->GetQuantifier(); }
+	std::string GetRelationshipTypeName()
+	{
+		std::string out;
+		switch (type)
+		{
+		case RelationshipAggregation:
+			out = "Aggregation";
+			break;
+		case RelationshipComposition:
+			out = "Composition";
+			break;
+		case RelationshipGeneralization:
+			out = "Generalization";
+			break;
+		case RelationshipRealization:
+			out = "Realization";
+			break;
+		default:
+			out = "Unrecognized relationship";
+		}
+		return out;
+	}
+	std::string GetQuantifierName()
+	{
+		std::string out;
+		switch (quantifier)
+		{
+		case RelationshipQuantifierOne:
+			out = "One";
+			break;
+		case RelationshipQuantifierMany:
+			out = "Many";
+			break;
+		default:
+			out = "Unrecognized quantifier";
+		}
+		return out;
+	}
 	std::string ToString()
 	{
-		if (parent == true)
-		  return "{Type: " + std::to_string(type) + ", Parent of: " + object->ReturnTitle() + "}";
-		
-		else
-		  return "{Type: " + std::to_string(type) + ", Child of: " + object->ReturnTitle() + "}";
-		
-		//return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
+		return "{ " + thisObject->ReturnTitle() + " has relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
 	}
 };

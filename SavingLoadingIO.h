@@ -22,15 +22,17 @@ namespace SavingLoadingIO
 
 	struct Relationship
 	{
-		Relationship(std::string p, std::string c, std::string t)
+		Relationship(std::string p, std::string c, std::string t, std::string q)
 		{
 			parent = p;
 			child = c;
 			type = t;
+			quantifier = q;
 		}
 		std::string parent;
 		std::string child;
 		std::string type;
+		std::string quantifier;
 	};
 
 	//SaveProjectToFile does as it says. A default file name is given if there is none specified

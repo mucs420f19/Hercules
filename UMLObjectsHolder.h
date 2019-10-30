@@ -35,13 +35,19 @@ public:
 	//Edit title.. pass in a new title and the name of the old title. returns true if successful
 	bool EditClassTitle(std::string new_title, std::string old_title);
 	//Add a relationship between a parent and child. returns true if successful
-	bool AddRelationship(std::string parent, std::string child, int type);
+	bool AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2);
 	//Edit a relationship between a specified parent and child. returns true if successful
 	//The only thing that can be edited is the relationship type.. otherwise that is considered a new relationship.
-	bool EditRelationship(std::string parent, std::string child, int type);
+	bool EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2);
 	//delete the specified relationship. returns true if successful
 	bool DeleteRelationship(std::string parent, std::string child);
+	//this function is not used, and under normal conditions should never need to be used
+	//its purpose is to go through the relationships and fix missing quantifiers, but that should not happen 
+	void RefreshRelationships();
 	UMLObject* GetUMLObject(std::string title);
+
+	//used by the REPL to retrieve a relationship type from a string
+	int GetRelationshipTypeFromString(std::string in);
 
 private:
 	std::vector<UMLObject*> UMLObjects_holder;

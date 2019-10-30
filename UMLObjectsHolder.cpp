@@ -135,7 +135,7 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 	return false;
 }
 
-bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type)
+bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
 {
 	UMLObject* p, * c;
 
@@ -146,13 +146,13 @@ bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, in
 
 	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
 
-	p->AddRelationship({ type, c, true });
-	c->AddRelationship({ type, p, false });
+	p->AddRelationship({ type, quantifier1, c, p});
+	c->AddRelationship({ type, quantifier2, p, c });
 
 	return true;
 }
 
-bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type)
+bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
 {
 	UMLObject* p, * c;
 
@@ -163,8 +163,8 @@ bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, i
 
 	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
 
-	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type);
-	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type);
+	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type, quantifier1);
+	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type, quantifier2);
 	return true;
 }
 
@@ -184,6 +184,23 @@ bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 	return true;
 }
 
+void UMLObjectsHolder::RefreshRelationships()
+{
+	UMLRelationship* a, * b;
+	for (auto i : UMLObjects_holder)
+	{
+		for (auto j : UMLObjects_holder)
+		{
+			a = i->GetRelationshipWith(j->ReturnTitle());
+			if (a)
+			{
+				b = j->GetRelationshipWith(i->ReturnTitle());
+				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->type, a->quantifier, b->quantifier);
+			}
+		}
+	}
+}
+
 UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 {
 	for (auto i : UMLObjects_holder)
@@ -191,4 +208,16 @@ UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 		if (i->ReturnTitle() == title) return i;
 	}
 	return 0;
+}
+
+int UMLObjectsHolder::GetRelationshipTypeFromString(std::string in)
+{
+	int result = 0;
+	if (in.size() == 0) return result;
+	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
+	if (in[0] == 'a') result = RelationshipAggregation;
+	else if (in[0] == 'c') result = RelationshipComposition;
+	else if (in[0] == 'g') result = RelationshipGeneralization;
+	else if (in[0] == 'r') result = RelationshipRealization;
+	return result;
 }

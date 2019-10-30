@@ -84,8 +84,8 @@ namespace SavingLoadingIO
 				out << "      Type:\n";
 				out << "        - " << j.type << "\n";
 
-				out << "      Parent:\n";
-				out << "        - " << j.parent << "\n";
+				out << "      Quantifier:\n";
+				out << "        - " << j.quantifier << "\n";
 			}
 		}
 		out.close();
@@ -116,7 +116,7 @@ namespace SavingLoadingIO
 		ProcessResults(t, out, rela);
 		for (auto i : rela)
 		{
-			out->AddRelationship(i.parent, i.child, std::stoi(i.type));
+			out->GetUMLObject(i.parent)->AddRelationship({ std::stoi(i.type), std::stoi(i.quantifier), out->GetUMLObject(i.child), out->GetUMLObject(i.parent) });
 		}
 		LoadingCleanup(t);
 		return out;
@@ -251,11 +251,7 @@ namespace SavingLoadingIO
 						}
 						else if (j->key == "UMLRelationship")
 						{
-							if (FindChildWhere(j, "Parent") == "1")
-							{
-								relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type")));
-							}
-							else relationships.push_back(Relationship(FindChildWhere(j, "Object"), title, FindChildWhere(j, "Type")));
+							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier")));
 						}
 					}
 				}

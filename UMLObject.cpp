@@ -92,10 +92,24 @@ size_t UMLObject::GetIndexRelationshipWith(std::string in)
 	}
 	return out;
 }
+UMLRelationship * UMLObject::GetRelationshipWith(std::string in)
+{
+	UMLRelationship * out = 0;
+	for (unsigned int i = 0; i < relationships.size(); i++)
+	{
+		if (relationships[i].GetObject() == in)
+		{
+			out = &relationships[i];
+			break;
+		}
+	}
+	return out;
+}
 //updates corrisponding relationship
-void UMLObject::UpdateRelationship(size_t index, int type)
+void UMLObject::UpdateRelationship(size_t index, int type, int quantifier)
 {
 	relationships[index].SetType(type);
+	relationships[index].SetQuantifier(quantifier);
 }
 //deletes corrisponding relationship
 void UMLObject::DeleteRelationship(size_t index)
