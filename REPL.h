@@ -289,7 +289,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				      std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
 				    
 					  // Relationship acceptable
-					  else if (holder->AddRelationship(substrings[2], substrings[3], 2))
+					  else if (holder->AddRelationship(substrings[2], substrings[3], 0, 0, 0))
 						  std::cout << "Relationship created successfully." << std::endl;
 
 					  // Relationship not acceptable and not created

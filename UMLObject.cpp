@@ -16,14 +16,30 @@ void UMLObject::SetTitle(std::string in)
 	title = in;
 }
 //adds the fields into the vector
-void UMLObject::AddField(UMLField in)
+bool UMLObject::AddField(UMLField in)
 {
+	for (auto i : fields)
+	{
+		if (i.ReturnName() == in.ReturnName())
+		{
+			return false;
+		}
+	}
 	fields.push_back(in);
+	return true;
 }
 //adds the methods to the vector
-void UMLObject::AddMethod(UMLMethod in)
+bool UMLObject::AddMethod(UMLMethod in)
 {
+	for (auto i : methods)
+	{
+		if (i.ReturnName() == in.ReturnName())
+		{
+			return false;
+		}
+	}
 	methods.push_back(in);
+	return true;
 }
 //returns title of object
 const std::string & UMLObject::ReturnTitle() const
@@ -60,6 +76,22 @@ std::string UMLObject::ToString()
 {
 	return "Title: {" + ReturnTitle() + "}, Fields:" + ReturnFields() + ", Methods: " + ReturnMethods() + ", Relationships: " + ReturnRelationships();
 	
+}
+int UMLObject::GetXPosition()
+{
+	return x;
+}
+int UMLObject::GetYPosition()
+{
+	return y;
+}
+void UMLObject::SetXPosition(int in)
+{
+	x = in;
+}
+void UMLObject::SetYPosition(int in)
+{
+	y = in;
 }
 
 int UMLObject::GetLargestStringSize()
@@ -316,15 +348,32 @@ size_t UMLObject::GetIndexRelationshipWith(std::string in)
 	}
 	return out;
 }
+UMLRelationship * UMLObject::GetRelationshipWith(std::string in)
+{
+	UMLRelationship * out = 0;
+	for (unsigned int i = 0; i < relationships.size(); i++)
+	{
+		if (relationships[i].GetObject() == in)
+		{
+			out = &relationships[i];
+			break;
+		}
+	}
+	return out;
+}
 //updates corrisponding relationship
-void UMLObject::UpdateRelationship(size_t index, int type)
+void UMLObject::UpdateRelationship(size_t index, int type, int quantifier)
 {
 	relationships[index].SetType(type);
+	relationships[index].SetQuantifier(quantifier);
 }
 //deletes corrisponding relationship
-void UMLObject::DeleteRelationship(size_t index)
+void UMLObject::DeleteRelationship(std::string in)
 {
-	relationships.erase(relationships.begin() + index);
+	if (GetIndexRelationshipWith(in) != -1)
+	{
+		relationships.erase(relationships.begin() + GetIndexRelationshipWith(in));
+	}
 }
 //returns fields unformatted
 std::vector<UMLField> UMLObject::ReturnFieldsRaw()
@@ -340,6 +389,10 @@ std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 std::vector<UMLRelationship> UMLObject::ReturnRelationshipsRaw()
 {
 	return relationships;
+}
+size_t UMLObject::RelationshipsSize()
+{
+	return relationships.size();
 }
 //makes field private from user
 UMLField::UMLField()
