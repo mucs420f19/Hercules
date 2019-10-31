@@ -34,7 +34,7 @@ matrix:
         - cmake --build .
         - ctest -C Debug --verbose
       after_success:
-        - coveralls --root . -E "/usr/.*"
+        - coveralls --root ../ --build-root ./ --exclude-pattern '.+/usr/' --exclude-pattern '.+/.+_test\.cc' --exclude-pattern '.+/CMakeFiles/' --gcov /usr/bin/gcov --gcov-options '\--long-file-names --preserve-paths' --verbose;
     # - os: linux
     #   compiler: clang
     #   env: PATH=$HOME/.local/bin:$PATH
