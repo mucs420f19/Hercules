@@ -393,16 +393,16 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 
 	RunREPL(holder, "delete relationship test_class1 test_class2");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 2, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 2, Child of: test_class2}, }");
 
 	RunREPL(holder, "delete relationship test_class2");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 2, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 2, Child of: test_class2}, }");
 
 	RunREPL(holder, "delete relationship");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 2, Parent of: test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 2, Child of: test_class2}, }");
 }

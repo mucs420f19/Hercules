@@ -169,7 +169,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tAggregation:\n";
 
 		for (auto x : Ag)
-			out += "\t\t" + x.ToString() + "\n";
+			out += "\t\t" + x.ToStringPretty() + "\n";
 	}
 
 	if (Co.size() != 0)
@@ -177,7 +177,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tComposition:\n";
 
 		for (auto x : Co)
-			out += "\t\t" + x.ToString() + "\n";
+			out += "\t\t" + x.ToStringPretty() + "\n";
 	}
 
 	if (Ge.size() != 0)
@@ -185,7 +185,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tGeneralization:\n";
 
 		for (auto x : Ge)
-			out += "\t\t" + x.ToString() + "\n";
+			out += "\t\t" + x.ToStringPretty() + "\n";
 	}
 
 	if (Re.size() != 0)
@@ -193,7 +193,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tRealization:\n";
 
 		for (auto x : Re)
-			out += "\t\t" + x.ToString() + "\n";
+			out += "\t\t" + x.ToStringPretty() + "\n";
 	}
 
 	

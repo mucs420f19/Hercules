@@ -248,11 +248,19 @@ struct UMLRelationship
 	std::string ToString()
 	{
 		if (parent == true)
+			return "{Type: " + std::to_string(type) + ", Parent of: " + object->ReturnTitle() + "}";
+
+		else
+			return "{Type: " + std::to_string(type) + ", Child of: " + object->ReturnTitle() + "}";
+
+	}
+
+	std::string ToStringPretty()
+	{
+		if (parent == true)
 		  return "Parent of: " + object->ReturnTitle();
 		
 		else
 		  return "Child of: " + object->ReturnTitle();
-		
-		//return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
 	}
 };
