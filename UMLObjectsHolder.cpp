@@ -95,16 +95,24 @@ void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 
 bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 {
+	std::vector<UMLObject*> UMLObjects_holder_temp = UMLObjects_holder;
 	for (unsigned int i = 0; i < UMLObjects_holder.size(); i++)
 	{
 		if (UMLObjects_holder[i]->ReturnTitle() == title)
 		{
-		  for (auto j : UMLObjects_holder)
-		  {
-		    size_t del = j->GetIndexRelationshipWith(title);
-		    if (del != -1)
-		      j->DeleteRelationship(del);
-		  }
+			for (auto j : UMLObjects_holder_temp)
+			{
+				if (j->GetRelationshipWith(title))
+				{
+					//if the object we are deleting has a child and it is Composition relationship
+					// and the child has no other relationships..... delete the child as well
+					if (j->GetRelationshipWith(title)->type == RelationshipComposition && j->GetRelationshipWith(title)->parent == 0 && j->RelationshipsSize() == 1)
+					{
+						DeleteUMLObject(j->ReturnTitle());
+					}
+					j->DeleteRelationship(title);
+				}
+			}
 		  
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
 			return true;
@@ -135,7 +143,7 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 	return false;
 }
 
-bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type)
+bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
 {
 	UMLObject* p, * c;
 
@@ -146,13 +154,13 @@ bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, in
 
 	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
 
-	p->AddRelationship({ type, c, true });
-	c->AddRelationship({ type, p, false });
+	p->AddRelationship({ type, quantifier1, c, p, true});
+	c->AddRelationship({ type, quantifier2, p, c, false});
 
 	return true;
 }
 
-bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type)
+bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
 {
 	UMLObject* p, * c;
 
@@ -163,8 +171,8 @@ bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, i
 
 	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
 
-	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type);
-	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type);
+	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type, quantifier1);
+	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type, quantifier2);
 	return true;
 }
 
@@ -179,9 +187,26 @@ bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 
 	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
 
-	p->DeleteRelationship(p->GetIndexRelationshipWith(child));
-	c->DeleteRelationship(c->GetIndexRelationshipWith(parent));
+	p->DeleteRelationship(child);
+	c->DeleteRelationship(parent);
 	return true;
+}
+
+void UMLObjectsHolder::RefreshRelationships()
+{
+	UMLRelationship* a, * b;
+	for (auto i : UMLObjects_holder)
+	{
+		for (auto j : UMLObjects_holder)
+		{
+			a = i->GetRelationshipWith(j->ReturnTitle());
+			if (a)
+			{
+				b = j->GetRelationshipWith(i->ReturnTitle());
+				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->type, a->quantifier, b->quantifier);
+			}
+		}
+	}
 }
 
 UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
@@ -191,4 +216,16 @@ UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 		if (i->ReturnTitle() == title) return i;
 	}
 	return 0;
+}
+
+int UMLObjectsHolder::GetRelationshipTypeFromString(std::string in)
+{
+	int result = 0;
+	if (in.size() == 0) return result;
+	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
+	if (in[0] == 'a') result = RelationshipAggregation;
+	else if (in[0] == 'c') result = RelationshipComposition;
+	else if (in[0] == 'g') result = RelationshipGeneralization;
+	else if (in[0] == 'r') result = RelationshipRealization;
+	return result;
 }
