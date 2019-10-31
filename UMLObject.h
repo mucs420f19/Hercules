@@ -21,7 +21,12 @@ struct UMLRelationship;
 //structure for the field
 struct UMLField
 {
-	UMLField();
+	UMLField(std::string inName)
+	{
+		name = inName;
+		type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
 	UMLField(std::string inName, std::string inType, int inVisibility = 1)
 	{
 		name = inName;
@@ -110,7 +115,12 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
-	UMLMethod();
+	UMLMethod(std::string inName)
+	{
+		name = inName;
+		return_type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
 	UMLMethod(std::string inName, std::string inType, std::vector<UMLParameter> inParameters, int inVisibility)
 	{
 		name = inName;

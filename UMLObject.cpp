@@ -387,11 +387,6 @@ size_t UMLObject::RelationshipsSize()
 {
 	return relationships.size();
 }
-//makes field private from user
-UMLField::UMLField()
-{
-	visibility = UMLFieldVisibilityPrivate;
-}
 //returns name of the field
 std::string UMLField::ReturnName()
 {
@@ -421,11 +416,6 @@ void UMLField::SetReturnType(std::string in)
 void UMLField::SetVisibility(int in)
 {
 	visibility = in;
-}
-//makes visibility private from user
-UMLMethod::UMLMethod()
-{
-	visibility = UMLFieldVisibilityPrivate;
 }
 // returns name from method
 std::string UMLMethod::ReturnName()

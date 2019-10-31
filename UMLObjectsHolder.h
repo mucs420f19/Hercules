@@ -39,6 +39,34 @@ public:
 	size_t Size();
 	//Edit title.. pass in a new title and the name of the old title. returns true if successful
 	bool EditClassTitle(std::string new_title, std::string old_title);
+
+
+	//used by the REPL to retrieve a relationship type from a string
+	int GetRelationshipTypeFromString(std::string in);
+	//similarly for the Visibility
+	int GetVisibilityTypeFromString(std::string in);
+
+	bool AddField(std::string class_title, std::string field_title);
+	bool EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
+	bool EditFieldType(std::string class_title, std::string field_title, std::string type);
+	bool EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility);
+	bool DeleteField(std::string class_title, std::string field_title);
+
+	bool AddMethod(std::string class_title, std::string method_title);
+	bool EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
+	bool EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
+	bool EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility);
+	bool DeleteMethod(std::string class_title, std::string method_title);
+
+	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
+	bool EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name);
+	bool EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type);
+	//this makes the parameter optional, since it has a default value
+	bool EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value);
+	//this makes the parameter required again, since it no longer has a default value
+	bool EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name);
+	bool DeleteParameter(std::string class_title, std::string method_title, std::string param_name);
+
 	//Add a relationship between a parent and child. returns true if successful
 	bool AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2);
 	//Edit a relationship between a specified parent and child. returns true if successful
@@ -50,9 +78,6 @@ public:
 	//its purpose is to go through the relationships and fix missing quantifiers, but that should not happen 
 	void RefreshRelationships();
 	UMLObject* GetUMLObject(std::string title);
-
-	//used by the REPL to retrieve a relationship type from a string
-	int GetRelationshipTypeFromString(std::string in);
 
 private:
 	std::vector<UMLObject*> UMLObjects_holder;

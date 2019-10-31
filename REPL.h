@@ -63,7 +63,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		if (run)
 			getline(std::cin, input);
 		
-		int length = input.length();
+		size_t length = input.length();
 		std::vector<std::string> substrings;
 
 		// Check for end of file
@@ -235,17 +235,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		      // 'add method _____ _____'
 		      if (substrings[1] == "method")
 		      {
-		        UMLMethod newMethod;
-					  newMethod.SetName(substrings[3]);
-
 					  // Check that the class exists
 					  if (holder->IsTitleUnique(substrings[2]) == false)
 					  {
 					    // Check if the method already exists
-					    if (holder->GetUMLObject(substrings[2])->DoesMethodExist(substrings[3]) == false)
-					    {
-					      holder->GetUMLObject(substrings[2])->AddMethod(newMethod);
-					      
+					    if (holder->AddMethod(substrings[2], substrings[3]))
+					    {	      
 					      std::cout << "Method added successfully." << std::endl;
 					    }
 					    
@@ -262,17 +257,12 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  // 'add field _____ _____'
 				  else if (substrings[1] == "field")
 				  {
-					  UMLField newField;
-					  newField.SetName(substrings[3]);
-
 					  // Check that the class exists
 					  if (holder->IsTitleUnique(substrings[2]) == false)
 					  {
 					    // Check if the field already exists
-					    if (holder->GetUMLObject(substrings[2])->DoesFieldExist(substrings[3]) == false)
-					    {
-					      holder->GetUMLObject(substrings[2])->AddField(newField);
-					      
+					    if (holder->AddField(substrings[2], substrings[3]))
+					    {					      
 					      std::cout << "Field added successfully." << std::endl;
 					    }
 					    

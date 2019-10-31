@@ -142,6 +142,97 @@ bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_tit
 	return false;
 }
 
+int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
+{
+	int result = 0;
+	if (in.size() == 0) return result;
+	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
+	if (in == "private") result = UMLFieldVisibilityPrivate;
+	else if (in == "public") result = UMLFieldVisibilityPublic;
+	else if (in == "protected") result = UMLFieldVisibilityProtected;
+	return result;
+}
+
+bool UMLObjectsHolder::AddField(std::string class_title, std::string field_title)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::DeleteField(std::string class_title, std::string field_title)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string method_name, std::string type)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_title)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
+{
+	return false;
+}
+
+bool UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
+{
+	return false;
+}
+
 bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
 {
 	UMLObject* p, * c;
