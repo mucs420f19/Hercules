@@ -175,7 +175,6 @@ class UMLObject
 {
 public:
 	UMLObject();
-	UMLObject(UMLObject * copy);
 	void SetTitle(std::string in);
 	bool AddField(UMLField in);
 	bool AddMethod(UMLMethod in);
@@ -205,7 +204,7 @@ public:
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
-	int GetLargestStringSize();
+	size_t GetLargestStringSize();
 	std::string ReturnFieldsPretty();
 	std::string ReturnMethodsPretty();
 	std::string ToStringPretty();
