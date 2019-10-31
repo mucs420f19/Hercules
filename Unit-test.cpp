@@ -219,6 +219,7 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
 		holder->AddRelationship("Vehicle", "Door", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
 		holder->AddRelationship("Vehicle", "Light", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
+		holder->AddRelationship("Vehicle", "Engine", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
 		holder->AddRelationship("Engine", "Cylinders", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
 		holder->AddRelationship("Fleet", "Vehicle", RelationshipAggregation, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
 		holder->AddRelationship("Driver", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne)
@@ -226,28 +227,40 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 
 	SECTION("Verify relationship", "0")
 	{
-		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, {Vehicle is Parent in relationship Composition One-to-Many with Door}, {Vehicle is Parent in relationship Composition One-to-Many with Light}, {Vehicle is Child in relationship Aggregation Many-to-Many with Fleet}, {Vehicle is Child in relationship Realization One-to-One with Driver}, }");
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, {Vehicle is Parent in relationship Composition One-to-Many with Door}, {Vehicle is Parent in relationship Composition One-to-Many with Light}, {Vehicle is Parent in relationship Composition One-to-One with Engine}, {Vehicle is Child in relationship Aggregation Many-to-Many with Fleet}, {Vehicle is Child in relationship Realization One-to-One with Driver}, }");
 
 		REQUIRE(holder->GetUMLObject("Tire")->ReturnRelationships() == "{{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Door")->ReturnRelationships() == "{{Door is Child in relationship Composition Many-to-One with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Light")->ReturnRelationships() == "{{Light is Child in relationship Composition Many-to-One with Vehicle}, }");
-		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine is Parent in relationship Composition One-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine is Child in relationship Composition One-to-One with Vehicle}, {Engine is Parent in relationship Composition One-to-Many with Cylinders}, }");
 		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders is Child in relationship Composition Many-to-One with Engine}, }");
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet is Parent in relationship Aggregation Many-to-Many with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
 	}
 
+	holder->DeleteUMLObject("Door");
+
+	//Delete just one class, see what happens
+	SECTION("Verify relationships after class deletion", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, {Vehicle is Parent in relationship Composition One-to-Many with Light}, {Vehicle is Parent in relationship Composition One-to-One with Engine}, {Vehicle is Child in relationship Aggregation Many-to-Many with Fleet}, {Vehicle is Child in relationship Realization One-to-One with Driver}, }");
+
+		REQUIRE(holder->GetUMLObject("Door") == NULL);
+	}
+
 	holder->DeleteUMLObject("Vehicle");
 
-	//driver and fleet should be the same, eveything else was composed from vehichle so they should be deleted
+	//tire and light should be deleted, since they are both composed children of Vehicle with no other connections
+	//fleet and driver lost their only relationship (which was with vehcile)
+	//engine lost 1 relationship
+	//cylinder is unchanged
 	SECTION("Verify relationships after class deletion", "0")
 	{
 		REQUIRE(holder->GetUMLObject("Vehicle") == NULL);
-		//TODO implement this functionality
-		//REQUIRE(holder->GetUMLObject("Door") == NULL);
-		//REQUIRE(holder->GetUMLObject("Light") == NULL);
-		//REQUIRE(holder->GetUMLObject("Engine") == NULL);
-		//REQUIRE(holder->GetUMLObject("Cylinders") == NULL);
+		REQUIRE(holder->GetUMLObject("Tire") == NULL);
+		REQUIRE(holder->GetUMLObject("Light") == NULL);
+		REQUIRE(holder->GetUMLObject("Engine")->ReturnRelationships() == "{{Engine is Parent in relationship Composition One-to-Many with Cylinders}, }");
+		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders is Child in relationship Composition Many-to-One with Engine}, }");
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{}");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{}");
 	}

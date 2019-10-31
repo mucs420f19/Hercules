@@ -95,16 +95,24 @@ void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 
 bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 {
+	std::vector<UMLObject*> UMLObjects_holder_temp = UMLObjects_holder;
 	for (unsigned int i = 0; i < UMLObjects_holder.size(); i++)
 	{
 		if (UMLObjects_holder[i]->ReturnTitle() == title)
 		{
-		  for (auto j : UMLObjects_holder)
-		  {
-		    size_t del = j->GetIndexRelationshipWith(title);
-		    if (del != -1)
-		      j->DeleteRelationship(del);
-		  }
+			for (auto j : UMLObjects_holder_temp)
+			{
+				if (j->GetRelationshipWith(title))
+				{
+					//if the object we are deleting has a child and it is Composition relationship
+					// and the child has no other relationships..... delete the child as well
+					if (j->GetRelationshipWith(title)->type == RelationshipComposition && j->GetRelationshipWith(title)->parent == 0 && j->RelationshipsSize() == 1)
+					{
+						DeleteUMLObject(j->ReturnTitle());
+					}
+					j->DeleteRelationship(title);
+				}
+			}
 		  
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
 			return true;
@@ -179,8 +187,8 @@ bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 
 	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
 
-	p->DeleteRelationship(p->GetIndexRelationshipWith(child));
-	c->DeleteRelationship(c->GetIndexRelationshipWith(parent));
+	p->DeleteRelationship(child);
+	c->DeleteRelationship(parent);
 	return true;
 }
 

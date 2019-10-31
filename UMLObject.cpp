@@ -144,9 +144,12 @@ void UMLObject::UpdateRelationship(size_t index, int type, int quantifier)
 	relationships[index].SetQuantifier(quantifier);
 }
 //deletes corrisponding relationship
-void UMLObject::DeleteRelationship(size_t index)
+void UMLObject::DeleteRelationship(std::string in)
 {
-	relationships.erase(relationships.begin() + index);
+	if (GetIndexRelationshipWith(in) != -1)
+	{
+		relationships.erase(relationships.begin() + GetIndexRelationshipWith(in));
+	}
 }
 //returns fields unformatted
 std::vector<UMLField> UMLObject::ReturnFieldsRaw()
@@ -162,6 +165,10 @@ std::vector<UMLMethod> UMLObject::ReturnMethodsRaw()
 std::vector<UMLRelationship> UMLObject::ReturnRelationshipsRaw()
 {
 	return relationships;
+}
+size_t UMLObject::RelationshipsSize()
+{
+	return relationships.size();
 }
 //makes field private from user
 UMLField::UMLField()

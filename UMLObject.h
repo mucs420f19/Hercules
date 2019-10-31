@@ -195,7 +195,7 @@ public:
 	size_t GetIndexRelationshipWith(std::string in);
 	UMLRelationship * GetRelationshipWith(std::string in);
 	void UpdateRelationship(size_t index, int type, int quantifier);
-	void DeleteRelationship(size_t index);
+	void DeleteRelationship(std::string in);
 	
 	bool EditMethod(std::string oldName, std::string newName);
 	bool EditField(std::string oldName, std::string newName);
@@ -208,6 +208,7 @@ public:
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
 	std::vector<UMLRelationship> ReturnRelationshipsRaw();
+	size_t RelationshipsSize();
 private:
 	std::string title;
 	std::vector<UMLField> fields;
