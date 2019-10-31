@@ -34,7 +34,7 @@ matrix:
         - cmake --build .
         - ctest -C Debug --verbose
       after_success:
-        - coveralls --root .
+        - coveralls --root . -E "/usr/.*"
     # - os: linux
     #   compiler: clang
     #   env: PATH=$HOME/.local/bin:$PATH
