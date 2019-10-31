@@ -13,7 +13,8 @@ void help()
 	std::cout << "Usable Commands:" << std::endl << "================" << std::endl;
 
 	std::cout << "help - Display a list of usable commands." << std::endl; 
-	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl; 
+	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl;
+	std::cout << "titles -  Lists titles of all currently existing classes." << std::endl;
 	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; 
 
 	std::cout << "save [file name] - Saves the current project to the given file." << std::endl;
@@ -112,6 +113,10 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			  // 'list'
 			  else if (substrings[0] == "list")
 				  holder->UMLObjectPrintContents();
+			  
+			  // 'title'
+			  else if (substrings[0] == "titles")
+				  holder->UMLObjectPrintTitles();
 
 			  // 'exit'
 			  else if (substrings[0] == "exit")
@@ -281,7 +286,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					    std::cout << "Could not find a class by that name." << std::endl;
 				  }
 
-				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
+				  // 'add relationship _____ _____' // Currently set to aggregation by default
 				  else if (substrings[1] == "relationship")
 				  {
 				    // Check that the objects are not identical - Object cannot have relationship to itself
@@ -289,7 +294,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				      std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
 				    
 					  // Relationship acceptable
-					  else if (holder->AddRelationship(substrings[2], substrings[3], 0, 0, 0))
+					  else if (holder->AddRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString("c TODO user puts their string here"), 0, 0))
 						  std::cout << "Relationship created successfully." << std::endl;
 
 					  // Relationship not acceptable and not created

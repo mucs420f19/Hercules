@@ -32,10 +32,7 @@ bool UMLObjectsHolder::IsTitleUnique(std::string in)
 // Destructor
 UMLObjectsHolder::~UMLObjectsHolder()
 {
-	for (auto i : UMLObjects_holder)
-	{
-		delete i;
-	}
+	ClearProject();
 }
 
 void UMLObjectsHolder::ClearProject()
@@ -60,7 +57,9 @@ void UMLObjectsHolder::UMLObjectPrintTitles()
 void UMLObjectsHolder::UMLObjectPrintContents()
 {
 	for (auto i : UMLObjects_holder)
-		std::cout << i->ToString() << std::endl;
+		std::cout << i->ToStringPretty() << std::endl;
+		
+		//std::cout << i->ToString() << std::endl;
 }
 
 std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()

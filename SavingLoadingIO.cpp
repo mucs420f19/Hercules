@@ -283,7 +283,7 @@ namespace SavingLoadingIO
 			{
 				if (i->contents.size() == 1)
 				{
-					out = i->contents[0];
+					out = RemoveQuotes(i->contents[0]);
 					break;
 				}
 			}
