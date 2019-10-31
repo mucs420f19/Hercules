@@ -204,7 +204,7 @@ public:
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
-	int GetLargestStringSize();
+	size_t GetLargestStringSize();
 	std::string ReturnFieldsPretty();
 	std::string ReturnMethodsPretty();
 	std::string ToStringPretty();

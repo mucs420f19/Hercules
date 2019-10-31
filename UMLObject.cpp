@@ -87,10 +87,10 @@ void UMLObject::SetYPosition(int in)
 	y = in;
 }
 
-int UMLObject::GetLargestStringSize()
+size_t UMLObject::GetLargestStringSize()
 {
-	int maxSize = 0;
-	int temp = 0;
+	size_t maxSize = 0;
+	size_t temp = 0;
 
 	// Check title string size
 	temp = title.size();
@@ -123,8 +123,8 @@ int UMLObject::GetLargestStringSize()
 std::string UMLObject::ReturnFieldsPretty()
 {
 	std::string out;
-	int temp = 0;
-	int addSpace = 0;
+	size_t temp = 0;
+	size_t addSpace = 0;
 
 	for (auto a : fields)
 	{
@@ -145,8 +145,8 @@ std::string UMLObject::ReturnFieldsPretty()
 std::string UMLObject::ReturnMethodsPretty()
 {
 	std::string out;
-	int temp = 0;
-	int addSpace = 0;
+	size_t temp = 0;
+	size_t addSpace = 0;
 
 	for (auto a : methods)
 	{
@@ -155,7 +155,7 @@ std::string UMLObject::ReturnMethodsPretty()
 
 		out += "\xB3 + " + a.ReturnName();
 
-		for (int x = 0; x < addSpace; ++x)
+		for (size_t x = 0; x < addSpace; ++x)
 		out += " ";
 
 		out += " \xB3\n";
@@ -231,8 +231,8 @@ std::string UMLObject::ToStringPretty()
 {
 	std::string out;
 	std::string breakLine;
-	int temp = 0;
-	int addSpace = 0;
+	size_t temp = 0;
+	size_t addSpace = 0;
 
 	// ==========================================================================================
 
