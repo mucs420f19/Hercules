@@ -3,13 +3,6 @@
 UMLObject::UMLObject()
 {
 }
-//creates copy of title field methods
-UMLObject::UMLObject(UMLObject* copy)
-{
-	title = copy->title;
-	fields = copy->fields;
-	methods = copy->methods;
-}
 //title is the input of the user
 void UMLObject::SetTitle(std::string in)
 {

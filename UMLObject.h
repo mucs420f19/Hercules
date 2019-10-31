@@ -175,7 +175,6 @@ class UMLObject
 {
 public:
 	UMLObject();
-	UMLObject(UMLObject * copy);
 	void SetTitle(std::string in);
 	bool AddField(UMLField in);
 	bool AddMethod(UMLMethod in);

@@ -32,10 +32,7 @@ bool UMLObjectsHolder::IsTitleUnique(std::string in)
 // Destructor
 UMLObjectsHolder::~UMLObjectsHolder()
 {
-	for (auto i : UMLObjects_holder)
-	{
-		delete i;
-	}
+	ClearProject();
 }
 
 void UMLObjectsHolder::ClearProject()

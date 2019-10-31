@@ -16,6 +16,7 @@ TEST_CASE("Create a Class", "0")
 	{
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
 	}
+	delete holder;
 }
 
 TEST_CASE("Edit a class", "0")
@@ -41,7 +42,7 @@ TEST_CASE("Edit a class", "0")
 		REQUIRE(b == NULL);
 		REQUIRE(holder->Size() == 1);
 	}
-
+	delete holder;
 }
 
 
@@ -60,6 +61,7 @@ TEST_CASE("Add multiple classes", "0")
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
 		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
 	}
+	delete holder;
 }
 
 TEST_CASE("Add relationship between classes", "0")
@@ -83,7 +85,7 @@ TEST_CASE("Add relationship between classes", "0")
 		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
 		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
 	}
-
+	delete holder;
 }
 
 TEST_CASE("Relationships functionality test multiple relationships on item", "0")
@@ -121,7 +123,7 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 			REQUIRE(holder->ReturnPtrToVector()[2 + (i * 2)]->ReturnRelationships() == "{{Tire" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
 		}
 	}
-
+	delete holder;
 }
 
 TEST_CASE("Relationships edit functionality test", "0")
@@ -199,6 +201,8 @@ TEST_CASE("Relationships edit functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet is Parent in relationship Realization One-to-One with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Generalization Many-to-Many with Vehicle}, }");
 	}
+
+	delete holder;
 }
 
 TEST_CASE("Relationships composite delete functionality test", "0")
@@ -264,6 +268,8 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{}");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{}");
 	}
+	
+	delete holder;
 }
 
 /*
@@ -390,6 +396,8 @@ TEST_CASE("Test Saving Loading All Items", "0")
 		}
 	}
 
+	delete holder;
+	delete holder2;
 }
 
 TEST_CASE("Test Saving Overwriting", "0")
@@ -403,7 +411,7 @@ TEST_CASE("Test Saving Overwriting", "0")
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "do_not_overwrite_me.txt") == SaveAlreadyExists);
 
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "do_not_overwrite_me.txt", true) == SaveSuccess);
-
+	delete holder;
 }
 
 TEST_CASE("Test Invalid Loading", "0")
@@ -424,6 +432,8 @@ TEST_CASE("Test Invalid Loading", "0")
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, randfilename, true) == SaveSuccess);
 
 	REQUIRE(SavingLoadingIO::LoadProject(holder, randfilename) == true);
+
+	delete holder;
 }
 
 TEST_CASE("Test Invalid Saving", "0")
@@ -435,6 +445,8 @@ TEST_CASE("Test Invalid Saving", "0")
 
 	//should still fail, even if we want to overwrite
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "", true) == SaveError);
+
+	delete holder;
 }
 
 TEST_CASE("Test Terminal Class Functionality", "0")
@@ -516,16 +528,24 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->Size() == 2);
     REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
+
+	RunREPL(holder, "list");
+
+	delete holder;
 }
 
 TEST_CASE("Test Terminal Method & Field Functionality", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
+	RunREPL(holder, "help");
+
 	RunREPL(holder, "add class test_class1");
 	RunREPL(holder, "add method test_class1 test_method1");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, }");
 
+	//should only receive one despite being called twice
+	RunREPL(holder, "add method test_class1 test_method2");
 	RunREPL(holder, "add method test_class1 test_method2");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
 
@@ -558,6 +578,8 @@ TEST_CASE("Test Terminal Method & Field Functionality", "0")
 
 	// ===
 
+	//should only receive one despite being called twice
+	RunREPL(holder, "add field test_class1 test_field1");
 	RunREPL(holder, "add field test_class1 test_field1");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, }");
 
@@ -590,6 +612,11 @@ TEST_CASE("Test Terminal Method & Field Functionality", "0")
 
 	RunREPL(holder, "delete field test_class1");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
+
+	RunREPL(holder, "list");
+	RunREPL(holder, "titles");
+
+	delete holder;
 }
 
 
@@ -624,4 +651,5 @@ This test will not work until the REPL is updated to reflect the changes in the 
 //	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
 //	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
 //	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
+//	delete holder;
 //}
