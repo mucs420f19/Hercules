@@ -19,7 +19,7 @@ MESSAGE( STATUS "CMAKE_INSTALL_RPATH: " "${CMAKE_INSTALL_PREFIX}/lib" )
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 if (COVERALLS)
-    set(COVERAGE_SRCS Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
+    set(COVERAGE_SRCS Unit-test.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp)
 	coveralls_setup(
         "${COVERAGE_SRCS}"
         ON
