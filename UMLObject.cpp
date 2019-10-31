@@ -93,6 +93,230 @@ void UMLObject::SetYPosition(int in)
 {
 	y = in;
 }
+
+int UMLObject::GetLargestStringSize()
+{
+	int maxSize = 0;
+	int temp = 0;
+
+	// Check title string size
+	temp = title.size();
+	if (temp > maxSize)
+		maxSize = temp;
+
+		// Check field string sizes
+		for (auto f : fields)
+		{
+			temp = f.ReturnName().size();
+
+			if (temp > maxSize)
+				maxSize = temp;
+		}
+	
+	// Check method string sizes
+	for (auto m : methods)
+	{
+		temp = m.ReturnName().size();
+
+		if (temp > maxSize)
+			maxSize = temp;
+	}
+
+	//maxSize += 2;
+
+	return maxSize;
+}
+
+std::string UMLObject::ReturnFieldsPretty()
+{
+	std::string out;
+	int temp = 0;
+	int addSpace = 0;
+
+	for (auto a : fields)
+	{
+		temp = a.ReturnName().size();
+		addSpace = GetLargestStringSize() - temp;
+
+		out += "\xB3 - " + a.ReturnName();
+
+		for (int x = 0; x < addSpace; ++x)
+		out += " ";
+
+		out += " \xB3\n";
+	}
+
+	return out;
+}
+
+std::string UMLObject::ReturnMethodsPretty()
+{
+	std::string out;
+	int temp = 0;
+	int addSpace = 0;
+
+	for (auto a : methods)
+	{
+		temp = a.ReturnName().size();
+		addSpace = GetLargestStringSize() - temp;
+
+		out += "\xB3 + " + a.ReturnName();
+
+		for (int x = 0; x < addSpace; ++x)
+		out += " ";
+
+		out += " \xB3\n";
+	}
+
+	return out;
+}
+
+std::string UMLObject::ReturnRelationshipsPretty()
+{
+	std::string out;
+	std::vector<UMLRelationship> Ag;
+	std::vector<UMLRelationship> Co;
+	std::vector<UMLRelationship> Ge;
+	std::vector<UMLRelationship> Re;
+  	
+	out += "\n" + ReturnTitle() + " Relationships:\n";
+
+	for (auto r : relationships)	
+	{
+		if (r.GetType() == RelationshipAggregation)
+			Ag.push_back(r);
+
+		if (r.GetType() == RelationshipComposition)
+			Co.push_back(r);
+
+		if (r.GetType() == RelationshipGeneralization)
+			Ge.push_back(r);
+
+		if (r.GetType() == RelationshipRealization)
+			Re.push_back(r);
+	}
+
+	if (Ag.size() != 0)
+	{
+		out += "\tAggregation:\n";
+
+		for (auto x : Ag)
+			out += "\t\t" + x.ToStringPretty() + "\n";
+	}
+
+	if (Co.size() != 0)
+	{
+		out += "\tComposition:\n";
+
+		for (auto x : Co)
+			out += "\t\t" + x.ToStringPretty() + "\n";
+	}
+
+	if (Ge.size() != 0)
+	{
+		out += "\tGeneralization:\n";
+
+		for (auto x : Ge)
+			out += "\t\t" + x.ToStringPretty() + "\n";
+	}
+
+	if (Re.size() != 0)
+	{
+		out += "\tRealization:\n";
+
+		for (auto x : Re)
+			out += "\t\t" + x.ToStringPretty() + "\n";
+	}
+
+	
+
+
+	return out;
+}
+
+std::string UMLObject::ToStringPretty()
+{
+	std::string out;
+	std::string breakLine;
+	int temp = 0;
+	int addSpace = 0;
+
+	// ==========================================================================================
+
+	// ┌────────────────────┐
+
+	out += "\xDA";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		out += "\xC4";
+
+	out += "\xBF\n";
+
+	// ==========================================================================================
+
+	// │ Title              │
+
+	temp = title.size();
+	addSpace = GetLargestStringSize() - temp;
+
+	out += "\xB3 " + ReturnTitle();
+
+	for (int x = 0; x < addSpace + 2; ++x)
+		out += " ";
+
+	out += " \xB3\n";
+
+	// ==========================================================================================
+
+	// ├────────────────────┤
+
+	breakLine += "\xC3";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		breakLine += "\xC4";
+
+	breakLine += "\xB4\n";
+
+	out += breakLine;
+
+	// ==========================================================================================
+
+	// Print fields
+	out += ReturnFieldsPretty();
+
+	// ==========================================================================================
+
+	// ├────────────────────┤
+
+	out += breakLine;
+
+	// ==========================================================================================
+
+	// Print methods
+	out += ReturnMethodsPretty();
+
+	// ==========================================================================================
+
+	// └────────────────────┘
+
+	out += "\xC0";
+
+	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+		out += "\xC4";
+
+	out += "\xD9";
+
+	// ==========================================================================================
+
+	// Print relationships
+	out += ReturnRelationshipsPretty();
+
+	// ==========================================================================================
+
+	out += "\n";
+	return out;
+}
+
 //iterates to return the relationship
 std::string UMLObject::ReturnRelationships()
 {

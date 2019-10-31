@@ -281,7 +281,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					    std::cout << "Could not find a class by that name." << std::endl;
 				  }
 
-				  // 'add relationship _____ _____' - 'type' set to 0 until types of relationships are added
+				  // 'add relationship _____ _____' // Currently set to aggregation by default
 				  else if (substrings[1] == "relationship")
 				  {
 				    // Check that the objects are not identical - Object cannot have relationship to itself

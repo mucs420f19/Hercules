@@ -581,8 +581,6 @@ TEST_CASE("Test Terminal Method & Field Functionality", "0")
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
 }
 
-
-
 /*
 TODO
 This test will not work until the REPL is updated to reflect the changes in the relationships!
