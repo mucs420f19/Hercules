@@ -430,14 +430,11 @@ TEST_CASE("Test Invalid Saving", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	//verify that file cannot be opened if it is the name of a directory
-	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "CMakeFiles", false) == SaveError);
+	//verify that file cannot be opened if it has no name
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "", false) == SaveError);
 
 	//should still fail, even if we want to overwrite
-	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "CMakeFiles", true) == SaveError);
-
-	//this file exists but we cannot overwrite it
-	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "cmake", false) == SaveAlreadyExists);
+	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "", true) == SaveError);
 }
 
 TEST_CASE("Test Terminal Class Functionality", "0")
