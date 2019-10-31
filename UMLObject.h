@@ -204,6 +204,12 @@ public:
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
+	int GetLargestStringSize();
+	std::string ReturnFieldsPretty();
+	std::string ReturnMethodsPretty();
+	std::string ToStringPretty();
+	std::string ReturnRelationshipsPretty();
+	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
 	std::vector<UMLRelationship> ReturnRelationshipsRaw();
@@ -234,9 +240,11 @@ struct UMLRelationship
 	//Changing who the relationship is attached to is considered a new relationship
 	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
+  int GetType() { return type; }
 	void SetQuantifier(int in) { quantifier = in; }
 	std::string GetObject() { return object->ReturnTitle(); }
-	std::string GetQuantifier() { return GetQuantifierName(); }
+  
+  std::string GetQuantifier() { return GetQuantifierName(); }
 	std::string GetOtherQuantifier() { return object->GetRelationshipWith(thisObject->ReturnTitle())->GetQuantifier(); }
 	bool GetParent() { return parent; }
 	std::string GetRelationshipTypeName()
@@ -277,8 +285,18 @@ struct UMLRelationship
 		}
 		return out;
 	}
-	std::string ToString()
+  
+  std::string ToString()
 	{
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
-	}
+  }
+  
+  std::string ToStringPretty()
+	{
+		if (parent == true)
+		  return "Parent of: " + object->ReturnTitle();
+		
+		else
+		  return "Child of: " + object->ReturnTitle();
+  }
 };
