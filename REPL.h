@@ -84,7 +84,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		// Split the user's input into substrings if eof is not reached
 		else
 		{
-			for (int x = 0, y = 0; x < length; ++x)
+			for (size_t x = 0, y = 0; x < length; ++x)
 			{
 				if (input[x] == ' ')
 				{
@@ -236,52 +236,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		    // 'add _____ ...'
 		    if (substrings[0] == "add")
 		    { 
-		      // 'add method _____ _____'
-		      if (substrings[1] == "method")
-		      {
-					  // Check that the class exists
-					  if (holder->IsTitleUnique(substrings[2]) == false)
-					  {
-					    // Check if the method already exists
-					    if (holder->AddMethod(substrings[2], substrings[3]))
-					    {	      
-					      std::cout << "Method added successfully." << std::endl;
-					    }
-					    
-					    // Method already exists, does not duplicate
-					    else
-					      std::cout << "This method already exists." << std::endl;
-					  }
-					  
-					  // Class does not exist, method not added
-					  else
-					    std::cout << "Could not find a class by that name." << std::endl;
-				  }
-
-				  // 'add field _____ _____'
-				  else if (substrings[1] == "field")
-				  {
-					  // Check that the class exists
-					  if (holder->IsTitleUnique(substrings[2]) == false)
-					  {
-					    // Check if the field already exists
-					    if (holder->AddField(substrings[2], substrings[3]))
-					    {					      
-					      std::cout << "Field added successfully." << std::endl;
-					    }
-					    
-					    // Field already exists, does not duplicate
-					    else
-					      std::cout << "This field already exists." << std::endl;
-					  }
-					  
-					  // Class does not exist, field not added
-					  else
-					    std::cout << "Could not find a class by that name." << std::endl;
-				  }
-
 				  // 'add relationship _____ _____' // Currently set to aggregation by default
-				  else if (substrings[1] == "relationship")
+				  if (substrings[1] == "relationship")
 				  {
 				    // Check that the objects are not identical - Object cannot have relationship to itself
 				    if (substrings[2] == substrings[3])
@@ -428,16 +384,63 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		    
 		    break;
 		  } 
+
+		  case 6:
+		  {
+			  if (substrings[0] == "add")
+			  {
+				  // Check and convert visibility
+				  int vis;
+				  if (substrings[5] == "public" || substrings[5] == "+")
+				  	vis = 1;
+				  else if (substrings[5] == "private" || substrings[5] == "-")
+				  	vis = 2;
+				  else if (substrings[5] == "protected" || substrings[5] == "#")
+				  	vis = 3;
+				  else
+				  {
+					std::cout << "Please enter a valid visibility." << std::endl;
+					break;
+				  }
+
+				  // @ add field class name type visibility
+				  if (substrings[1] == "field")
+				  {
+						int out = holder->AddField(substrings[2], substrings[3], substrings[4], vis);
+
+						// Class does not exists
+						if (out == ClassDoesntExist)
+							std::cout << "Could not find a class by that name." << std::endl;
+					
+						// Field already exists in this class
+						else if (out == FieldExists)
+							std::cout << "This field already exists." << std::endl;
+
+						// Field added successfully
+						else
+							std::cout << "Field added successfully." << std::endl;
+				  }
+
+				  else if (substrings[1] == "method")
+				  {
+
+				  }
+
+				  else 
+				  	fail();
+			  }
+
+			  else 
+			  	fail();
+		  }
 		    
 		  // Fail if too many commands are entered
 		  default:
 		  {
-			  if (substrings.size() > 0)
-			  {
-			  	if (substrings[0] != "save")
-			  		fail();
-			  }
-			  break;
+			  if (substrings.size() > 6)
+			  	fail();
+			  
+			  	break;
 		  }
 		}
 	} while (run);

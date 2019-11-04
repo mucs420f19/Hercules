@@ -153,9 +153,17 @@ int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
 	return result;
 }
 
-bool UMLObjectsHolder::AddField(std::string class_title, std::string field_title)
+int UMLObjectsHolder::AddField(std::string class_title, std::string field_title, std::string type, int visibility)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) 
+		return ClassDoesntExist;
+
+	if (c->AddField(UMLField(field_title, type, visibility)) == false)
+		return FieldExists;
+	
+	return FieldSuccess;
 }
 
 bool UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
@@ -178,7 +186,7 @@ bool UMLObjectsHolder::DeleteField(std::string class_title, std::string field_ti
 	return false;
 }
 
-bool UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title)
+bool UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, int visibility)
 {
 	return false;
 }
