@@ -10,10 +10,8 @@
 #include "UMLObject.h"
 
 const int ClassDoesntExist = 1;
-const int FieldExists = 2;
-const int FieldSuccess = 3;
-const int MethodExists = 2;
-const int MethodSuccess = 3;
+const int ElementExists = 2;
+const int ElementSuccess = 3;
 
 class UMLObjectsHolder
 {
@@ -60,7 +58,7 @@ public:
 	bool EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility);
 	bool DeleteField(std::string class_title, std::string field_title);
 
-	bool AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
+	int AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
 	bool EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
 	bool EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
 	bool EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility);

@@ -30,7 +30,7 @@ struct UMLField
 		type = "no type defined";
 		visibility = UMLFieldVisibilityPrivate;
 	}
-	UMLField(std::string inName, std::string inType, int inVisibility = 1)
+	UMLField(std::string inName, std::string inType, int inVisibility)
 	{
 		name = inName;
 		type = inType;
