@@ -14,25 +14,29 @@ void help()
 
 	std::cout << "help - Display a list of usable commands." << std::endl; 
 	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl;
-	std::cout << "titles -  Lists titles of all currently existing classes." << std::endl;
+	std::cout << "titles - Lists titles of all currently existing classes." << std::endl;
 	std::cout << "exit - Exit the Hercules UML Editor." << std::endl << std::endl; 
 
 	std::cout << "save [file name] - Saves the current project to the given file." << std::endl;
 	std::cout << "load [file name] - Loads a previous project from the given file." << std::endl << std::endl;
 
-	std::cout << "add class [class name]    - Creates a new class." << std::endl;
-	std::cout << "edit class [old class name] [new class name] - Changes the name of a class." << std::endl; 
-	std::cout << "delete class [class name] - Deletes a class." << std::endl << std::endl; 
+	std::cout << "add class [class name] - Creates a new class." << std::endl;
+	std::cout << "delete class [class name] - Deletes a class." << std::endl; 
+	std::cout << "edit class [old class name] [new class name] - Changes the name of a class." << std::endl << std::endl; 
 
-	std::cout << "add method [class name] [method name]    - Adds a new method to a given class." << std::endl;
-	std::cout << "edit method [class name] [method name]   - Changes the name of a method to a given class." << std::endl;
-	std::cout << "delete method [class name] [method name] - Deletes the name of a method to a given class." << std::endl << std::endl;
+	std::cout << "add field [class name] [field name] [return type] [visibility] - Adds a new field to a given class." << std::endl;
+	std::cout << "delete field [class name] [field name] - Removes an existing field from a given class." << std::endl;
+	std::cout << "edit field name [class name] [field name] [new name] - Edit the name of an existing field." << std::endl;
+	std::cout << "edit field type [class name] [field name] [new type] - Edit the return type of an existing field." << std::endl;
+	std::cout << "edit field visibility [class name] [field name] [new visibility] - Edit the visibility of an existing field." << std::endl << std::endl;
 
-	std::cout << "add field [class name] [field name]    - Adds a new field to a given class." << std::endl;
-	std::cout << "edit field [class name] [field name]   - Changes the name of a field to a given class." << std::endl;
-	std::cout << "delete field [class name] [field name] - Deletes the name of a field to a given class." << std::endl << std::endl;
+	std::cout << "add method [class name] [method name] [return type] [visibility] - Adds a new method to a given class." << std::endl;
+	std::cout << "delete method [class name] [method name] - Removes an existing method from a given class." << std::endl;
+	std::cout << "edit method name [class name] [method name] [new name] - Edit the name of an existing field." << std::endl;
+	std::cout << "edit method type [class name] [method name] [new type] - Edit the return type of an existing field." << std::endl;
+	std::cout << "edit method visibility [class name] [method name] [new visibility] - Edit the visibility of an existing field." << std::endl << std::endl;
 
-	std::cout << "add relationship [parent class] [child class]    - Adds a relationship between the parent and child classes." << std::endl;
+	std::cout << "add relationship [parent class] [child class] - Adds a relationship between the parent and child classes." << std::endl;
 	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl << std::endl;
 }
 
