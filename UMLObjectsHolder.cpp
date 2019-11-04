@@ -165,9 +165,9 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 		return ClassDoesntExist;
 
 	if (c->AddField(UMLField(field_title, type, visibility)) == false)
-		return FieldExists;
+		return ElementExists;
 	
-	return FieldSuccess;
+	return ElementSuccess;
 }
 
 bool UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
@@ -190,9 +190,17 @@ bool UMLObjectsHolder::DeleteField(std::string class_title, std::string field_ti
 	return false;
 }
 
-bool UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, int visibility)
+int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, int visibility)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) 
+		return ClassDoesntExist;
+
+	if (c->AddMethod(UMLMethod(method_title, type, {}, visibility)) == false)
+		return ElementExists;
+	
+	return ElementSuccess;
 }
 
 bool UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)

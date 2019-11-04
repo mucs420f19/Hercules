@@ -413,7 +413,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							std::cout << "Could not find a class by that name." << std::endl;
 					
 						// Field already exists in this class
-						else if (out == FieldExists)
+						else if (out == ElementExists)
 							std::cout << "This field already exists." << std::endl;
 
 						// Field added successfully
@@ -424,7 +424,19 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					// @ add method [class] [name] [type] [visibility]
 				  	else if (substrings[1] == "method")
 				  	{
+						int out = holder->AddMethod(substrings[2], substrings[3], substrings[4], vis);
 
+						// Class does not exists
+						if (out == ClassDoesntExist)
+							std::cout << "Could not find a class by that name." << std::endl;
+					
+						// Field already exists in this class
+						else if (out == ElementExists)
+							std::cout << "This method already exists." << std::endl;
+
+						// Field added successfully
+						else
+							std::cout << "Method added successfully." << std::endl;
 				  	}
 
 				  	else 
