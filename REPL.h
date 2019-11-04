@@ -276,47 +276,42 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	}
 			  	}
 			  
-			  	// 'delete _____ ...'
 			  	else if (substrings[0] == "delete")
 			  	{
-			    	// 'delete method _____ _____'
-			    	if (substrings[1] == "method")
+			    	// @ delete field [class] [name]
+			    	if (substrings[1] == "field")
 			    	{
-			      		// Check that the class exists
-			      		if (holder->IsTitleUnique(substrings[2]) == false)
-			      		{
-			        		// Check that the method exists
-			        		if (holder->GetUMLObject(substrings[2])->DeleteMethod(substrings[3]) == true)
-			          			std::cout << "Method successfully deleted." << std::endl;
-			        
-			        	// Method does not exist
-			        	else
-			          		std::cout << "Could not find a method by that name." << std::endl;
-			      		}
-			      
-			      	// Class does not exist
-			      	else
-			        	std::cout << "Could not find a class by that name." << std::endl;
+			      		int out = holder->DeleteField(substrings[2], substrings[3]);
+
+						// Class does not exist
+						if (out == ClassDoesntExist)
+							std::cout << "Could not find a class by that name." << std::endl;
+					
+						// Field does not exist
+						else if (out == ElementDoesntExist)
+							std::cout << "Could not find a field by that name." << std::endl;
+
+						// Field removed successfully
+						else
+							std::cout << "Field removed successfully." << std::endl;
 			    	}
 			    
-			    	// 'delete field _____ _____'
-			    	else if (substrings[1] == "field")
+			    	// @ delete method [class] [name]
+			    	else if (substrings[1] == "method")
 			    	{
-			      		// Check that the class exists
-			      		if (holder->IsTitleUnique(substrings[2]) == false)
-			      		{
-			        		// Check that the field exists
-			        		if (holder->GetUMLObject(substrings[2])->DeleteField(substrings[3]) == true)
-			          			std::cout << "Field successfully deleted." << std::endl;
-			        
-			        		// Field does not exist
-			        		else
-			          			std::cout << "Could not find a field by that name." << std::endl;
-			      		}
-			      
-			      		// Class does not exist
-			      		else
-			        		std::cout << "Could not find a class by that name." << std::endl;
+						int out = holder->DeleteMethod(substrings[2], substrings[3]);
+
+						// Class does not exist
+						if (out == ClassDoesntExist)
+							std::cout << "Could not find a class by that name." << std::endl;
+					
+						// Method does not exist
+						else if (out == ElementDoesntExist)
+							std::cout << "Could not find a method by that name." << std::endl;
+
+						// Method removed successfully
+						else
+							std::cout << "Method removed successfully." << std::endl;
 			    	}
 			    
 			    	// 'delete relationship _____ _____' 

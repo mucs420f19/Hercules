@@ -12,6 +12,7 @@
 const int ClassDoesntExist = 1;
 const int ElementExists = 2;
 const int ElementSuccess = 3;
+const int ElementDoesntExist = 4;
 
 class UMLObjectsHolder
 {
@@ -56,13 +57,13 @@ public:
 	bool EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
 	bool EditFieldType(std::string class_title, std::string field_title, std::string type);
 	bool EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility);
-	bool DeleteField(std::string class_title, std::string field_title);
+	int DeleteField(std::string class_title, std::string field_title);
 
 	int AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
 	bool EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
 	bool EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
 	bool EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility);
-	bool DeleteMethod(std::string class_title, std::string method_title);
+	int DeleteMethod(std::string class_title, std::string method_title);
 
 	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
 	bool EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name);
