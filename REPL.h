@@ -428,8 +428,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		  // Fail if too many commands are entered
 		  default:
 		  {
-			  fail();
-
+			  if (substrings.size() > 0)
+			  {
+			  	if (substrings[0] != "save")
+			  		fail();
+			  }
 			  break;
 		  }
 		}
