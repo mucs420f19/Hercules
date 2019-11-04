@@ -120,7 +120,7 @@ size_t UMLObject::GetLargestStringSize()
 	return maxSize;
 }
 
-std::string UMLObject::ReturnFieldsPretty()
+std::string UMLObject::ReturnFieldsREPL()
 {
 	std::string out;
 	size_t temp = 0;
@@ -133,7 +133,7 @@ std::string UMLObject::ReturnFieldsPretty()
 
 		out += "\xB3 - " + a.ReturnName();
 
-		for (int x = 0; x < addSpace; ++x)
+		for (size_t x = 0; x < addSpace; ++x)
 		out += " ";
 
 		out += " \xB3\n";
@@ -142,7 +142,7 @@ std::string UMLObject::ReturnFieldsPretty()
 	return out;
 }
 
-std::string UMLObject::ReturnMethodsPretty()
+std::string UMLObject::ReturnMethodsREPL()
 {
 	std::string out;
 	size_t temp = 0;
@@ -164,7 +164,7 @@ std::string UMLObject::ReturnMethodsPretty()
 	return out;
 }
 
-std::string UMLObject::ReturnRelationshipsPretty()
+std::string UMLObject::ReturnRelationshipsREPL()
 {
 	std::string out;
 	std::vector<UMLRelationship> Ag;
@@ -194,7 +194,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tAggregation:\n";
 
 		for (auto x : Ag)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Co.size() != 0)
@@ -202,7 +202,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tComposition:\n";
 
 		for (auto x : Co)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Ge.size() != 0)
@@ -210,7 +210,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tGeneralization:\n";
 
 		for (auto x : Ge)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Re.size() != 0)
@@ -218,7 +218,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tRealization:\n";
 
 		for (auto x : Re)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	
@@ -227,7 +227,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 	return out;
 }
 
-std::string UMLObject::ToStringPretty()
+std::string UMLObject::ToStringREPL()
 {
 	std::string out;
 	std::string breakLine;
@@ -240,7 +240,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xDA";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
 		out += "\xC4";
 
 	out += "\xBF\n";
@@ -254,7 +254,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xB3 " + ReturnTitle();
 
-	for (int x = 0; x < addSpace + 2; ++x)
+	for (size_t x = 0; x < addSpace + 2; ++x)
 		out += " ";
 
 	out += " \xB3\n";
@@ -265,7 +265,7 @@ std::string UMLObject::ToStringPretty()
 
 	breakLine += "\xC3";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
 		breakLine += "\xC4";
 
 	breakLine += "\xB4\n";
@@ -275,7 +275,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print fields
-	out += ReturnFieldsPretty();
+	out += ReturnFieldsREPL();
 
 	// ==========================================================================================
 
@@ -286,7 +286,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print methods
-	out += ReturnMethodsPretty();
+	out += ReturnMethodsREPL();
 
 	// ==========================================================================================
 
@@ -294,7 +294,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xC0";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
 		out += "\xC4";
 
 	out += "\xD9";
@@ -302,7 +302,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print relationships
-	out += ReturnRelationshipsPretty();
+	out += ReturnRelationshipsREPL();
 
 	// ==========================================================================================
 

@@ -221,10 +221,10 @@ public:
 	bool DoesFieldExist(std::string in);
 
 	size_t GetLargestStringSize();
-	std::string ReturnFieldsPretty();
-	std::string ReturnMethodsPretty();
-	std::string ToStringPretty();
-	std::string ReturnRelationshipsPretty();
+	std::string ReturnFieldsREPL();
+	std::string ReturnMethodsREPL();
+	std::string ToStringREPL();
+	std::string ReturnRelationshipsREPL();
 	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
@@ -307,7 +307,7 @@ struct UMLRelationship
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
   }
   
-  std::string ToStringPretty()
+  std::string ToStringREPL()
 	{
 		if (parent == true)
 		  return "Parent of: " + object->ReturnTitle();

@@ -57,9 +57,13 @@ void UMLObjectsHolder::UMLObjectPrintTitles()
 void UMLObjectsHolder::UMLObjectPrintContents()
 {
 	for (auto i : UMLObjects_holder)
-		std::cout << i->ToStringPretty() << std::endl;
-		
-		//std::cout << i->ToString() << std::endl;
+		std::cout << i->ToString() << std::endl;
+}
+
+void UMLObjectsHolder::UMLObjectPrintContentsREPL()
+{
+	for (auto i : UMLObjects_holder)
+		std::cout << i->ToStringREPL() << std::endl;
 }
 
 std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()

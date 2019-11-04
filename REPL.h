@@ -116,7 +116,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 			  	// 'list'
 			  	else if (substrings[0] == "list")
-				  	holder->UMLObjectPrintContents();
+				  	holder->UMLObjectPrintContentsREPL();
 			  
 			  	// 'title'
 			  	else if (substrings[0] == "titles")
@@ -403,7 +403,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						break;
 				  	}
 
-				  	// @ add field class name type visibility
+				  	// @ add field [class] [name] [type] [visibility]
 				  	if (substrings[1] == "field")
 				  	{
 						int out = holder->AddField(substrings[2], substrings[3], substrings[4], vis);
@@ -421,6 +421,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							std::cout << "Field added successfully." << std::endl;
 				  	}
 
+					// @ add method [class] [name] [type] [visibility]
 				  	else if (substrings[1] == "method")
 				  	{
 
