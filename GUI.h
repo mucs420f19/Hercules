@@ -149,7 +149,6 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Add Class"))
 			{
 				(holder->CreateNewClass(add));
-				  //node_editor_add(&node1, add, nk_rect(40, 10, 180, 220), node_data(), 0, 1, node_ftables[0]);
 				  node_editor_add(&node1, add, nk_rect(400, 260, 180, 220),
                             node_data(), 1, 2, node_ftables[1], true, 1);
 			}
