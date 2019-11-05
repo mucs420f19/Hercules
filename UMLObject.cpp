@@ -563,7 +563,7 @@ bool UMLObject::DeleteField(std::string in)
 
 bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
 {
-	for (auto i : fields)
+	for (auto &i : fields)
 	{
 		if (i.ReturnName() == fieldName)
 		{
@@ -578,7 +578,7 @@ bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
 
 bool UMLObject::EditMethodT(std::string methodName, std::string newType)
 {
-	for (auto i : methods)
+	for (auto &i : methods)
 	{
 		if (i.ReturnName() == methodName)
 		{

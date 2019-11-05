@@ -432,7 +432,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 								std::cout << "An error has occurred." << std::endl;
 
 							// Type changed successfully
-							else if (out == ElementSuccess)
+							else
 								std::cout << "Return type changed successfully." << std::endl;
 						}
 
