@@ -361,6 +361,10 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
             node_editor_clean_links(nodeedit);
             node_editor_clear_gaps(nodeedit);
         }
+        if (nk_contextual_item_label(ctx, "Edit", NK_TEXT_CENTERED))
+        {
+            
+        }
         nk_contextual_end(ctx);
     }
     else if (nk_window_is_active(ctx, title))
@@ -388,8 +392,8 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
     }
 
 #ifndef NDE_NO_WINDOW
-    if (nk_begin(ctx, title, nk_rect(0, 0, 800, 600),
-                NK_WINDOW_BORDER|NK_WINDOW_NO_SCROLLBAR|NK_WINDOW_MOVABLE|NK_WINDOW_CLOSABLE))
+    if (nk_begin(ctx, title, nk_rect(450, 0, 800, WINDOW_HEIGHT),
+                NK_WINDOW_BORDER|NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE))
     {
 #endif
         /* allocate complete window space */
