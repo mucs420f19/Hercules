@@ -97,25 +97,35 @@ size_t UMLObject::GetLargestStringSize()
 	if (temp > maxSize)
 		maxSize = temp;
 
-		// Check field string sizes
-		for (auto f : fields)
-		{
-			temp = f.ReturnName().size();
-
-			if (temp > maxSize)
-				maxSize = temp;
-		}
-	
-	// Check method string sizes
-	for (auto m : methods)
+	// Check field string sizes
+	for (auto f : fields)
 	{
-		temp = m.ReturnName().size();
+		// For visibility and space
+		temp = 2;
+
+		temp += f.ReturnName().size();
+
+		// For type and : space
+		temp += f.ReturnType().size() + 3;
 
 		if (temp > maxSize)
 			maxSize = temp;
 	}
+	
+	// Check method string sizes
+	for (auto m : methods)
+	{
+		// For visibility and space
+		temp = 2;
 
-	//maxSize += 2;
+		temp += m.ReturnName().size();
+
+		// For type and : space
+		temp += m.ReturnType().size() + 3;
+
+		if (temp > maxSize)
+			maxSize = temp;
+	}
 
 	return maxSize;
 }
@@ -128,13 +138,22 @@ std::string UMLObject::ReturnFieldsREPL()
 
 	for (auto a : fields)
 	{
-		temp = a.ReturnName().size();
+		temp = 5 + a.ReturnName().size() + a.ReturnType().size();
 		addSpace = GetLargestStringSize() - temp;
 
-		out += "\xB3 - " + a.ReturnName();
+		out += "\xB3 ";
+
+		if (a.ReturnVisibility() == 1)
+			out += "+ ";
+		else if (a.ReturnVisibility() == 2)
+			out += "- ";
+		else if (a.ReturnVisibility() == 3)
+			out += "# ";
+
+		out += a.ReturnName() + " : " + a.ReturnType();
 
 		for (size_t x = 0; x < addSpace; ++x)
-		out += " ";
+			out += " ";
 
 		out += " \xB3\n";
 	}
@@ -150,13 +169,22 @@ std::string UMLObject::ReturnMethodsREPL()
 
 	for (auto a : methods)
 	{
-		temp = a.ReturnName().size();
+		temp = 5 + a.ReturnName().size() + a.ReturnType().size();
 		addSpace = GetLargestStringSize() - temp;
 
-		out += "\xB3 + " + a.ReturnName();
+		out += "\xB3 ";
+
+		if (a.ReturnVisibility() == 1)
+			out += "+ ";
+		else if (a.ReturnVisibility() == 2)
+			out += "- ";
+		else if (a.ReturnVisibility() == 3)
+			out += "# ";
+
+		out += a.ReturnName() + " : " + a.ReturnType();
 
 		for (size_t x = 0; x < addSpace; ++x)
-		out += " ";
+			out += " ";
 
 		out += " \xB3\n";
 	}
@@ -221,9 +249,6 @@ std::string UMLObject::ReturnRelationshipsREPL()
 			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
-	
-
-
 	return out;
 }
 
@@ -240,7 +265,7 @@ std::string UMLObject::ToStringREPL()
 
 	out += "\xDA";
 
-	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		out += "\xC4";
 
 	out += "\xBF\n";
@@ -254,7 +279,7 @@ std::string UMLObject::ToStringREPL()
 
 	out += "\xB3 " + ReturnTitle();
 
-	for (size_t x = 0; x < addSpace + 2; ++x)
+	for (size_t x = 0; x < addSpace; ++x)
 		out += " ";
 
 	out += " \xB3\n";
@@ -265,7 +290,7 @@ std::string UMLObject::ToStringREPL()
 
 	breakLine += "\xC3";
 
-	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		breakLine += "\xC4";
 
 	breakLine += "\xB4\n";
@@ -294,7 +319,7 @@ std::string UMLObject::ToStringREPL()
 
 	out += "\xC0";
 
-	for (size_t x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		out += "\xC4";
 
 	out += "\xD9";
@@ -536,7 +561,7 @@ bool UMLObject::DeleteField(std::string in)
   return false;
 }
 
-bool UMLObject::EditFieldType(std::string fieldName, std::string newType)
+bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
 {
 	for (auto i : fields)
 	{
@@ -551,7 +576,7 @@ bool UMLObject::EditFieldType(std::string fieldName, std::string newType)
 	return false;
 }
 
-bool UMLObject::EditMethodType(std::string methodName, std::string newType)
+bool UMLObject::EditMethodT(std::string methodName, std::string newType)
 {
 	for (auto i : methods)
 	{

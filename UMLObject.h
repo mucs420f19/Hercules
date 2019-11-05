@@ -217,8 +217,8 @@ public:
 	bool DeleteMethod(std::string in);
 	bool DeleteField(std::string in);
 
-	bool EditFieldType(std::string fieldName, std::string newType);
-	bool EditMethodType(std::string methodName, std::string newType);
+	bool EditFieldT(std::string fieldName, std::string newType);
+	bool EditMethodT(std::string methodName, std::string newType);
 	
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);

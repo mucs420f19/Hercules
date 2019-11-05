@@ -190,7 +190,7 @@ int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_t
 	if (c == 0)
 		return ClassDoesntExist;
 
-	if (c->EditFieldType(field_title, type) == false)
+	if (c->EditFieldT(field_title, type) == false)
 		return ElementDoesntExist;
 
 	return ElementSuccess;
@@ -248,7 +248,7 @@ int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string 
 	if (c == 0)
 		return ClassDoesntExist;
 
-	if (c->EditMethodType(method_name, type) == false)
+	if (c->EditMethodT(method_name, type) == false)
 		return ElementDoesntExist;
 
 	return ElementSuccess;
