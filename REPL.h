@@ -278,7 +278,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			  
 			  	else if (substrings[0] == "delete")
 			  	{
-			    	// @ delete field [class] [name]
+			    	// delete field [class] [name]
 			    	if (substrings[1] == "field")
 			    	{
 			      		int out = holder->DeleteField(substrings[2], substrings[3]);
@@ -296,7 +296,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							std::cout << "Field removed successfully." << std::endl;
 			    	}
 			    
-			    	// @ delete method [class] [name]
+			    	// delete method [class] [name]
 			    	else if (substrings[1] == "method")
 			    	{
 						int out = holder->DeleteMethod(substrings[2], substrings[3]);
@@ -398,7 +398,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						break;
 				  	}
 
-				  	// @ add field [class] [name] [type] [visibility]
+				  	// add field [class name] [field name] [type] [visibility]
 				  	if (substrings[1] == "field")
 				  	{
 						int out = holder->AddField(substrings[2], substrings[3], substrings[4], vis);
@@ -416,7 +416,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							std::cout << "Field added successfully." << std::endl;
 				  	}
 
-					// @ add method [class] [name] [type] [visibility]
+					// add method [class name] [field name] [type] [visibility]
 				  	else if (substrings[1] == "method")
 				  	{
 						int out = holder->AddMethod(substrings[2], substrings[3], substrings[4], vis);
@@ -437,6 +437,108 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	else 
 				  		fail();
 			  	}
+
+				else if (substrings[0] == "edit")
+				{
+					if (substrings[1] == "field")
+					{
+						// edit field name [class name] [old field name] [new field name]
+						if (substrings[2] == "name")
+						{
+							int out = holder->EditFieldName(substrings[3], substrings[4], substrings[5]);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+					
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Name changed successfully." << std::endl;
+						}
+
+						// edit field type [class name] [field name] [new type]
+						else if (substrings[2] == "type")
+						{
+							int out = holder->EditFieldType(substrings[3], substrings[4], substrings[5]);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+					
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Return type changed successfully." << std::endl;
+						}
+
+						// edit field visibility [class name] [field name] [new visibility]
+						else if (substrings[2] == "visibility")
+						{
+
+						}
+
+						else
+							fail();
+					}
+
+					else if (substrings[1] == "method")
+					{
+						// edit method name [class name] [old method name] [new method name]
+						if (substrings[2] == "name")
+						{
+							int out = holder->EditMethodName(substrings[3], substrings[4], substrings[5]);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+					
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Name changed successfully." << std::endl;
+						}
+						
+						// edit method type [class name] [method name] [new type]
+						else if (substrings[2] == "type")
+						{
+							int out = holder->EditMethodReturnType(substrings[3], substrings[4], substrings[5]);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+					
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Return type changed successfully." << std::endl;
+						}
+
+						// edit method visibility [class name] [method name] [new visibility]
+						else if (substrings[2] == "visibility")
+						{
+
+						}
+
+						else
+							fail();
+					}
+
+					else
+						fail();
+				}
 
 			  	else 
 			  		fail();

@@ -536,6 +536,36 @@ bool UMLObject::DeleteField(std::string in)
   return false;
 }
 
+bool UMLObject::EditFieldType(std::string fieldName, std::string newType)
+{
+	for (auto i : fields)
+	{
+		if (i.ReturnName() == fieldName)
+		{
+			i.SetReturnType(newType);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UMLObject::EditMethodType(std::string methodName, std::string newType)
+{
+	for (auto i : methods)
+	{
+		if (i.ReturnName() == methodName)
+		{
+			i.SetReturnType(newType);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool UMLObject::DoesMethodExist(std::string in)
 {
   for (auto i : methods)

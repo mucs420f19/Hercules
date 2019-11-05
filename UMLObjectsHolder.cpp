@@ -170,17 +170,33 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
+int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0)
+		return ClassDoesntExist;
+
+	if (c->EditField(old_field_title, new_field_title) == false)
+		return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
+int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0)
+		return ClassDoesntExist;
+
+	if (c->EditFieldType(field_title, type) == false)
+		return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
+int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
 {
 	return false;
 }
@@ -212,17 +228,33 @@ int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_titl
 	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)
+int UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0)
+		return ClassDoesntExist;
+
+	if (c->EditMethod(old_method_name, new_method_name) == false)
+		return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string method_name, std::string type)
+int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string method_name, std::string type)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0)
+		return ClassDoesntExist;
+
+	if (c->EditMethodType(method_name, type) == false)
+		return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
+int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
 {
 	return false;
 }
