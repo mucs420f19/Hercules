@@ -97,30 +97,40 @@ size_t UMLObject::GetLargestStringSize()
 	if (temp > maxSize)
 		maxSize = temp;
 
-		// Check field string sizes
-		for (auto f : fields)
-		{
-			temp = f.ReturnName().size();
+	// Check field string sizes
+	for (auto f : fields)
+	{
+		// For visibility and space
+		temp = 2;
 
-			if (temp > maxSize)
-				maxSize = temp;
-		}
+		temp += f.ReturnName().size();
+
+		// For type and : space
+		temp += f.ReturnType().size() + 3;
+
+		if (temp > maxSize)
+			maxSize = temp;
+	}
 	
 	// Check method string sizes
 	for (auto m : methods)
 	{
-		temp = m.ReturnName().size();
+		// For visibility and space
+		temp = 2;
+
+		temp += m.ReturnName().size();
+
+		// For type and : space
+		temp += m.ReturnType().size() + 3;
 
 		if (temp > maxSize)
 			maxSize = temp;
 	}
 
-	//maxSize += 2;
-
 	return maxSize;
 }
 
-std::string UMLObject::ReturnFieldsPretty()
+std::string UMLObject::ReturnFieldsREPL()
 {
 	std::string out;
 	size_t temp = 0;
@@ -128,13 +138,22 @@ std::string UMLObject::ReturnFieldsPretty()
 
 	for (auto a : fields)
 	{
-		temp = a.ReturnName().size();
+		temp = 5 + a.ReturnName().size() + a.ReturnType().size();
 		addSpace = GetLargestStringSize() - temp;
 
-		out += "\xB3 - " + a.ReturnName();
+		out += "\xB3 ";
 
-		for (int x = 0; x < addSpace; ++x)
-		out += " ";
+		if (a.ReturnVisibility() == 1)
+			out += "+ ";
+		else if (a.ReturnVisibility() == 2)
+			out += "- ";
+		else if (a.ReturnVisibility() == 3)
+			out += "# ";
+
+		out += a.ReturnName() + " : " + a.ReturnType();
+
+		for (size_t x = 0; x < addSpace; ++x)
+			out += " ";
 
 		out += " \xB3\n";
 	}
@@ -142,7 +161,7 @@ std::string UMLObject::ReturnFieldsPretty()
 	return out;
 }
 
-std::string UMLObject::ReturnMethodsPretty()
+std::string UMLObject::ReturnMethodsREPL()
 {
 	std::string out;
 	size_t temp = 0;
@@ -150,13 +169,22 @@ std::string UMLObject::ReturnMethodsPretty()
 
 	for (auto a : methods)
 	{
-		temp = a.ReturnName().size();
+		temp = 5 + a.ReturnName().size() + a.ReturnType().size();
 		addSpace = GetLargestStringSize() - temp;
 
-		out += "\xB3 + " + a.ReturnName();
+		out += "\xB3 ";
+
+		if (a.ReturnVisibility() == 1)
+			out += "+ ";
+		else if (a.ReturnVisibility() == 2)
+			out += "- ";
+		else if (a.ReturnVisibility() == 3)
+			out += "# ";
+
+		out += a.ReturnName() + " : " + a.ReturnType();
 
 		for (size_t x = 0; x < addSpace; ++x)
-		out += " ";
+			out += " ";
 
 		out += " \xB3\n";
 	}
@@ -164,7 +192,7 @@ std::string UMLObject::ReturnMethodsPretty()
 	return out;
 }
 
-std::string UMLObject::ReturnRelationshipsPretty()
+std::string UMLObject::ReturnRelationshipsREPL()
 {
 	std::string out;
 	std::vector<UMLRelationship> Ag;
@@ -194,7 +222,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tAggregation:\n";
 
 		for (auto x : Ag)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Co.size() != 0)
@@ -202,7 +230,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tComposition:\n";
 
 		for (auto x : Co)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Ge.size() != 0)
@@ -210,7 +238,7 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tGeneralization:\n";
 
 		for (auto x : Ge)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
 
 	if (Re.size() != 0)
@@ -218,16 +246,13 @@ std::string UMLObject::ReturnRelationshipsPretty()
 		out += "\tRealization:\n";
 
 		for (auto x : Re)
-			out += "\t\t" + x.ToStringPretty() + "\n";
+			out += "\t\t" + x.ToStringREPL() + "\n";
 	}
-
-	
-
 
 	return out;
 }
 
-std::string UMLObject::ToStringPretty()
+std::string UMLObject::ToStringREPL()
 {
 	std::string out;
 	std::string breakLine;
@@ -240,7 +265,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xDA";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		out += "\xC4";
 
 	out += "\xBF\n";
@@ -254,7 +279,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xB3 " + ReturnTitle();
 
-	for (int x = 0; x < addSpace + 2; ++x)
+	for (size_t x = 0; x < addSpace; ++x)
 		out += " ";
 
 	out += " \xB3\n";
@@ -265,7 +290,7 @@ std::string UMLObject::ToStringPretty()
 
 	breakLine += "\xC3";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		breakLine += "\xC4";
 
 	breakLine += "\xB4\n";
@@ -275,7 +300,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print fields
-	out += ReturnFieldsPretty();
+	out += ReturnFieldsREPL();
 
 	// ==========================================================================================
 
@@ -286,7 +311,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print methods
-	out += ReturnMethodsPretty();
+	out += ReturnMethodsREPL();
 
 	// ==========================================================================================
 
@@ -294,7 +319,7 @@ std::string UMLObject::ToStringPretty()
 
 	out += "\xC0";
 
-	for (int x = 0; x < GetLargestStringSize() + 4; ++x)
+	for (size_t x = 0; x < GetLargestStringSize() + 2; ++x)
 		out += "\xC4";
 
 	out += "\xD9";
@@ -302,7 +327,7 @@ std::string UMLObject::ToStringPretty()
 	// ==========================================================================================
 
 	// Print relationships
-	out += ReturnRelationshipsPretty();
+	out += ReturnRelationshipsREPL();
 
 	// ==========================================================================================
 
@@ -387,11 +412,6 @@ size_t UMLObject::RelationshipsSize()
 {
 	return relationships.size();
 }
-//makes field private from user
-UMLField::UMLField()
-{
-	visibility = UMLFieldVisibilityPrivate;
-}
 //returns name of the field
 std::string UMLField::ReturnName()
 {
@@ -421,11 +441,6 @@ void UMLField::SetReturnType(std::string in)
 void UMLField::SetVisibility(int in)
 {
 	visibility = in;
-}
-//makes visibility private from user
-UMLMethod::UMLMethod()
-{
-	visibility = UMLFieldVisibilityPrivate;
 }
 // returns name from method
 std::string UMLMethod::ReturnName()
@@ -544,6 +559,66 @@ bool UMLObject::DeleteField(std::string in)
     ++count;
   }
   return false;
+}
+
+bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
+{
+	for (auto &i : fields)
+	{
+		if (i.ReturnName() == fieldName)
+		{
+			i.SetReturnType(newType);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UMLObject::EditFieldV(std::string fieldName, int vis)
+{
+	for (auto &i : fields)
+	{
+		if (i.ReturnName() == fieldName)
+		{
+			i.SetVisibility(vis);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UMLObject::EditMethodT(std::string methodName, std::string newType)
+{
+	for (auto &i : methods)
+	{
+		if (i.ReturnName() == methodName)
+		{
+			i.SetReturnType(newType);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UMLObject::EditMethodV(std::string methodName, int vis)
+{
+	for (auto &i : methods)
+	{
+		if (i.ReturnName() == methodName)
+		{
+			i.SetVisibility(vis);
+
+			return true;
+		}
+	}
+
+	return false;
 }
 
 bool UMLObject::DoesMethodExist(std::string in)

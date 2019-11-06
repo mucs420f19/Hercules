@@ -453,6 +453,8 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
+	RunREPL(holder, "help");
+
 	RunREPL(holder, "add class test_class1");
 	REQUIRE(holder->Size() == 1);
 	REQUIRE(holder->GetUMLObject("test_class1") != NULL);
@@ -530,91 +532,169 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
 
 	RunREPL(holder, "list");
+	RunREPL(holder, "titles");
 
 	delete holder;
 }
 
-TEST_CASE("Test Terminal Method & Field Functionality", "0")
+TEST_CASE("Test Terminal Field Functionality", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	RunREPL(holder, "help");
+	RunREPL(holder, "add class test_class1");
+
+	RunREPL(holder, "add field test_class1 test_field1 int public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, }");
+
+	RunREPL(holder, "add field test_class1 test_field2 str -");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, }");
+
+	RunREPL(holder, "add field test_class1 test_field3 bool protected");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
+
+	// Add to class that doesnt exist
+	RunREPL(holder, "add field test_class2 test_field4 int public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
+
+	// Add field that already exists
+	RunREPL(holder, "add field test_class1 test_field2 char #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
+
+	// Delete field
+	RunREPL(holder, "delete field test_class1 test_field3");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, }");
+
+	// Delete from class that doesnt exist
+	RunREPL(holder, "delete field test_class2 test_field2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, }");
+
+	// Delete field that doesnt exist
+	RunREPL(holder, "delete field test_class1 test_field7");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, }");
+
+	// Edit field name
+	RunREPL(holder, "edit field name test_class1 test_field1 test_fieldA");
+	RunREPL(holder, "edit field name test_class1 test_field2 test_fieldB");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, int, Public}, {test_fieldB, str, Private}, }");
+
+	// Edit field in nonexistant class
+	RunREPL(holder, "edit field name test_class2 test_fieldA test_fieldC");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, int, Public}, {test_fieldB, str, Private}, }");
+
+	// Edit field that doesnt exist
+	RunREPL(holder, "edit field name test_class1 test_fieldC test_fieldD");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, int, Public}, {test_fieldB, str, Private}, }");
+
+	// Edit field type
+	RunREPL(holder, "edit field type test_class1 test_fieldA bool");
+	RunREPL(holder, "edit field type test_class1 test_fieldB bool");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Public}, {test_fieldB, bool, Private}, }");
+
+	// Edit type in nonexistant class
+	RunREPL(holder, "edit field type test_class2 test_fieldA int");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Public}, {test_fieldB, bool, Private}, }");
+	
+	// Edit field that doesnt exist
+	RunREPL(holder, "edit field type test_class1 test_fieldC str");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Public}, {test_fieldB, bool, Private}, }");
+
+	// Edit field visibility
+	RunREPL(holder, "edit field visibility test_class1 test_fieldA private");
+	RunREPL(holder, "edit field visibility test_class1 test_fieldB public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Private}, {test_fieldB, bool, Public}, }");
+
+	RunREPL(holder, "edit field visibility test_class1 test_fieldA #");
+	RunREPL(holder, "edit field visibility test_class1 test_fieldB #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
+
+	// Edit visibility in nonexistant class
+	RunREPL(holder, "edit field type test_class2 test_fieldA +");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
+	
+	// Edit field that doesnt exist
+	RunREPL(holder, "edit field type test_class1 test_fieldC -");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
+
+	delete holder;
+}
+
+TEST_CASE("Test Terminal Method Functionality", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
 	RunREPL(holder, "add class test_class1");
-	RunREPL(holder, "add method test_class1 test_method1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, }");
 
-	//should only receive one despite being called twice
-	RunREPL(holder, "add method test_class1 test_method2");
-	RunREPL(holder, "add method test_class1 test_method2");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+	RunREPL(holder, "add method test_class1 test_method1 int public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, }");
 
-	RunREPL(holder, "add method test_class2 test_method3");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+	RunREPL(holder, "add method test_class1 test_method2 str -");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, }");
 
-	RunREPL(holder, "add method test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, , {}, Private}, {test_method2, , {}, Private}, }");
+	RunREPL(holder, "add method test_class1 test_method3 bool protected");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, {test_method3, bool, {}, Protected}, }");
+
+	// Add to class that doesnt exist
+	RunREPL(holder, "add method test_class2 test_method4 int public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, {test_method3, bool, {}, Protected}, }");
+
+	// Add method that already exists
+	RunREPL(holder, "add method test_class1 test_method2 char #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, {test_method3, bool, {}, Protected}, }");
+
+	// Delete method
+	RunREPL(holder, "delete method test_class1 test_method3");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, }");
+
+	// Delete from class that doesnt exist
+	RunREPL(holder, "delete method test_class2 test_method2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, }");
+
+	// Delete method that doesnt exist
+	RunREPL(holder, "delete method test_class1 test_method7");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, }");
+
+	// Edit method name
+	RunREPL(holder, "edit method name test_class1 test_method1 test_methodA");
+	RunREPL(holder, "edit method name test_class1 test_method2 test_methodB");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, int, {}, Public}, {test_methodB, str, {}, Private}, }");
+
+	// Edit method in nonexistant class
+	RunREPL(holder, "edit method name test_class2 test_methodA test_methodC");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, int, {}, Public}, {test_methodB, str, {}, Private}, }");
+
+	// Edit method that doesnt exist
+	RunREPL(holder, "edit method name test_class1 test_methodC test_methodD");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, int, {}, Public}, {test_methodB, str, {}, Private}, }");
+
+	// Edit method type
+	RunREPL(holder, "edit method type test_class1 test_methodA bool");
+	RunREPL(holder, "edit method type test_class1 test_methodB bool");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Public}, {test_methodB, bool, {}, Private}, }");
+
+	// Edit type in nonexistant class
+	RunREPL(holder, "edit method type test_class2 test_methodA int");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Public}, {test_methodB, bool, {}, Private}, }");
 	
-	RunREPL(holder, "add method test_class2");
-	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+	// Edit method that doesnt exist
+	RunREPL(holder, "edit method type test_class1 test_methodC str");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Public}, {test_methodB, bool, {}, Private}, }");
 
-	RunREPL(holder, "add method test_class2 newMethod");
-	REQUIRE(holder->GetUMLObject("test_class2") == 0);
+	// Edit method visibility
+	RunREPL(holder, "edit method visibility test_class1 test_methodA private");
+	RunREPL(holder, "edit method visibility test_class1 test_methodB public");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Private}, {test_methodB, bool, {}, Public}, }");
 
-	RunREPL(holder, "edit method test_class1 test_method1 test_methodA");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
+	RunREPL(holder, "edit method visibility test_class1 test_methodA #");
+	RunREPL(holder, "edit method visibility test_class1 test_methodB #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Protected}, {test_methodB, bool, {}, Protected}, }");
 
-	RunREPL(holder, "edit method test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
-
-	RunREPL(holder, "edit method test_class1 test_methodA");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, {test_method2, , {}, Private}, }");
-
-	RunREPL(holder, "delete method test_class1 test_method2");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, }");
-
-	RunREPL(holder, "delete method test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, , {}, Private}, }");
-
-	// ===
-
-	//should only receive one despite being called twice
-	RunREPL(holder, "add field test_class1 test_field1");
-	RunREPL(holder, "add field test_class1 test_field1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, }");
-
-	RunREPL(holder, "add field test_class1 test_field2");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
-
-	RunREPL(holder, "add field test_class2 test_field3");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
-
-	RunREPL(holder, "add field test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, , Private}, {test_field2, , Private}, }");
+	// Edit visibility in nonexistant class
+	RunREPL(holder, "edit method type test_class2 test_methodA +");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Protected}, {test_methodB, bool, {}, Protected}, }");
 	
-	RunREPL(holder, "add field test_class2");
-	REQUIRE(holder->GetUMLObject("test_class2") == 0);
-
-	RunREPL(holder, "add field test_class2 newField");
-	REQUIRE(holder->GetUMLObject("test_class2") == 0);
-
-	RunREPL(holder, "edit field test_class1 test_field1 test_fieldA");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
-
-	RunREPL(holder, "edit field test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
-
-	RunREPL(holder, "edit field test_class1 test_fieldA");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, {test_field2, , Private}, }");
-
-	RunREPL(holder, "delete field test_class1 test_field2");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
-
-	RunREPL(holder, "delete field test_class1");
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, , Private}, }");
-
-	RunREPL(holder, "list");
-	RunREPL(holder, "titles");
+	// Edit method that doesnt exist
+	RunREPL(holder, "edit method type test_class1 test_methodC -");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Protected}, {test_methodB, bool, {}, Protected}, }");
 
 	delete holder;
 }

@@ -21,8 +21,16 @@ struct UMLRelationship;
 //structure for the field
 struct UMLField
 {
-	UMLField();
-	UMLField(std::string inName, std::string inType, int inVisibility = 1)
+	UMLField()
+	{ }
+
+	UMLField(std::string inName)
+	{
+		name = inName;
+		type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
+	UMLField(std::string inName, std::string inType, int inVisibility)
 	{
 		name = inName;
 		type = inType;
@@ -110,7 +118,15 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
-	UMLMethod();
+	UMLMethod()
+	{ }
+
+	UMLMethod(std::string inName)
+	{
+		name = inName;
+		return_type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
 	UMLMethod(std::string inName, std::string inType, std::vector<UMLParameter> inParameters, int inVisibility)
 	{
 		name = inName;
@@ -200,15 +216,20 @@ public:
 	bool EditField(std::string oldName, std::string newName);
 	bool DeleteMethod(std::string in);
 	bool DeleteField(std::string in);
+
+	bool EditFieldT(std::string fieldName, std::string newType);
+	bool EditFieldV(std::string fieldName, int vis);
+	bool EditMethodT(std::string methodName, std::string newType);
+	bool EditMethodV(std::string methodName, int vis);
 	
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
 	size_t GetLargestStringSize();
-	std::string ReturnFieldsPretty();
-	std::string ReturnMethodsPretty();
-	std::string ToStringPretty();
-	std::string ReturnRelationshipsPretty();
+	std::string ReturnFieldsREPL();
+	std::string ReturnMethodsREPL();
+	std::string ToStringREPL();
+	std::string ReturnRelationshipsREPL();
 	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
@@ -291,7 +312,7 @@ struct UMLRelationship
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
   }
   
-  std::string ToStringPretty()
+  std::string ToStringREPL()
 	{
 		if (parent == true)
 		  return "Parent of: " + object->ReturnTitle();
