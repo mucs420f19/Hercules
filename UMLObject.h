@@ -218,7 +218,9 @@ public:
 	bool DeleteField(std::string in);
 
 	bool EditFieldT(std::string fieldName, std::string newType);
+	bool EditFieldV(std::string fieldName, int vis);
 	bool EditMethodT(std::string methodName, std::string newType);
+	bool EditMethodV(std::string methodName, int vis);
 	
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);

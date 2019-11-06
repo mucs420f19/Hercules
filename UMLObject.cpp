@@ -576,6 +576,21 @@ bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
 	return false;
 }
 
+bool UMLObject::EditFieldV(std::string fieldName, int vis)
+{
+	for (auto &i : fields)
+	{
+		if (i.ReturnName() == fieldName)
+		{
+			i.SetVisibility(vis);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool UMLObject::EditMethodT(std::string methodName, std::string newType)
 {
 	for (auto &i : methods)
@@ -583,6 +598,21 @@ bool UMLObject::EditMethodT(std::string methodName, std::string newType)
 		if (i.ReturnName() == methodName)
 		{
 			i.SetReturnType(newType);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UMLObject::EditMethodV(std::string methodName, int vis)
+{
+	for (auto &i : methods)
+	{
+		if (i.ReturnName() == methodName)
+		{
+			i.SetVisibility(vis);
 
 			return true;
 		}

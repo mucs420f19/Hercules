@@ -439,7 +439,33 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit field visibility [class name] [field name] [new visibility]
 						else if (substrings[2] == "visibility")
 						{
+							// Check and convert visibility
+				  			int vis;
+				  			if (substrings[5] == "public" || substrings[5] == "+")
+				  				vis = 1;
+				  			else if (substrings[5] == "private" || substrings[5] == "-")
+				  				vis = 2;
+				  			else if (substrings[5] == "protected" || substrings[5] == "#")
+				  				vis = 3;
+				  			else
+				  			{
+								std::cout << "Please enter a valid visibility." << std::endl;
+								break;
+				  			}
 
+							int out = holder->EditFieldVisibility(substrings[3], substrings[4], vis);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+							
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Visibility changed successfully." << std::endl;
 						}
 
 						else
@@ -481,13 +507,39 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 							// Type changed successfully
 							else
-								std::cout << "Return type changed successfully." << std::endl;
+								std::cout << "Type changed successfully." << std::endl;
 						}
 
 						// edit method visibility [class name] [method name] [new visibility]
 						else if (substrings[2] == "visibility")
 						{
+							// Check and convert visibility
+				  			int vis;
+				  			if (substrings[5] == "public" || substrings[5] == "+")
+				  				vis = 1;
+				  			else if (substrings[5] == "private" || substrings[5] == "-")
+				  				vis = 2;
+				  			else if (substrings[5] == "protected" || substrings[5] == "#")
+				  				vis = 3;
+				  			else
+				  			{
+								std::cout << "Please enter a valid visibility." << std::endl;
+								break;
+				  			}
 
+							int out = holder->EditMethodVisibility(substrings[3], substrings[4], vis);
+
+							// Class does not exist
+							if (out == ClassDoesntExist)
+								std::cout << "Could not find a class by that name." << std::endl;
+							
+							// Error
+							else if (out == ElementDoesntExist)
+								std::cout << "An error has occurred." << std::endl;
+
+							// Type changed successfully
+							else
+								std::cout << "Visibility changed successfully." << std::endl;
 						}
 
 						else

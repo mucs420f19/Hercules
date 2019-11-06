@@ -56,13 +56,13 @@ public:
 	int AddField(std::string class_title, std::string field_title, std::string type, int visibility);
 	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
 	int EditFieldType(std::string class_title, std::string field_title, std::string type);
-	int EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility);
+	int EditFieldVisibility(std::string class_title, std::string field_title, int vis);
 	int DeleteField(std::string class_title, std::string field_title);
 
 	int AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
 	int EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
 	int EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
-	int EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility);
+	int EditMethodVisibility(std::string class_title, std::string method_title, int vis);
 	int DeleteMethod(std::string class_title, std::string method_title);
 
 	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
