@@ -97,6 +97,7 @@ struct node_linking {
 struct node_editor {
     int initialized;
 	char name[64];
+    char tempName[32];
     struct node node_buf[64];
     struct node_link links[256];
     struct node *begin;
@@ -114,6 +115,9 @@ struct node_editor {
     struct node_linking linking;
 };
 static struct node_editor nodeEditor;
+char className[32] = {0};
+char tempName[32] = {0};
+
 #ifndef NDE_FUNCTIONS
 #define NDE_FUNCTIONS
 void node_editor_push(struct node_editor *editor, struct node *node, bool delete_list = false)
@@ -346,13 +350,13 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         const char *grid_option[] = {"Show Grid", "Hide Grid"};
         nk_layout_row_dynamic(ctx, 25, 1);
         if (nk_contextual_item_label(ctx, "New", NK_TEXT_CENTERED))
-            node_editor_add(nodeedit, "New", nk_rect(400, 260, 180, 220),
+            node_editor_add(nodeedit, className, nk_rect(400, 260, 180, 220),
                             node_data(), 1, 2, node_ftables[1], true, 1);
         if (nk_contextual_item_label(ctx, grid_option[nodeedit->show_grid],NK_TEXT_CENTERED))
             nodeedit->show_grid = !nodeedit->show_grid;
         nk_contextual_end(ctx);
     }
-    else if (nk_window_is_active(ctx, title) && nk_contextual_begin(ctx, 0, nk_vec2(100, 220), nk_window_get_bounds(ctx))) {
+    else if (nk_window_is_active(ctx, title) && nk_contextual_begin(ctx, 0, nk_vec2(200, 220), nk_window_get_bounds(ctx))) {
         nodeedit->popupOpened = true;
         nk_layout_row_dynamic(ctx, 25, 1);
         if (nk_contextual_item_label(ctx, "Delete", NK_TEXT_CENTERED))
@@ -363,9 +367,13 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
             node_editor_clean_links(nodeedit);
             node_editor_clear_gaps(nodeedit);
         }
+
+        nk_layout_row_static(ctx, 0, 100, 2);
+        nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, tempName, sizeof(tempName) - 1, nk_filter_default);
         if (nk_contextual_item_label(ctx, "Edit", NK_TEXT_CENTERED))
         {
-            
+            holder->EditClassTitle(tempName, nodeedit->hovered->name);
+            strcpy(nodeedit->hovered->name, tempName);
         }
         nk_contextual_end(ctx);
     }

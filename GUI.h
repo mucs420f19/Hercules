@@ -69,6 +69,7 @@ void RunGUI(UMLObjectsHolder* holder)
 	char classname[256] = { 0 };
 	char overwrite[256] = { 0 };
 	char type[256] = { 0 };
+	static int popup_active;
 	node_ftables[0].draw = &draw_color;
 	node_ftables[1].draw = &draw_info;
 	static struct node_editor node1;
@@ -149,14 +150,14 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Add Class"))
 			{
 				(holder->CreateNewClass(add));
-				  node_editor_add(&node1, add, nk_rect(400, 260, 180, 220),
-                            node_data(), 1, 2, node_ftables[1], true, 1);
+				node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 			}
 			//Edits a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Edit Class"))
 			{
 				(holder->EditClassTitle(edit, add));
+				strcpy(node1.name , edit);
 			}
 			//Deletes a class in the holder
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
