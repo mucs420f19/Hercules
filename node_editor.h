@@ -1,5 +1,14 @@
 //Node Editor, GNU GPL v3 (Originally Public Domain)
 //This is a heavily extended version of Nuklear's node editor demo, it fixes a small bug with the grid, cleaned up global state, includes unlinking, snapping the links, deleting nodes, nodes with infinite amount of links (actually limited to a set amount but don't talk about that) as well as custom draw functions for each node
+#include "UMLObjectsHolder.h"
+
+UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+void node_holder(UMLObjectsHolder* temp)
+{
+	holder = temp;
+}
+
 
 #ifndef NDE_MAX_FUNCS
 #define NDE_MAX_FUNCS 32
@@ -349,6 +358,7 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         if (nk_contextual_item_label(ctx, "Delete", NK_TEXT_CENTERED))
         {
             node_editor_pop(nodeedit, nodeedit->hovered);
+			holder->DeleteUMLObject(nodeedit->hovered->name);
             node_editor_push(nodeedit, nodeedit->hovered, true);
             node_editor_clean_links(nodeedit);
             node_editor_clear_gaps(nodeedit);
