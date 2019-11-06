@@ -29,7 +29,7 @@ public:
 	//print to console the entire contents of a class (using its ToString method)
 	void UMLObjectPrintContents();
 	//print to console the contents of a class in a pseudo UML manner
-	void UMLObjectsHolder::UMLObjectPrintContentsREPL();
+	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
 	std::vector<std::string> UMLObjectReturnTitles();
 	std::vector<std::string> UMLObjectReturnTitlesString();
