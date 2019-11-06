@@ -10,6 +10,7 @@
 #include "UMLObjectsHolder.h"
 #include "REPL.h"
 #include "GUI.h"
+#include "node_editor.h"
 
 int main(int argc, char** argv)
 {
@@ -19,6 +20,7 @@ int main(int argc, char** argv)
 
 	if (argc == 1)
 	{
+		node_holder(holder);
 		RunGUI(holder);
 	}
 	else

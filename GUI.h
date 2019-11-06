@@ -7,6 +7,7 @@
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
 #include "REPL.h"
+#include <cmath>
 
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
@@ -28,7 +29,10 @@
 #include "nuklear.h"
 #include "nuklear_glfw_gl3.h"
 #include "style.c"
-
+#include "node_editor.h"
+static void draw_color(struct node* cnode, struct nk_context* ctx);
+static void draw_info(struct node* cnode, struct nk_context* ctx);
+#include "custom_nodes.h"
 
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
@@ -42,6 +46,11 @@ static void error_callback(int e, const char* d)
 
 void RunGUI(UMLObjectsHolder* holder)
 {
+
+	/* Set up node functions */
+	node_ftables[0].draw = &draw_color;
+	node_ftables[1].draw = &draw_info;
+	
 	/* Platform */
 	static GLFWwindow *win;
 	int width = 0, height = 0;
@@ -60,6 +69,11 @@ void RunGUI(UMLObjectsHolder* holder)
 	char classname[256] = { 0 };
 	char overwrite[256] = { 0 };
 	char type[256] = { 0 };
+	static int popup_active;
+	node_ftables[0].draw = &draw_color;
+	node_ftables[1].draw = &draw_info;
+	static struct node_editor node1;
+	static struct node_editor node2;
 
 	/* GLFW */
 	glfwSetErrorCallback(error_callback);
@@ -100,8 +114,8 @@ void RunGUI(UMLObjectsHolder* holder)
 
 #ifdef INCLUDE_STYLE
 	set_style(ctx, THEME_DARK);
+#endif	
 
-#endif
 	//Background window color
 	bg.r = 0.00f, bg.g = 0.00f, bg.b = 0.00f, bg.a = 0.00f;
 	while (!glfwWindowShouldClose(win))
@@ -111,7 +125,7 @@ void RunGUI(UMLObjectsHolder* holder)
 		nk_glfw3_new_frame();
 
 		/* GUI */
-		if (nk_begin(ctx, " ", nk_rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT),
+		if (nk_begin(ctx, " ", nk_rect(0, 0, 450, WINDOW_HEIGHT),
 			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
 			NK_WINDOW_TITLE))
 
@@ -136,20 +150,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Add Class"))
 			{
 				(holder->CreateNewClass(add));
+				node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 			}
-			//Edits a class in the holder
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, edit, sizeof(edit) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Edit Class"))
-			{
-				(holder->EditClassTitle(edit, add));
-			}
-			//Deletes a class in the holder
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, del, sizeof(del) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Delete Class"))
-			{
-				(holder->DeleteUMLObject(del));
-			}
-
 		}
 
 		//Add method
@@ -346,10 +348,10 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_menu_end(ctx);
 		}
 
-		//nk_label(ctx, holder->UMLObjectPrintContents(), NK_TEXT_LEFT);
-
 		//Close the ctx struct context
 		nk_end(ctx);
+
+		node_edit(ctx, &node1, "Editor 1");
 
 		/* Draw */
 		glfwGetWindowSize(win, &width, &height);
