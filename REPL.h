@@ -438,20 +438,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						else if (substrings[2] == "visibility")
 						{
 							// Check and convert visibility
-				  			int vis;
-				  			if (substrings[5] == "public" || substrings[5] == "+")
-				  				vis = 1;
-				  			else if (substrings[5] == "private" || substrings[5] == "-")
-				  				vis = 2;
-				  			else if (substrings[5] == "protected" || substrings[5] == "#")
-				  				vis = 3;
-				  			else
-				  			{
-								std::cout << "Please enter a valid visibility." << std::endl;
-								break;
-				  			}
+				  			int out;
 
-							int out = holder->EditFieldVisibility(substrings[3], substrings[4], vis);
+							// Check and convert visibility
+				  			if (holder->GetVisibilityTypeFromString(substrings[5]))
+							{
+								out = holder->EditFieldVisibility(substrings[3], substrings[4], holder->GetVisibilityTypeFromString(substrings[5]));
+							}
 
 							// Class does not exist
 							if (out == ClassDoesntExist)
@@ -517,21 +510,19 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit method visibility [class name] [method name] [new visibility]
 						else if (substrings[2] == "visibility")
 						{
+							int out;
+
 							// Check and convert visibility
-				  			int vis;
-				  			if (substrings[5] == "public" || substrings[5] == "+")
-				  				vis = 1;
-				  			else if (substrings[5] == "private" || substrings[5] == "-")
-				  				vis = 2;
-				  			else if (substrings[5] == "protected" || substrings[5] == "#")
-				  				vis = 3;
+				  			if (holder->GetVisibilityTypeFromString(substrings[5]))
+							{
+								out = holder->EditMethodVisibility(substrings[3], substrings[4], holder->GetVisibilityTypeFromString(substrings[5]));
+							}
+
 				  			else
 				  			{
 								std::cout << "Please enter a valid visibility." << std::endl;
 								break;
-				  			}
-
-							int out = holder->EditMethodVisibility(substrings[3], substrings[4], vis);
+				  			}							
 
 							// Class does not exist
 							if (out == ClassDoesntExist)

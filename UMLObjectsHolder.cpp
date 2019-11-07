@@ -151,9 +151,9 @@ int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
 	int result = 0;
 	if (in.size() == 0) return result;
 	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
-	if (in == "private") result = UMLFieldVisibilityPrivate;
-	else if (in == "public") result = UMLFieldVisibilityPublic;
-	else if (in == "protected") result = UMLFieldVisibilityProtected;
+	if (in == "private" || in[0] == '-') result = UMLFieldVisibilityPrivate;
+	else if (in == "public" || in[0] == '+') result = UMLFieldVisibilityPublic;
+	else if (in == "protected" || in[0] == '#') result = UMLFieldVisibilityProtected;
 	return result;
 }
 
