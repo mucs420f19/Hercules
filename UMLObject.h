@@ -7,10 +7,10 @@ const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
 const int UMLFieldVisibilityProtected = 3;
 
-const int RelationshipAggregation = 2;
-const int RelationshipComposition = 6;
-const int RelationshipGeneralization = 12;
-const int RelationshipRealization = 18;
+const int RelationshipAggregation = 1;
+const int RelationshipComposition = 2;
+const int RelationshipGeneralization = 3;
+const int RelationshipRealization = 4;
 
 const int RelationshipQuantifierOne = 1;
 const int RelationshipQuantifierMany = 2;
@@ -310,14 +310,10 @@ struct UMLRelationship
   std::string ToString()
 	{
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
-  }
-  
-  std::string ToStringREPL()
+  	}
+
+	std::string ToStringREPL()
 	{
-		if (parent == true)
-		  return "Parent of: " + object->ReturnTitle();
 		
-		else
-		  return "Child of: " + object->ReturnTitle();
-  }
+	}
 };

@@ -405,3 +405,29 @@ int UMLObjectsHolder::GetRelationshipTypeFromString(std::string in)
 	else if (in[0] == 'r') result = RelationshipRealization;
 	return result;
 }
+
+int UMLObjectsHolder::GetQuantifierFromString(std::string in)
+{
+	int result = 0;
+	if (in.size() == 0) return result;
+	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
+	if (in == "1" || in == "one") result = RelationshipQuantifierOne;
+	else if (in == "many") result = RelationshipQuantifierMany;
+	return result;
+}
+
+bool UMLObjectsHolder::ValidateRelationshipType(std::string in)
+{
+	if (in[0] != 'a' && in[0] != 'c' && in[0] != 'g' && in[0] != 'r')
+		return false;
+
+	return true;
+}
+
+bool UMLObjectsHolder::ValidateQuantifier(std::string in)
+{
+	if (in != "one" && in != "many" && in != "1")
+		return false;
+
+	return true;
+}
