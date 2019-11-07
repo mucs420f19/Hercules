@@ -13,9 +13,6 @@ static void draw_color(struct node* cnode, struct nk_context* ctx)
 //Was too lazy to remember how to draw a text label (just remembered as writing this comment) so just used nk_propertyi for the values
 static void draw_info(struct node* cnode, struct nk_context* ctx)
 {
-	nk_layout_row_dynamic(ctx, 25, 2);
-	nk_button_color(ctx, cnode->data.color);
-	nk_button_color(ctx, cnode->data.color);
 	nk_propertyi(ctx, "#ID:", 0, cnode->ID, 255, 1,1);
 	nk_propertyi(ctx, "#Inp:", 0, cnode->input_count, 255, 1,1);
 }
