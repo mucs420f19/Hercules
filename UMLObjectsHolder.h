@@ -52,6 +52,10 @@ public:
 	int GetRelationshipTypeFromString(std::string in);
 	//similarly for the Visibility
 	int GetVisibilityTypeFromString(std::string in);
+	int GetQuantifierFromString(std::string in);
+
+	bool ValidateRelationshipType(std::string in);
+	bool ValidateQuantifier(std::string in);
 
 	int AddField(std::string class_title, std::string field_title, std::string type, int visibility);
 	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);

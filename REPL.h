@@ -10,7 +10,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input = "");
 
 void help()
 {
-	std::cout << "Usable Commands:" << std::endl << "================" << std::endl;
+	std::cout << "\nUsable Commands:" << std::endl << "================" << std::endl;
 
 	std::cout << "help - Display a list of usable commands." << std::endl; 
 	std::cout << "list - Lists all currently existing classes and their attributes." << std::endl;
@@ -36,8 +36,22 @@ void help()
 	std::cout << "edit method type [class name] [method name] [new type] - Edit the return type of an existing field." << std::endl;
 	std::cout << "edit method visibility [class name] [method name] [new visibility] - Edit the visibility of an existing field." << std::endl << std::endl;
 
-	std::cout << "add relationship [parent class] [child class] - Adds a relationship between the parent and child classes." << std::endl;
-	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl << std::endl;
+	std::cout << "add relationship [parent class] [child class] [type] [q1] [q2] - Adds a relationship between the parent and child classes." << std::endl;
+	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl;
+	std::cout << "edit relationship [parent class] [child class] [type] [q1] [q2] - Edits an existing relationship." << std::endl << std::endl;
+
+	std::cout << "Additional Info:" << std::endl << "===============" << std::endl;
+
+	std::cout << "Quantifier Syntax" << std::endl << "q1-q2" << std::endl << "\tSo if q2 = many and q1 = one, you would have a one-to-many relationship." << std::endl << std::endl;
+
+	std::cout << "Acceptable visibilities for methods & fields:" << std::endl;
+	std::cout << "public / +" << std::endl << "private / -" << std::endl << "protected / #" << std::endl << std::endl;
+
+	std::cout << "Acceptable relationship types:" << std::endl;
+	std::cout << "[a]ggregation" << std::endl << "[c]omposition" << std::endl << "[g]eneralization" << std::endl << "[r]ealization" << std::endl << std::endl;
+
+	std::cout << "Acceptable relationship quantifiers:" << std::endl;
+	std::cout << "one / 1" << std::endl << "many" << std::endl << std::endl;
 }
 
 void fail()
@@ -233,32 +247,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 
 		  	case 4:
 		  	{
-		    	// 'add _____ ...'
-		    	if (substrings[0] == "add")
-		    	{ 
-				  	// 'add relationship _____ _____' // Currently set to aggregation by default
-				  	if (substrings[1] == "relationship")
-				  	{
-				    	// Check that the objects are not identical - Object cannot have relationship to itself
-				    	if (substrings[2] == substrings[3])
-				      		std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
-				    
-					  	// Relationship acceptable
-					  	else if (holder->AddRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString("c TODO user puts their string here"), 0, 0))
-						  	std::cout << "Relationship created successfully." << std::endl;
-
-					  	// Relationship not acceptable and not created
-					  	else
-						  	std::cout << "An error has occurred, relationship not created." << std::endl;
-				  	}
-
-				  	// Fail if second substring is not 'method', 'field', or 'relationship'
-				  	else
-					  	fail();
-			  	}
-
 			  	// 'edit _____ ...'
-			  	else if (substrings[0] == "edit")
+			  	if (substrings[0] == "edit")
 			  	{
 				  	// 'edit class _____ _____'
 				  	if (substrings[1] == "class")
@@ -372,6 +362,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// Field added successfully
 						else
 							std::cout << "Field added successfully." << std::endl;
+
+						break;
 				  	}
 
 					// add method [class name] [field name] [type] [visibility]
@@ -390,6 +382,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// Field added successfully
 						else
 							std::cout << "Method added successfully." << std::endl;
+
+						break;
 				  	}
 
 				  	else 
@@ -416,6 +410,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Name changed successfully." << std::endl;
+
+							break;
 						}
 
 						// edit field type [class name] [field name] [new type]
@@ -434,6 +430,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Return type changed successfully." << std::endl;
+
+								break;
 						}
 
 						// edit field visibility [class name] [field name] [new visibility]
@@ -466,6 +464,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Visibility changed successfully." << std::endl;
+
+							break;
 						}
 
 						else
@@ -490,6 +490,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Name changed successfully." << std::endl;
+
+							break;
 						}
 						
 						// edit method type [class name] [method name] [new type]
@@ -508,6 +510,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Type changed successfully." << std::endl;
+
+							break;
 						}
 
 						// edit method visibility [class name] [method name] [new visibility]
@@ -540,6 +544,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 							// Type changed successfully
 							else
 								std::cout << "Visibility changed successfully." << std::endl;
+
+							break;
 						}
 
 						else
@@ -550,14 +556,70 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						fail();
 				}
 
-			  	else 
-			  		fail();
+				else
+					fail();
 		  	}
+
+			case 7:
+			{
+				if (substrings[0] == "add")
+		    	{ 
+				  	// add relationship
+				  	if (substrings[1] == "relationship")
+				  	{
+				    	// Check that the objects are not identical - Object cannot have relationship to itself
+				    	if (substrings[2] == substrings[3])
+				      		std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
+
+						else if (holder->ValidateRelationshipType(substrings[4]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship type." << std::endl;
+
+						else if (holder->ValidateQuantifier(substrings[5]) == false || holder->ValidateQuantifier(substrings[6]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship quantifier." << std::endl;
+				    
+					  	// Relationship acceptable
+					  	else if (holder->AddRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString(substrings[4]), holder->GetQuantifierFromString(substrings[5]), holder->GetQuantifierFromString(substrings[6])))
+						  	std::cout << "Relationship created successfully." << std::endl;
+
+					  	// Relationship not acceptable and not created
+					  	else
+						  	std::cout << "An error has occurred, relationship not created." << std::endl;
+				  	}
+
+				  	// Fail if second substring is not 'relationship'
+				  	else
+					  	fail();
+				}
+
+				else if (substrings[0] == "edit")
+				{
+					if (substrings[1] == "relationship")
+					{
+						if (holder->ValidateRelationshipType(substrings[4]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship type." << std::endl;
+
+						else if (holder->ValidateQuantifier(substrings[5]) == false || holder->ValidateQuantifier(substrings[6]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship quantifier." << std::endl;
+
+						else if (holder->EditRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString(substrings[4]), holder->GetQuantifierFromString(substrings[5]), holder->GetQuantifierFromString(substrings[6])))
+							std::cout << "Relationship edited successfully." << std::endl;
+
+						else
+							fail();
+					}
+
+					else	
+						fail();
+				}
+
+				else 
+					fail();
+			}
 		    
 		  	// Fail if too many commands are entered
 		  	default:
 		  	{
-			  	if (substrings.size() > 6)
+			  	if (substrings.size() > 7 || substrings.size() == 5)
 			  		fail();
 			  
 			  		break;
