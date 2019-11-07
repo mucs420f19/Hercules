@@ -349,6 +349,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// Field added successfully
 						else
 							std::cout << "Field added successfully." << std::endl;
+
+						break;
 				  	}
 
 					// add method [class name] [field name] [type] [visibility]
@@ -367,6 +369,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// Field added successfully
 						else
 							std::cout << "Method added successfully." << std::endl;
+
+						break;
 				  	}
 
 				  	else 
@@ -526,6 +530,9 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					else
 						fail();
 				}
+
+				else
+					fail();
 		  	}
 
 			case 7:
