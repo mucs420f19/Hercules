@@ -38,7 +38,7 @@ void help()
 
 	std::cout << "add relationship [parent class] [child class] [type] [q1] [q2] - Adds a relationship between the parent and child classes." << std::endl;
 	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl;
-	std::cout << "edit relationship [parent class] [child class] [type] [q1] [q2] - ." << std::endl << std::endl;
+	std::cout << "edit relationship [parent class] [child class] [type] [q1] [q2] - Edits an existing relationship." << std::endl << std::endl;
 }
 
 void fail()
@@ -526,9 +526,6 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					else
 						fail();
 				}
-
-			  	else 
-			  		fail();
 		  	}
 
 			case 7:
@@ -557,10 +554,34 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						  	std::cout << "An error has occurred, relationship not created." << std::endl;
 				  	}
 
-				  	// Fail if second substring is not 'method', 'field', or 'relationship'
+				  	// Fail if second substring is not 'relationship'
 				  	else
 					  	fail();
 				}
+
+				else if (substrings[0] == "edit")
+				{
+					if (substrings[1] == "relationship")
+					{
+						if (holder->ValidateRelationshipType(substrings[4]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship type." << std::endl;
+
+						else if (holder->ValidateQuantifier(substrings[5]) == false || holder->ValidateQuantifier(substrings[6]) == false)
+							std::cout << "An error has occurred. Please enter a valid relationship quantifier." << std::endl;
+
+						else if (holder->EditRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString(substrings[4]), holder->GetQuantifierFromString(substrings[5]), holder->GetQuantifierFromString(substrings[6])))
+							std::cout << "Relationship edited successfully." << std::endl;
+
+						else
+							fail();
+					}
+
+					else	
+						fail();
+				}
+
+				else 
+					fail();
 			}
 		    
 		  	// Fail if too many commands are entered
