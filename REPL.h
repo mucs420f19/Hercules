@@ -51,7 +51,7 @@ void help()
 	std::cout << "[a]ggregation" << std::endl << "[c]omposition" << std::endl << "[g]eneralization" << std::endl << "[r]ealization" << std::endl << std::endl;
 
 	std::cout << "Acceptable relationship quantifiers:" << std::endl;
-	std::cout << "one / 1" << std::endl << "many" << std::endl << std::endl;
+	std::cout << "[o]ne / 1" << std::endl << "[m]any" << std::endl << std::endl;
 }
 
 void fail()
@@ -557,19 +557,9 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		    	{ 
 				  	// add relationship
 				  	if (substrings[1] == "relationship")
-				  	{
-				    	// Check that the objects are not identical - Object cannot have relationship to itself
-				    	if (substrings[2] == substrings[3])
-				      		std::cout << "An error has occurred. You cannot create a relationship from an object to itself." << std::endl;
-
-						else if (holder->ValidateRelationshipType(substrings[4]) == false)
-							std::cout << "An error has occurred. Please enter a valid relationship type." << std::endl;
-
-						else if (holder->ValidateQuantifier(substrings[5]) == false || holder->ValidateQuantifier(substrings[6]) == false)
-							std::cout << "An error has occurred. Please enter a valid relationship quantifier." << std::endl;
-				    
+				  	{				    
 					  	// Relationship acceptable
-					  	else if (holder->AddRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString(substrings[4]), holder->GetQuantifierFromString(substrings[5]), holder->GetQuantifierFromString(substrings[6])))
+					  	if (holder->AddRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]))
 						  	std::cout << "Relationship created successfully." << std::endl;
 
 					  	// Relationship not acceptable and not created
@@ -586,13 +576,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				{
 					if (substrings[1] == "relationship")
 					{
-						if (holder->ValidateRelationshipType(substrings[4]) == false)
-							std::cout << "An error has occurred. Please enter a valid relationship type." << std::endl;
-
-						else if (holder->ValidateQuantifier(substrings[5]) == false || holder->ValidateQuantifier(substrings[6]) == false)
-							std::cout << "An error has occurred. Please enter a valid relationship quantifier." << std::endl;
-
-						else if (holder->EditRelationship(substrings[2], substrings[3], holder->GetRelationshipTypeFromString(substrings[4]), holder->GetQuantifierFromString(substrings[5]), holder->GetQuantifierFromString(substrings[6])))
+						if (holder->EditRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]))
 							std::cout << "Relationship edited successfully." << std::endl;
 
 						else

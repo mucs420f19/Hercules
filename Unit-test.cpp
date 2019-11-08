@@ -78,7 +78,7 @@ TEST_CASE("Add relationship between classes", "0")
 		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
 	}
 
-	holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+	holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many");
 
 	SECTION("Verify relationship", "0")
 	{
@@ -97,10 +97,10 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 	for (unsigned int i = 0; i < 4; i++)
 	{
 		holder->CreateNewClass("Door" + std::to_string(i + 1));
-		holder->AddRelationship("Vehicle", "Door" + std::to_string(i + 1), RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+		holder->AddRelationship("Vehicle", "Door" + std::to_string(i + 1), "Composition", "one", "many");
 
 		holder->CreateNewClass("Tire" + std::to_string(i + 1));
-		holder->AddRelationship("Vehicle", "Tire" + std::to_string(i + 1), RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+		holder->AddRelationship("Vehicle", "Tire" + std::to_string(i + 1), "Composition", "one", "many");
 	}
 
 	SECTION("Create classes", "0")
@@ -141,13 +141,13 @@ TEST_CASE("Relationships edit functionality test", "0")
 
 	//every one of these must succeed
 	REQUIRE((
-		holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Door", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Light", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Engine", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
-		holder->AddRelationship("Engine", "Cylinders", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Fleet", "Vehicle", RelationshipAggregation, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Driver", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne)
+		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") &&
+		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") &&
+		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") &&
+		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one")
 	));
 
 	SECTION("Verify relationship", "0")
@@ -165,12 +165,12 @@ TEST_CASE("Relationships edit functionality test", "0")
 
 	//these values might not make sense in the real world, they are just for the purpose of the test
 	REQUIRE((
-		holder->EditRelationship("Vehicle", "Tire", RelationshipGeneralization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->EditRelationship("Door", "Vehicle", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->EditRelationship("Vehicle", "Light", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->EditRelationship("Cylinders", "Engine", RelationshipRealization, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->EditRelationship("Fleet", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
-		holder->EditRelationship("Vehicle", "Driver", RelationshipGeneralization, RelationshipQuantifierMany, RelationshipQuantifierMany)
+		holder->EditRelationship("Vehicle", "Tire", "Generalization", "many", "many") &&
+		holder->EditRelationship("Door", "Vehicle", "Realization", "many", "many") &&
+		holder->EditRelationship("Vehicle", "Light", "Realization", "many", "many") &&
+		holder->EditRelationship("Cylinders", "Engine", "Realization", "many", "many") &&
+		holder->EditRelationship("Fleet", "Vehicle", "Realization", "one", "one") &&
+		holder->EditRelationship("Vehicle", "Driver", "Generalization", "many", "many")
 		));
 
 	SECTION("Verify relationships after edit", "0")
@@ -220,13 +220,13 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 
 	//every one of these must succeed
 	REQUIRE((
-		holder->AddRelationship("Vehicle", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Door", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Light", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Vehicle", "Engine", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierOne) &&
-		holder->AddRelationship("Engine", "Cylinders", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Fleet", "Vehicle", RelationshipAggregation, RelationshipQuantifierMany, RelationshipQuantifierMany) &&
-		holder->AddRelationship("Driver", "Vehicle", RelationshipRealization, RelationshipQuantifierOne, RelationshipQuantifierOne)
+		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") &&
+		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") &&
+		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") &&
+		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") &&
+		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one")
 		));
 
 	SECTION("Verify relationship", "0")
@@ -308,7 +308,7 @@ TEST_CASE("Test Saving Loading All Items", "0")
 	}
 
 	holder->EditClassTitle("Tire", "Wheel");
-	holder->AddRelationship("Car", "Tire", RelationshipComposition, RelationshipQuantifierOne, RelationshipQuantifierMany);
+	holder->AddRelationship("Car", "Tire", "Composition", "one", "many");
 
 
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "tempfile.txt", true) == SaveSuccess);
@@ -699,35 +699,57 @@ TEST_CASE("Test Terminal Method Functionality", "0")
 	delete holder;
 }
 
-/*
-TODO
-This test will not work until the REPL is updated to reflect the changes in the relationships!
-*/
+TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-//TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
-//{
-//	UMLObjectsHolder* holder = new UMLObjectsHolder();
-//
-//	RunREPL(holder, "add class test_class1");
-//	RunREPL(holder, "add class test_class2");
-//	RunREPL(holder, "add class test_class3");
-//
-//	RunREPL(holder, "add relationship test_class1 test_class2");
-//	RunREPL(holder, "add relationship test_class2 test_class3");
-//
-//	RunREPL(holder, "delete relationship test_class1 test_class2");
-//	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-//	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-//	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
-//
-//	RunREPL(holder, "delete relationship test_class2");
-//	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-//	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-//	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
-//
-//	RunREPL(holder, "delete relationship");
-//	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
-//	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{Type: 0, Parent of: test_class3}, }");
-//	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{Type: 0, Child of: test_class2}, }");
-//	delete holder;
-//}
+	RunREPL(holder, "add class test_class1");
+	RunREPL(holder, "add class test_class2");
+	RunREPL(holder, "add class test_class3");
+
+	RunREPL(holder, "add relationship test_class1 test_class2 a 1 m");
+	RunREPL(holder, "add relationship test_class2 test_class3 c many o");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "delete relationship test_class1 test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "delete relationship test_class2");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "delete relationship");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+	delete holder;
+}
+
+
+
+/*
+
+
+	std::cout << "add relationship [parent class] [child class] [type] [q1] [q2] - Adds a relationship between the parent and child classes." << std::endl;
+	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl;
+	std::cout << "edit relationship [parent class] [child class] [type] [q1] [q2] - Edits an existing relationship." << std::endl << std::endl;
+
+	std::cout << "Additional Info:" << std::endl << "===============" << std::endl;
+
+	std::cout << "Quantifier Syntax" << std::endl << "q1-q2" << std::endl << "\tSo if q2 = many and q1 = one, you would have a one-to-many relationship." << std::endl << std::endl;
+
+	std::cout << "Acceptable visibilities for methods & fields:" << std::endl;
+	std::cout << "public / +" << std::endl << "private / -" << std::endl << "protected / #" << std::endl << std::endl;
+
+	std::cout << "Acceptable relationship types:" << std::endl;
+	std::cout << "[a]ggregation" << std::endl << "[c]omposition" << std::endl << "[g]eneralization" << std::endl << "[r]ealization" << std::endl << std::endl;
+
+	std::cout << "Acceptable relationship quantifiers:" << std::endl;
+	std::cout << "[o]ne / 1" << std::endl << "[m]any" << std::endl << std::endl;
+
+
+*/

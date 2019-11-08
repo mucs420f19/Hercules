@@ -13,6 +13,10 @@ const int ClassDoesntExist = 1;
 const int ElementExists = 2;
 const int ElementSuccess = 3;
 const int ElementDoesntExist = 4;
+const int RelationshipAlreadyExists = 5;
+const int InvalidQuantifier = 6;
+const int InvalidRelationshipType = 7;
+const int RelationshipDoesNotExist = 8;
 
 class UMLObjectsHolder
 {
@@ -54,9 +58,6 @@ public:
 	int GetVisibilityTypeFromString(std::string in);
 	int GetQuantifierFromString(std::string in);
 
-	bool ValidateRelationshipType(std::string in);
-	bool ValidateQuantifier(std::string in);
-
 	int AddField(std::string class_title, std::string field_title, std::string type, int visibility);
 	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
 	int EditFieldType(std::string class_title, std::string field_title, std::string type);
@@ -79,12 +80,12 @@ public:
 	bool DeleteParameter(std::string class_title, std::string method_title, std::string param_name);
 
 	//Add a relationship between a parent and child. returns true if successful
-	bool AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2);
+	int AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);
 	//Edit a relationship between a specified parent and child. returns true if successful
 	//The only thing that can be edited is the relationship type.. otherwise that is considered a new relationship.
-	bool EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2);
+	bool EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);
 	//delete the specified relationship. returns true if successful
-	bool DeleteRelationship(std::string parent, std::string child);
+	int DeleteRelationship(std::string parent, std::string child);
 	//this function is not used, and under normal conditions should never need to be used
 	//its purpose is to go through the relationships and fix missing quantifiers, but that should not happen 
 	void RefreshRelationships();

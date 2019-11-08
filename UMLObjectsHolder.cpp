@@ -319,49 +319,51 @@ bool UMLObjectsHolder::DeleteParameter(std::string class_title, std::string meth
 	return false;
 }
 
-bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
+int UMLObjectsHolder::AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
 
-	if (p == 0 || c == 0) return false;
+	if (p == 0 || c == 0) return ClassDoesntExist;
+	if (!GetQuantifierFromString(quantifier1) || !GetQuantifierFromString(quantifier2)) return InvalidQuantifier;
+	if (!GetRelationshipTypeFromString(type)) return InvalidRelationshipType;
+	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return RelationshipAlreadyExists;
 
-	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
-
-	p->AddRelationship({ type, quantifier1, c, p, true});
-	c->AddRelationship({ type, quantifier2, p, c, false});
+	p->AddRelationship({ GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier1), c, p, true});
+	c->AddRelationship({ GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier2), p, c, false});
 
 	return true;
 }
 
-bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
+bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
 
-	if (p == 0 || c == 0) return false;
+	if (p == 0 || c == 0) return ClassDoesntExist;
+	if (!GetQuantifierFromString(quantifier1) || !GetQuantifierFromString(quantifier2)) return InvalidQuantifier;
+	if (!GetRelationshipTypeFromString(type)) return InvalidRelationshipType;
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return RelationshipDoesNotExist;
 
-	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
-
-	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type, quantifier1);
-	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type, quantifier2);
+	p->UpdateRelationship(p->GetIndexRelationshipWith(child), GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier1));
+	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier2));
 	return true;
 }
 
-bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
+int UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 {
 	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
 
-	if (p == 0 || c == 0) return false;
+	if (p == 0 || c == 0) return ClassDoesntExist;
 
-	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return RelationshipDoesNotExist;
 
 	p->DeleteRelationship(child);
 	c->DeleteRelationship(parent);
@@ -379,7 +381,7 @@ void UMLObjectsHolder::RefreshRelationships()
 			if (a)
 			{
 				b = j->GetRelationshipWith(i->ReturnTitle());
-				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->type, a->quantifier, b->quantifier);
+				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->GetRelationshipTypeName(), a->GetQuantifierName(), b->GetQuantifierName());
 			}
 		}
 	}
@@ -411,23 +413,7 @@ int UMLObjectsHolder::GetQuantifierFromString(std::string in)
 	int result = 0;
 	if (in.size() == 0) return result;
 	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
-	if (in == "1" || in == "one") result = RelationshipQuantifierOne;
-	else if (in == "many") result = RelationshipQuantifierMany;
+	if (in == "1" || in == "one" || in[0] == 'o') result = RelationshipQuantifierOne;
+	else if (in == "many" || in[0] == 'm') result = RelationshipQuantifierMany;
 	return result;
-}
-
-bool UMLObjectsHolder::ValidateRelationshipType(std::string in)
-{
-	if (in[0] != 'a' && in[0] != 'c' && in[0] != 'g' && in[0] != 'r')
-		return false;
-
-	return true;
-}
-
-bool UMLObjectsHolder::ValidateQuantifier(std::string in)
-{
-	if (in != "one" && in != "many" && in != "1")
-		return false;
-
-	return true;
 }
