@@ -22,7 +22,7 @@ TEST_CASE("Create a Class", "0")
 TEST_CASE("Edit a class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	UMLObject* a = holder->CreateNewClass("Car");
+	holder->CreateNewClass("Car");
 	SECTION("Class Constructor", "0")
 	{
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
@@ -35,11 +35,10 @@ TEST_CASE("Edit a class", "0")
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
 	}
 
-	UMLObject* b = holder->CreateNewClass("Vehicle");
+	holder->CreateNewClass("Vehicle");
 
 	SECTION("Class Creation Duplicate", "0")
 	{
-		REQUIRE(b == NULL);
 		REQUIRE(holder->Size() == 1);
 	}
 	delete holder;
@@ -50,13 +49,11 @@ TEST_CASE("Add multiple classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	UMLObject* c = holder->CreateNewClass("Vehicle");
-	UMLObject* a = holder->CreateNewClass("Tire");
+	holder->CreateNewClass("Vehicle");
+	holder->CreateNewClass("Tire");
 
 	SECTION("Class Multiples", "0")
 	{
-		REQUIRE(a != NULL);
-		REQUIRE(c != NULL);
 		REQUIRE(holder->Size() == 2);
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
 		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
@@ -68,8 +65,8 @@ TEST_CASE("Add relationship between classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	UMLObject* c = holder->CreateNewClass("Vehicle");
-	UMLObject* a = holder->CreateNewClass("Tire");
+	holder->CreateNewClass("Vehicle");
+	holder->CreateNewClass("Tire");
 
 	SECTION("Create classes", "0")
 	{
@@ -130,24 +127,24 @@ TEST_CASE("Relationships edit functionality test", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	UMLObject* c = holder->CreateNewClass("Vehicle");
-	UMLObject* a = holder->CreateNewClass("Tire");
-	UMLObject* d = holder->CreateNewClass("Door");
-	UMLObject* e = holder->CreateNewClass("Light");
-	UMLObject* f = holder->CreateNewClass("Cylinders");
-	UMLObject* g = holder->CreateNewClass("Engine");
-	UMLObject* h = holder->CreateNewClass("Fleet");
-	UMLObject* i = holder->CreateNewClass("Driver");
+	holder->CreateNewClass("Vehicle");
+	holder->CreateNewClass("Tire");
+	holder->CreateNewClass("Door");
+	holder->CreateNewClass("Light");
+	holder->CreateNewClass("Cylinders");
+	holder->CreateNewClass("Engine");
+	holder->CreateNewClass("Fleet");
+	holder->CreateNewClass("Driver");
 
 	//every one of these must succeed
 	REQUIRE((
-		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") &&
-		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") &&
-		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") &&
-		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one")
+		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") == ElementSuccess &&
+		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") == ElementSuccess &&
+		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one") == ElementSuccess
 	));
 
 	SECTION("Verify relationship", "0")
@@ -165,12 +162,12 @@ TEST_CASE("Relationships edit functionality test", "0")
 
 	//these values might not make sense in the real world, they are just for the purpose of the test
 	REQUIRE((
-		holder->EditRelationship("Vehicle", "Tire", "Generalization", "many", "many") &&
-		holder->EditRelationship("Door", "Vehicle", "Realization", "many", "many") &&
-		holder->EditRelationship("Vehicle", "Light", "Realization", "many", "many") &&
-		holder->EditRelationship("Cylinders", "Engine", "Realization", "many", "many") &&
-		holder->EditRelationship("Fleet", "Vehicle", "Realization", "one", "one") &&
-		holder->EditRelationship("Vehicle", "Driver", "Generalization", "many", "many")
+		holder->EditRelationship("Vehicle", "Tire", "Generalization", "many", "many") == ElementSuccess &&
+		holder->EditRelationship("Door", "Vehicle", "Realization", "many", "many") == ElementSuccess &&
+		holder->EditRelationship("Vehicle", "Light", "Realization", "many", "many") == ElementSuccess &&
+		holder->EditRelationship("Cylinders", "Engine", "Realization", "many", "many") == ElementSuccess &&
+		holder->EditRelationship("Fleet", "Vehicle", "Realization", "one", "one") == ElementSuccess &&
+		holder->EditRelationship("Vehicle", "Driver", "Generalization", "many", "many") == ElementSuccess
 		));
 
 	SECTION("Verify relationships after edit", "0")
@@ -209,24 +206,24 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	UMLObject* c = holder->CreateNewClass("Vehicle");
-	UMLObject* a = holder->CreateNewClass("Tire");
-	UMLObject* d = holder->CreateNewClass("Door");
-	UMLObject* e = holder->CreateNewClass("Light");
-	UMLObject* f = holder->CreateNewClass("Cylinders");
-	UMLObject* g = holder->CreateNewClass("Engine");
-	UMLObject* h = holder->CreateNewClass("Fleet");
-	UMLObject* i = holder->CreateNewClass("Driver");
+	holder->CreateNewClass("Vehicle");
+	holder->CreateNewClass("Tire");
+	holder->CreateNewClass("Door");
+	holder->CreateNewClass("Light");
+	holder->CreateNewClass("Cylinders");
+	holder->CreateNewClass("Engine");
+	holder->CreateNewClass("Fleet");
+	holder->CreateNewClass("Driver");
 
 	//every one of these must succeed
 	REQUIRE((
-		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") &&
-		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") &&
-		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") &&
-		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") &&
-		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one")
+		holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Door", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Light", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Vehicle", "Engine", "Composition", "one", "one") == ElementSuccess &&
+		holder->AddRelationship("Engine", "Cylinders", "Composition", "one", "many") == ElementSuccess &&
+		holder->AddRelationship("Fleet", "Vehicle", "Aggregation", "many", "many") == ElementSuccess &&
+		holder->AddRelationship("Driver", "Vehicle", "Realization", "one", "one") == ElementSuccess
 		));
 
 	SECTION("Verify relationship", "0")
@@ -283,29 +280,25 @@ TEST_CASE("Test Saving Loading All Items", "0")
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	UMLObject* a = NULL, * b = NULL;
 
-	if (holder->CreateNewClass("Car"))
-	{
-		a = holder->ReturnPtrToVector()[0];
-		std::vector<UMLParameter> testVec;
-		a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-		a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-		a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
-		a->SetXPosition(100);
-		a->SetYPosition(200);
-	}
+	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
+	a = holder->ReturnPtrToVector()[0];
+	std::vector<UMLParameter> testVec;
+	a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
+	a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
+	a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+	a->SetXPosition(100);
+	a->SetYPosition(200);
 
-	if (holder->CreateNewClass("Wheel"))
-	{
-		b = holder->ReturnPtrToVector()[1];
-		std::vector<UMLParameter> testVec;
-		testVec.push_back(UMLParameter("int", "Dummy param 1"));
-		testVec.push_back(UMLParameter("float", "Dummy param 2", "true", "0.0f"));
-		b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-		b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-		b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
-		b->SetXPosition(300);
-		b->SetYPosition(400);
-	}
+	REQUIRE(holder->CreateNewClass("Wheel") == ElementSuccess);
+	b = holder->ReturnPtrToVector()[1];
+	testVec.clear();
+	testVec.push_back(UMLParameter("int", "Dummy param 1"));
+	testVec.push_back(UMLParameter("float", "Dummy param 2", "true", "0.0f"));
+	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
+	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
+	b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+	b->SetXPosition(300);
+	b->SetYPosition(400);
 
 	holder->EditClassTitle("Tire", "Wheel");
 	holder->AddRelationship("Car", "Tire", "Composition", "one", "many");
@@ -454,6 +447,7 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
 	RunREPL(holder, "help");
+	RunREPL(holder, "exit");
 
 	RunREPL(holder, "add class test_class1");
 	REQUIRE(holder->Size() == 1);
@@ -712,7 +706,12 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
 
+	RunREPL(holder, "delete relationship test_class test_class2");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
+
 	RunREPL(holder, "delete relationship test_class1 test_class2");
+
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
 	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
 	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
@@ -728,28 +727,3 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
 	delete holder;
 }
-
-
-
-/*
-
-
-	std::cout << "add relationship [parent class] [child class] [type] [q1] [q2] - Adds a relationship between the parent and child classes." << std::endl;
-	std::cout << "delete relationship [parent class] [child class] - Deletes a given relationship." << std::endl;
-	std::cout << "edit relationship [parent class] [child class] [type] [q1] [q2] - Edits an existing relationship." << std::endl << std::endl;
-
-	std::cout << "Additional Info:" << std::endl << "===============" << std::endl;
-
-	std::cout << "Quantifier Syntax" << std::endl << "q1-q2" << std::endl << "\tSo if q2 = many and q1 = one, you would have a one-to-many relationship." << std::endl << std::endl;
-
-	std::cout << "Acceptable visibilities for methods & fields:" << std::endl;
-	std::cout << "public / +" << std::endl << "private / -" << std::endl << "protected / #" << std::endl << std::endl;
-
-	std::cout << "Acceptable relationship types:" << std::endl;
-	std::cout << "[a]ggregation" << std::endl << "[c]omposition" << std::endl << "[g]eneralization" << std::endl << "[r]ealization" << std::endl << std::endl;
-
-	std::cout << "Acceptable relationship quantifiers:" << std::endl;
-	std::cout << "[o]ne / 1" << std::endl << "[m]any" << std::endl << std::endl;
-
-
-*/

@@ -59,6 +59,60 @@ void fail()
 	std::cout << "Unknown input, type 'help' for a list of commands." << std::endl;
 }
 
+std::string ErrorHandler(int e)
+{
+	std::string out = "Unspecified error encountered.";
+	switch (e)
+	{
+		case(ClassDoesntExist):
+		{
+			out = "The specified class does not exist.";
+			break;
+		}
+		case(ElementExists):
+		{
+			out = "The specified element already exists.";
+			break;
+		}
+		case(ElementDoesntExist):
+		{
+			out = "The specified element does not exist.";
+			break;
+		}
+		case(ClassAlreadyExists):
+		{
+			out = "The specified class already exists.";
+			break;
+		}
+		case(RelationshipAlreadyExists):
+		{
+			out = "The specified relationship already exists.";
+			break;
+		}
+		case(InvalidQuantifier):
+		{
+			out = "The specified quantifier does not exist.";
+			break;
+		}
+		case(InvalidRelationshipType):
+		{
+			out = "The specified relationship type is invalid.";
+			break;
+		}
+		case(RelationshipDoesNotExist):
+		{
+			out = "The specified relationship does not exist.";
+			break;
+		}
+		case(InvalidVisibility):
+		{
+			out = "The specified visibility is invalid.";
+			break;
+		}
+	}
+	return out;
+}
+
 void RunREPL(UMLObjectsHolder* holder, std::string input)
 {
 	bool run = true;
@@ -73,6 +127,8 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		std::cout << "Welcome to the Hercules UML Editor" << std::endl;
 		std::cout << "Type 'help' for a list of commands." << std::endl;
 	}
+
+	int result = 0;
 
 	// Execute until 'exit' is used
 	do
@@ -213,10 +269,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	if (substrings[0] == "add")
 				  	{
 				    	// Verify that the class does not already exist
-				    	if (holder->CreateNewClass(substrings[2]) == 0)
-				      		std::cout << "Class already exists." << std::endl;
-				    
-				    	// Class does not exist, created successfully
+						result = holder->CreateNewClass(substrings[2]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
 				    	else
 					    	std::cout << "Successfully created class " << substrings[2] << "." << std::endl;
 				  	}
@@ -225,12 +282,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	else if (substrings[0] == "delete")
 				  	{
 					  	// Class exists and is deleted
-					  	if (holder->DeleteUMLObject(substrings[2]))
+						result = holder->DeleteUMLObject(substrings[2]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
+						else
 						  	std::cout << "Successfully deleted class " << substrings[2] << "." << std::endl;
-
-					  	// Class does not exist
-					  	else
-						  	std::cout << "Could not find a class called " << substrings[2] << "." << std::endl;
 				  	}
 
 				  	// Fail if 'add' or 'delete' are not first substring
@@ -253,16 +311,14 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	// 'edit class _____ _____'
 				  	if (substrings[1] == "class")
 				  	{
-					  	// Class name change is acceptable
-					  	if (holder->EditClassTitle(substrings[3], substrings[2]))
+					  	result = holder->EditClassTitle(substrings[3], substrings[2]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
+						else
 					    	std::cout << "Class name changed successfully." << std::endl;
-					  
-					  	// Class name change is not acceptable - Either the class doesn't exist or the new title is taken
-					  	else
-					  	{
-						  	std::cout << "An error has occurred." << std::endl;
-						  	std::cout << "Make sure that the class exists and that the new title is not already in use." << std::endl;
-					  	}
+					 
 				  	}
 			  	}
 			  
@@ -271,17 +327,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			    	// delete field [class] [name]
 			    	if (substrings[1] == "field")
 			    	{
-			      		int out = holder->DeleteField(substrings[2], substrings[3]);
-
-						// Class does not exist
-						if (out == ClassDoesntExist)
-							std::cout << "Could not find a class by that name." << std::endl;
-					
-						// Field does not exist
-						else if (out == ElementDoesntExist)
-							std::cout << "Could not find a field by that name." << std::endl;
-
-						// Field removed successfully
+			      		result = holder->DeleteField(substrings[2], substrings[3]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
 						else
 							std::cout << "Field removed successfully." << std::endl;
 			    	}
@@ -289,33 +339,28 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			    	// delete method [class] [name]
 			    	else if (substrings[1] == "method")
 			    	{
-						int out = holder->DeleteMethod(substrings[2], substrings[3]);
-
-						// Class does not exist
-						if (out == ClassDoesntExist)
-							std::cout << "Could not find a class by that name." << std::endl;
-					
-						// Method does not exist
-						else if (out == ElementDoesntExist)
-							std::cout << "Could not find a method by that name." << std::endl;
-
-						// Method removed successfully
+						result = holder->DeleteMethod(substrings[2], substrings[3]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
 						else
 							std::cout << "Method removed successfully." << std::endl;
 			    	}
 			    
 			    	// 'delete relationship _____ _____' 
-			    	else if (substrings[1] == "relationship")
-			    	{
-			    		// Relationship deletion acceptable
-			      		if (holder->DeleteRelationship(substrings[2], substrings[3]))
-			        		std::cout << "Relationship deleted successfully." << std::endl;
-			      
-			      	// Deletion not acceptable
-			      	else
-			        	std::cout << "An error has occurred, relationship not deleted." << std::endl;
-			    	}
-			    
+					else if (substrings[1] == "relationship")
+					{
+						// Relationship deletion acceptable
+						result = holder->DeleteRelationship(substrings[2], substrings[3]);
+
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
+						else
+							std::cout << "Relationship deleted successfully." << std::endl;
+					}
 			    	// Fail if second substring is not 'method', 'field', or 'relationship'
 			    	else
 			      		fail();
@@ -332,34 +377,14 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 		  	{
 			  	if (substrings[0] == "add")
 			  	{
-				  	// Check and convert visibility
-				  	int vis;
-				  	if (substrings[5] == "public" || substrings[5] == "+")
-				  		vis = 1;
-				  	else if (substrings[5] == "private" || substrings[5] == "-")
-				  		vis = 2;
-				  	else if (substrings[5] == "protected" || substrings[5] == "#")
-				  		vis = 3;
-				  	else
-				  	{
-						std::cout << "Please enter a valid visibility." << std::endl;
-						break;
-				  	}
-
 				  	// add field [class name] [field name] [type] [visibility]
-				  	if (substrings[1] == "field")
-				  	{
-						int out = holder->AddField(substrings[2], substrings[3], substrings[4], vis);
-
-						// Class does not exists
-						if (out == ClassDoesntExist)
-							std::cout << "Could not find a class by that name." << std::endl;
-					
-						// Field already exists in this class
-						else if (out == ElementExists)
-							std::cout << "This field already exists." << std::endl;
-
-						// Field added successfully
+					if (substrings[1] == "field")
+					{
+						result = holder->AddField(substrings[2], substrings[3], substrings[4], substrings[5]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
 						else
 							std::cout << "Field added successfully." << std::endl;
 
@@ -369,17 +394,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 					// add method [class name] [field name] [type] [visibility]
 				  	else if (substrings[1] == "method")
 				  	{
-						int out = holder->AddMethod(substrings[2], substrings[3], substrings[4], vis);
-
-						// Class does not exists
-						if (out == ClassDoesntExist)
-							std::cout << "Could not find a class by that name." << std::endl;
-					
-						// Field already exists in this class
-						else if (out == ElementExists)
-							std::cout << "This method already exists." << std::endl;
-
-						// Field added successfully
+						result = holder->AddMethod(substrings[2], substrings[3], substrings[4], substrings[5]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
 						else
 							std::cout << "Method added successfully." << std::endl;
 
@@ -397,17 +416,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit field name [class name] [old field name] [new field name]
 						if (substrings[2] == "name")
 						{
-							int out = holder->EditFieldName(substrings[3], substrings[4], substrings[5]);
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-					
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
+							result = holder->EditFieldName(substrings[3], substrings[4], substrings[5]);
+							if (result)
+							{
+								std::cout << ErrorHandler(result) << std::endl;
+							}
 							else
 								std::cout << "Name changed successfully." << std::endl;
 
@@ -417,17 +430,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit field type [class name] [field name] [new type]
 						else if (substrings[2] == "type")
 						{
-							int out = holder->EditFieldType(substrings[3], substrings[4], substrings[5]);
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-					
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
+							result = holder->EditFieldType(substrings[3], substrings[4], substrings[5]);
+							if (result)
+							{
+								std::cout << ErrorHandler(result) << std::endl;
+							}
 							else
 								std::cout << "Return type changed successfully." << std::endl;
 
@@ -437,24 +444,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit field visibility [class name] [field name] [new visibility]
 						else if (substrings[2] == "visibility")
 						{
-							// Check and convert visibility
-				  			int out;
-
-							// Check and convert visibility
-				  			if (holder->GetVisibilityTypeFromString(substrings[5]))
+							result = holder->EditFieldVisibility(substrings[3], substrings[4], substrings[5]);
+							if (result)
 							{
-								out = holder->EditFieldVisibility(substrings[3], substrings[4], holder->GetVisibilityTypeFromString(substrings[5]));
+								std::cout << ErrorHandler(result) << std::endl;
 							}
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-							
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
 							else
 								std::cout << "Visibility changed successfully." << std::endl;
 
@@ -470,17 +464,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit method name [class name] [old method name] [new method name]
 						if (substrings[2] == "name")
 						{
-							int out = holder->EditMethodName(substrings[3], substrings[4], substrings[5]);
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-					
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
+							result = holder->EditMethodName(substrings[3], substrings[4], substrings[5]);
+							if (result)
+							{
+								std::cout << ErrorHandler(result) << std::endl;
+							}
 							else
 								std::cout << "Name changed successfully." << std::endl;
 
@@ -490,17 +478,11 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit method type [class name] [method name] [new type]
 						else if (substrings[2] == "type")
 						{
-							int out = holder->EditMethodReturnType(substrings[3], substrings[4], substrings[5]);
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-					
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
+							result = holder->EditMethodReturnType(substrings[3], substrings[4], substrings[5]);
+							if (result)
+							{
+								std::cout << ErrorHandler(result) << std::endl;
+							}
 							else
 								std::cout << "Type changed successfully." << std::endl;
 
@@ -510,32 +492,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						// edit method visibility [class name] [method name] [new visibility]
 						else if (substrings[2] == "visibility")
 						{
-							int out;
-
-							// Check and convert visibility
-				  			if (holder->GetVisibilityTypeFromString(substrings[5]))
+							result = holder->EditMethodVisibility(substrings[3], substrings[4], substrings[5]);
+							if (result)
 							{
-								out = holder->EditMethodVisibility(substrings[3], substrings[4], holder->GetVisibilityTypeFromString(substrings[5]));
+								std::cout << ErrorHandler(result) << std::endl;
 							}
-
-				  			else
-				  			{
-								std::cout << "Please enter a valid visibility." << std::endl;
-								break;
-				  			}							
-
-							// Class does not exist
-							if (out == ClassDoesntExist)
-								std::cout << "Could not find a class by that name." << std::endl;
-							
-							// Error
-							else if (out == ElementDoesntExist)
-								std::cout << "An error has occurred." << std::endl;
-
-							// Type changed successfully
 							else
 								std::cout << "Visibility changed successfully." << std::endl;
-
 							break;
 						}
 
@@ -558,13 +521,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	// add relationship
 				  	if (substrings[1] == "relationship")
 				  	{				    
-					  	// Relationship acceptable
-					  	if (holder->AddRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]))
-						  	std::cout << "Relationship created successfully." << std::endl;
-
-					  	// Relationship not acceptable and not created
-					  	else
-						  	std::cout << "An error has occurred, relationship not created." << std::endl;
+						result = holder->AddRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
+						else
+							std::cout << "Relationship created successfully." << std::endl;
 				  	}
 
 				  	// Fail if second substring is not 'relationship'
@@ -576,11 +539,14 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				{
 					if (substrings[1] == "relationship")
 					{
-						if (holder->EditRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]))
+						result = holder->EditRelationship(substrings[2], substrings[3], substrings[4], substrings[5], substrings[6]);
+						if (result)
+						{
+							std::cout << ErrorHandler(result) << std::endl;
+						}
+						else
 							std::cout << "Relationship edited successfully." << std::endl;
 
-						else
-							fail();
 					}
 
 					else	

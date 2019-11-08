@@ -9,41 +9,29 @@
 
 #include "UMLObject.h"
 
+const int ElementSuccess = 0;
 const int ClassDoesntExist = 1;
 const int ElementExists = 2;
-const int ElementSuccess = 3;
+const int ClassAlreadyExists = 3;
 const int ElementDoesntExist = 4;
 const int RelationshipAlreadyExists = 5;
 const int InvalidQuantifier = 6;
 const int InvalidRelationshipType = 7;
 const int RelationshipDoesNotExist = 8;
+const int InvalidVisibility = 9;
 
 class UMLObjectsHolder
 {
 public:
 	UMLObjectsHolder();
-	//this method is used to add a new class. the holder will keep track of bookkeeping and everything
-	UMLObject* CreateNewClass(std::string title);
-	bool IsTitleUnique(std::string in);
 	~UMLObjectsHolder();
 	//delete all project contents
 	void ClearProject();
-	//print to console the class titles
-	void UMLObjectPrintTitles();
-	//print to console the entire contents of a class (using its ToString method)
-	void UMLObjectPrintContents();
-	//print to console the contents of a class in a pseudo UML manner
-	void UMLObjectPrintContentsREPL();
-	//Returns a vector containing just the object titles
-	std::vector<std::string> UMLObjectReturnTitles();
-	std::vector<std::string> UMLObjectReturnTitlesString();
-	//returns a vector containing pointers to the classes
-	//this allows direct access to the objects and might not be best practice
-	std::vector<UMLObject*> ReturnPtrToVector();
 
-	//if a UMLObject was created externally, this method can be used to add it in to the holder
-	//this is an alternative to the CreateNewClass using just a title but might not be best practice
-	void AddUMLObject(UMLObject * in);
+
+	//this method is used to add a new class. the holder will keep track of bookkeeping and everything
+	int CreateNewClass(std::string title);
+
 	//deletes an object using title as primary key
 	bool DeleteUMLObject(std::string title);
 	//returns number of objects in holder
@@ -51,23 +39,16 @@ public:
 	//Edit title.. pass in a new title and the name of the old title. returns true if successful
 	bool EditClassTitle(std::string new_title, std::string old_title);
 
-
-	//used by the REPL to retrieve a relationship type from a string
-	int GetRelationshipTypeFromString(std::string in);
-	//similarly for the Visibility
-	int GetVisibilityTypeFromString(std::string in);
-	int GetQuantifierFromString(std::string in);
-
-	int AddField(std::string class_title, std::string field_title, std::string type, int visibility);
+	int AddField(std::string class_title, std::string field_title, std::string type, std::string visibility);
 	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
 	int EditFieldType(std::string class_title, std::string field_title, std::string type);
-	int EditFieldVisibility(std::string class_title, std::string field_title, int vis);
+	int EditFieldVisibility(std::string class_title, std::string field_title, std::string vis);
 	int DeleteField(std::string class_title, std::string field_title);
 
-	int AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
+	int AddMethod(std::string class_title, std::string method_title, std::string type, std::string visibility);
 	int EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
 	int EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
-	int EditMethodVisibility(std::string class_title, std::string method_title, int vis);
+	int EditMethodVisibility(std::string class_title, std::string method_title, std::string vis);
 	int DeleteMethod(std::string class_title, std::string method_title);
 
 	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
@@ -83,15 +64,49 @@ public:
 	int AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);
 	//Edit a relationship between a specified parent and child. returns true if successful
 	//The only thing that can be edited is the relationship type.. otherwise that is considered a new relationship.
-	bool EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);
+	int EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);
 	//delete the specified relationship. returns true if successful
 	int DeleteRelationship(std::string parent, std::string child);
+
+
+
+	//the functions below are "naughty" functions because they allow direct access to the model
+	//this violates the MVC principle because they effectively skip the controller
+	//this could allow for mistakes or bad practices to be implemented
+
+	//returns a vector containing pointers to the classes
+	//this allows direct access to the objects and might not be best practice
+	std::vector<UMLObject*> ReturnPtrToVector();
+	UMLObject* GetUMLObject(std::string title);
+	//if a UMLObject was created externally, this method can be used to add it in to the holder
+	//this is an alternative to the CreateNewClass using just a title but might not be best practice
+	void AddUMLObject(UMLObject* in);
+
+
+	//the functions below all belong in REPL because they have nothing to do with the controller or model.
+	//these functions might require access direct to the model, so something will have to be implemented to do that
+	//for now they are fine, since they do not violate MVC but they are just awkwardly living here
+
+	//print to console the class titles
+	void UMLObjectPrintTitles();
+	//print to console the entire contents of a class (using its ToString method)
+	void UMLObjectPrintContents();
+	//print to console the contents of a class in a pseudo UML manner
+	void UMLObjectPrintContentsREPL();
+	//Returns a vector containing just the object titles
+	std::vector<std::string> UMLObjectReturnTitles();
+	std::vector<std::string> UMLObjectReturnTitlesString();
+
+
 	//this function is not used, and under normal conditions should never need to be used
 	//its purpose is to go through the relationships and fix missing quantifiers, but that should not happen 
 	void RefreshRelationships();
-	UMLObject* GetUMLObject(std::string title);
 
 private:
+	//these functions are not needed outside of the controller
 	std::vector<UMLObject*> UMLObjects_holder;
-
+	bool IsTitleUnique(std::string in);
+	int GetRelationshipTypeFromString(std::string in);
+	int GetVisibilityTypeFromString(std::string in);
+	int GetQuantifierFromString(std::string in);
 };
