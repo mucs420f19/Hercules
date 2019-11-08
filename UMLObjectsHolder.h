@@ -9,6 +9,11 @@
 
 #include "UMLObject.h"
 
+const int ClassDoesntExist = 1;
+const int ElementExists = 2;
+const int ElementSuccess = 3;
+const int ElementDoesntExist = 4;
+
 class UMLObjectsHolder
 {
 public:
@@ -23,6 +28,8 @@ public:
 	void UMLObjectPrintTitles();
 	//print to console the entire contents of a class (using its ToString method)
 	void UMLObjectPrintContents();
+	//print to console the contents of a class in a pseudo UML manner
+	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
 	std::vector<std::string> UMLObjectReturnTitles();
 	std::vector<std::string> UMLObjectReturnTitlesString();
@@ -45,18 +52,22 @@ public:
 	int GetRelationshipTypeFromString(std::string in);
 	//similarly for the Visibility
 	int GetVisibilityTypeFromString(std::string in);
+	int GetQuantifierFromString(std::string in);
 
-	bool AddField(std::string class_title, std::string field_title);
-	bool EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
-	bool EditFieldType(std::string class_title, std::string field_title, std::string type);
-	bool EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility);
-	bool DeleteField(std::string class_title, std::string field_title);
+	bool ValidateRelationshipType(std::string in);
+	bool ValidateQuantifier(std::string in);
 
-	bool AddMethod(std::string class_title, std::string method_title);
-	bool EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
-	bool EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
-	bool EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility);
-	bool DeleteMethod(std::string class_title, std::string method_title);
+	int AddField(std::string class_title, std::string field_title, std::string type, int visibility);
+	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
+	int EditFieldType(std::string class_title, std::string field_title, std::string type);
+	int EditFieldVisibility(std::string class_title, std::string field_title, int vis);
+	int DeleteField(std::string class_title, std::string field_title);
+
+	int AddMethod(std::string class_title, std::string method_title, std::string type, int visibility);
+	int EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name);
+	int EditMethodReturnType(std::string class_title, std::string method_name, std::string type);
+	int EditMethodVisibility(std::string class_title, std::string method_title, int vis);
+	int DeleteMethod(std::string class_title, std::string method_title);
 
 	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
 	bool EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name);

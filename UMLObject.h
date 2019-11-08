@@ -7,10 +7,10 @@ const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
 const int UMLFieldVisibilityProtected = 3;
 
-const int RelationshipAggregation = 2;
-const int RelationshipComposition = 6;
-const int RelationshipGeneralization = 12;
-const int RelationshipRealization = 18;
+const int RelationshipAggregation = 1;
+const int RelationshipComposition = 2;
+const int RelationshipGeneralization = 3;
+const int RelationshipRealization = 4;
 
 const int RelationshipQuantifierOne = 1;
 const int RelationshipQuantifierMany = 2;
@@ -21,13 +21,16 @@ struct UMLRelationship;
 //structure for the field
 struct UMLField
 {
+	UMLField()
+	{ }
+
 	UMLField(std::string inName)
 	{
 		name = inName;
 		type = "no type defined";
 		visibility = UMLFieldVisibilityPrivate;
 	}
-	UMLField(std::string inName, std::string inType, int inVisibility = 1)
+	UMLField(std::string inName, std::string inType, int inVisibility)
 	{
 		name = inName;
 		type = inType;
@@ -115,6 +118,9 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
+	UMLMethod()
+	{ }
+
 	UMLMethod(std::string inName)
 	{
 		name = inName;
@@ -210,15 +216,20 @@ public:
 	bool EditField(std::string oldName, std::string newName);
 	bool DeleteMethod(std::string in);
 	bool DeleteField(std::string in);
+
+	bool EditFieldT(std::string fieldName, std::string newType);
+	bool EditFieldV(std::string fieldName, int vis);
+	bool EditMethodT(std::string methodName, std::string newType);
+	bool EditMethodV(std::string methodName, int vis);
 	
 	bool DoesMethodExist(std::string in);
 	bool DoesFieldExist(std::string in);
 
 	size_t GetLargestStringSize();
-	std::string ReturnFieldsPretty();
-	std::string ReturnMethodsPretty();
-	std::string ToStringPretty();
-	std::string ReturnRelationshipsPretty();
+	std::string ReturnFieldsREPL();
+	std::string ReturnMethodsREPL();
+	std::string ToStringREPL();
+	std::string ReturnRelationshipsREPL();
 	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
@@ -299,14 +310,10 @@ struct UMLRelationship
   std::string ToString()
 	{
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
-  }
-  
-  std::string ToStringPretty()
+  	}
+
+	std::string ToStringREPL()
 	{
-		if (parent == true)
-		  return "Parent of: " + object->ReturnTitle();
 		
-		else
-		  return "Child of: " + object->ReturnTitle();
-  }
+	}
 };
