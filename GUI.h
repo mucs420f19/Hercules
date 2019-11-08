@@ -30,9 +30,6 @@
 #include "nuklear_glfw_gl3.h"
 #include "style.c"
 #include "node_editor.h"
-static void draw_color(struct node* cnode, struct nk_context* ctx);
-static void draw_info(struct node* cnode, struct nk_context* ctx);
-#include "custom_nodes.h"
 
 #define MAX_VERTEX_BUFFER 512 * 1024
 #define MAX_ELEMENT_BUFFER 128 * 1024
@@ -44,13 +41,10 @@ static void error_callback(int e, const char* d)
 	printf("Error %d: %s\n", e, d);
 }
 
+static void draw_info(struct node* cnode, struct nk_context* ctx);
+
 void RunGUI(UMLObjectsHolder* holder)
 {
-
-	/* Set up node functions */
-	node_ftables[0].draw = &draw_color;
-	node_ftables[1].draw = &draw_info;
-	
 	/* Platform */
 	static GLFWwindow *win;
 	int width = 0, height = 0;
@@ -70,7 +64,6 @@ void RunGUI(UMLObjectsHolder* holder)
 	char overwrite[256] = { 0 };
 	char type[256] = { 0 };
 	static int popup_active;
-	node_ftables[0].draw = &draw_color;
 	node_ftables[1].draw = &draw_info;
 	static struct node_editor node1;
 	static struct node_editor node2;
