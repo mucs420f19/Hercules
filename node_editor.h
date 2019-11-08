@@ -97,7 +97,6 @@ struct node_linking {
 struct node_editor {
     int initialized;
 	char name[64];
-    char tempName[32];
     struct node node_buf[64];
     struct node_link links[256];
     struct node *begin;
@@ -117,6 +116,13 @@ struct node_editor {
 static struct node_editor nodeEditor;
 char className[32] = {0};
 char tempName[32] = {0};
+char overwrite[32] = {0};
+
+static void draw_info(struct node* cnode, struct nk_context* ctx)
+{
+	nk_propertyi(ctx, "#ID:", 0, cnode->ID, 255, 1,1);
+	nk_propertyi(ctx, "#Inp:", 0, cnode->input_count, 255, 1,1);
+}
 
 #ifndef NDE_FUNCTIONS
 #define NDE_FUNCTIONS
@@ -372,8 +378,12 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, tempName, sizeof(tempName) - 1, nk_filter_default);
         if (nk_contextual_item_label(ctx, "Edit", NK_TEXT_CENTERED))
         {
-            holder->EditClassTitle(tempName, nodeedit->hovered->name);
+            if(!(holder->CreateNewClass(tempName)))
+            {
+                holder->EditClassTitle(tempName, nodeedit->hovered->name);
+            }
             strcpy(nodeedit->hovered->name, tempName);
+            strcpy(tempName,overwrite);
         }
         nk_contextual_end(ctx);
     }
