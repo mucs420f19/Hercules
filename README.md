@@ -1,7 +1,7 @@
 # Hercules
 
 [![Build Status](https://travis-ci.org/mucs420f19/Hercules.svg?branch=develop)](https://travis-ci.org/mucs420f19/Hercules)
-[![Coverage Status](https://coveralls.io/repos/github/mucs420f19/Hercules/badge.svg?branch=s3-code-coverage)](https://coveralls.io/github/mucs420f19/Hercules?branch=s3-code-coverage)
+[![Coverage Status](https://coveralls.io/repos/github/mucs420f19/Hercules/badge.svg?branch=develop)](https://coveralls.io/github/mucs420f19/Hercules?branch=develop)
 ## Description
 
 Team Hercules UML editor written in C++
