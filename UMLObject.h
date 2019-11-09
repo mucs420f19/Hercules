@@ -15,15 +15,24 @@ const int RelationshipRealization = 4;
 const int RelationshipQuantifierOne = 1;
 const int RelationshipQuantifierMany = 2;
 
+//error codes
+const int ElementSuccess = 0;
+const int ClassDoesntExist = 1;
+const int ElementAlreadyExists = 2;
+const int ClassAlreadyExists = 3;
+const int ElementDoesntExist = 4;
+const int RelationshipAlreadyExists = 5;
+const int InvalidQuantifier = 6;
+const int InvalidRelationshipType = 7;
+const int RelationshipDoesNotExist = 8;
+const int InvalidVisibility = 9;
+
 //forward declaration
 struct UMLRelationship;
 
 //structure for the field
 struct UMLField
 {
-	UMLField()
-	{ }
-
 	UMLField(std::string inName)
 	{
 		name = inName;
@@ -118,9 +127,6 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
-	UMLMethod()
-	{ }
-
 	UMLMethod(std::string inName)
 	{
 		name = inName;
@@ -172,14 +178,18 @@ struct UMLMethod
 	}
 	std::string ReturnName();
 	std::string ReturnType();
-	std::vector<std::string> ReturnParameters();
 	std::vector<UMLParameter> ReturnParametersRaw();
 	int ReturnVisibility();
 
 	void SetName(std::string in);
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
-	bool AddParameter(UMLParameter in);
+	int AddParameter(UMLParameter in);
+	int EditParamName(std::string old, std::string newn);
+	int EditParamType(std::string name, std::string type);
+	int SetParamDefaultValue(std::string name, std::string value);
+	int ClearParamDefaultValue(std::string name);
+	int DeleteParameter(std::string name);
 private:
 	std::string name;
 	std::string return_type;
@@ -212,19 +222,24 @@ public:
 	void UpdateRelationship(size_t index, int type, int quantifier);
 	void DeleteRelationship(std::string in);
 	
-	bool EditMethod(std::string oldName, std::string newName);
-	bool EditField(std::string oldName, std::string newName);
-	bool DeleteMethod(std::string in);
-	bool DeleteField(std::string in);
+	int EditMethod(std::string oldName, std::string newName);
+	int EditField(std::string oldName, std::string newName);
+	int DeleteMethod(std::string in);
+	int DeleteField(std::string in);
 
-	bool EditFieldT(std::string fieldName, std::string newType);
-	bool EditFieldV(std::string fieldName, int vis);
-	bool EditMethodT(std::string methodName, std::string newType);
-	bool EditMethodV(std::string methodName, int vis);
-	
-	bool DoesMethodExist(std::string in);
-	bool DoesFieldExist(std::string in);
+	int EditFieldT(std::string fieldName, std::string newType);
+	int EditFieldV(std::string fieldName, int vis);
+	int EditMethodT(std::string methodName, std::string newType);
+	int EditMethodV(std::string methodName, int vis);
 
+	int AddParameter(std::string method_title, std::string param_name);
+	int EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name);
+	int EditParameterType(std::string method_title, std::string param_name, std::string type);
+	int EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value);
+	int EditParameterClearDefaultValue(std::string method_title, std::string param_name);
+	int DeleteParameter(std::string method_title, std::string param_name);
+
+	//these methods dont belong here; should be eventually moved
 	size_t GetLargestStringSize();
 	std::string ReturnFieldsREPL();
 	std::string ReturnMethodsREPL();
@@ -311,9 +326,4 @@ struct UMLRelationship
 	{
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
   	}
-
-	std::string ToStringREPL()
-	{
-		
-	}
 };

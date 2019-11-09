@@ -142,6 +142,7 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Add Class"))
 			{
+				//TODO add error checking here... and for all of them after. See error handler method in REPL
 				(holder->CreateNewClass(add));
 				node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 			}
@@ -161,9 +162,11 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter Method Name"))
 			{
-				UMLMethod newMethod;
-				newMethod.SetName(method);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
+				//TODO use MVC paradiagm instead of directly touching the model
+				holder->AddMethod(classname, method, "type goes here", "private");
+				//UMLMethod newMethod;
+				//newMethod.SetName(method);
+				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
 				strcpy(classname, overwrite);
 			}
 
@@ -189,6 +192,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter New Method Name"))
 			{
+				//TODO use MVC instead
+				//holder->EditMethodName(classname, tempName, editMethod);
 				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
 				strcpy(tempName, overwrite);
 				strcpy(classname, overwrite);
@@ -211,6 +216,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter Method Name"))
 			{
+				//TODO MVC
+				//holder->DeleteMethod(classname, method);
 				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteMethod(method);
 				strcpy(classname, overwrite);
 			}
@@ -232,9 +239,11 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter field Name"))
 			{
-				UMLField newField;
-				newField.SetName(field);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
+				//TODO MVC
+				holder->AddField(classname, field, "type goes here", "public");
+				//UMLField newField;
+				//newField.SetName(field);
+				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
 				strcpy(classname, overwrite);
 			}
 
@@ -260,6 +269,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter New field Name"))
 			{
+				//TODO MVC
+				//holder->EditFieldName(classname, tempName, editField);
 				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditField(tempName, editField);
 				strcpy(tempName, overwrite);
 				strcpy(classname, overwrite);
@@ -282,6 +293,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter Field Name"))
 			{
+				//TODO MVC
+				//holder->DeleteField(classname, field);
 				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->DeleteField(field);
 				strcpy(classname, overwrite);
 			}

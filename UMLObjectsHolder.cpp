@@ -3,23 +3,6 @@
 UMLObjectsHolder::UMLObjectsHolder()
 {
 }
-// Allows a new class using title as primary key
-UMLObject * UMLObjectsHolder::CreateNewClass(std::string title)
-{
-	if (IsTitleUnique(title))
-	{
-		//std::cout << "Creating Class: " << title << std::endl;
-		UMLObject* a = new UMLObject();
-		a->SetTitle(title);
-		UMLObjects_holder.push_back(a);
-		return a;
-	}
-	else
-	{
-		//std::cout << "Duplicate name detected" << std::endl;
-		return 0;
-	}
-}
 
 bool UMLObjectsHolder::IsTitleUnique(std::string in)
 {
@@ -41,6 +24,15 @@ void UMLObjectsHolder::ClearProject()
 		delete i;
   
   UMLObjects_holder.clear();
+}
+
+int UMLObjectsHolder::CreateNewClass(std::string title)
+{
+	if (!IsTitleUnique(title)) return ClassAlreadyExists;
+	UMLObject* a = new UMLObject();
+	a->SetTitle(title);
+	UMLObjects_holder.push_back(a);
+	return ElementSuccess;
 }
 
 void UMLObjectsHolder::UMLObjectPrintTitles()
@@ -129,21 +121,21 @@ size_t UMLObjectsHolder::Size()
 	return UMLObjects_holder.size();
 }
 
-bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
+int UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
 {
 	for (auto i : UMLObjects_holder)
 	{
-		if (i->ReturnTitle() == new_title) return false;
+		if (i->ReturnTitle() == new_title) return ElementAlreadyExists;
 	}
 	for (auto i : UMLObjects_holder)
 	{
 		if (i->ReturnTitle() == old_title)
 		{
 			i->SetTitle(new_title);
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
 int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
@@ -157,232 +149,188 @@ int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
 	return result;
 }
 
-int UMLObjectsHolder::AddField(std::string class_title, std::string field_title, std::string type, int visibility)
+int UMLObjectsHolder::AddField(std::string class_title, std::string field_title, std::string type, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0) 
-		return ClassDoesntExist;
-
-	if (c->AddField(UMLField(field_title, type, visibility)) == false)
-		return ElementExists;
-	
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
+	return c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility)));
 }
 
 int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditField(old_field_title, new_field_title) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->EditField(old_field_title, new_field_title);
 }
 
 int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditFieldT(field_title, type) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->EditFieldT(field_title, type);
 }
 
-int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, int vis)
+int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditFieldV(field_title, vis) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
+	return c->EditFieldV(field_title, GetVisibilityTypeFromString(visibility));
 }
 
 int UMLObjectsHolder::DeleteField(std::string class_title, std::string field_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->DeleteField(field_title) == false)
-		return ElementDoesntExist;
-
-	else
-		return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->DeleteField(field_title);
 }
 
-int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, int visibility)
+int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0) 
-		return ClassDoesntExist;
-
-	if (c->AddMethod(UMLMethod(method_title, type, {}, visibility)) == false)
-		return ElementExists;
-	
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
+	return c->AddMethod(UMLMethod(method_title, type, {}, GetVisibilityTypeFromString(visibility)));
 }
 
 int UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditMethod(old_method_name, new_method_name) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->EditMethod(old_method_name, new_method_name);
 }
 
 int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string method_name, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
+	if (c == 0) return ClassDoesntExist;
 
-	if (c->EditMethodT(method_name, type) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	return c->EditMethodT(method_name, type);
 }
 
-int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, int vis)
+int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditMethodV(method_title, vis) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
+	return c->EditMethodV(method_title, GetVisibilityTypeFromString(visibility));
 }
 
 int UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->DeleteMethod(method_title) == false)
-		return ElementDoesntExist;
-
-	else
-		return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->DeleteMethod(method_title);
 }
 
-bool UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->AddParameter(method_title, param_name);
 }
 
-bool UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
+int UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->EditParameterName(method_title, old_param_name, new_param_name);
 }
 
-bool UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
+int UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->EditParameterType(method_title, param_name, type);
 }
 
-bool UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
+int UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->EditParameterSetDefaultValue(method_title, param_name, value);
 }
 
-bool UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->EditParameterClearDefaultValue(method_title, param_name);
 }
 
-bool UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	return c->DeleteParameter(method_title, param_name);
 }
 
-bool UMLObjectsHolder::AddRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
-{
-	UMLObject* p, * c;
-
-	p = GetUMLObject(parent);
-	c = GetUMLObject(child);
-
-	if (p == 0 || c == 0) return false;
-
-	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return false;
-
-	p->AddRelationship({ type, quantifier1, c, p, true});
-	c->AddRelationship({ type, quantifier2, p, c, false});
-
-	return true;
-}
-
-bool UMLObjectsHolder::EditRelationship(std::string parent, std::string child, int type, int quantifier1, int quantifier2)
+int UMLObjectsHolder::AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
 
-	if (p == 0 || c == 0) return false;
+	if (p == 0 || c == 0) return ClassDoesntExist;
+	if (!GetQuantifierFromString(quantifier1) || !GetQuantifierFromString(quantifier2)) return InvalidQuantifier;
+	if (!GetRelationshipTypeFromString(type)) return InvalidRelationshipType;
+	if (p->GetIndexRelationshipWith(child) != -1 || c->GetIndexRelationshipWith(parent) != -1) return RelationshipAlreadyExists;
 
-	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
+	p->AddRelationship({ GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier1), c, p, true});
+	c->AddRelationship({ GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier2), p, c, false});
 
-	p->UpdateRelationship(p->GetIndexRelationshipWith(child), type, quantifier1);
-	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), type, quantifier2);
-	return true;
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
+int UMLObjectsHolder::EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
 
 	p = GetUMLObject(parent);
 	c = GetUMLObject(child);
 
-	if (p == 0 || c == 0) return false;
+	if (p == 0 || c == 0) return ClassDoesntExist;
+	if (!GetQuantifierFromString(quantifier1) || !GetQuantifierFromString(quantifier2)) return InvalidQuantifier;
+	if (!GetRelationshipTypeFromString(type)) return InvalidRelationshipType;
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return RelationshipDoesNotExist;
 
-	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return false;
+	p->UpdateRelationship(p->GetIndexRelationshipWith(child), GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier1));
+	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier2));
+	return ElementSuccess;
+}
+
+int UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
+{
+	UMLObject* p, * c;
+
+	p = GetUMLObject(parent);
+	c = GetUMLObject(child);
+
+	if (p == 0 || c == 0) return ClassDoesntExist;
+
+	if (p->GetIndexRelationshipWith(child) == -1 || c->GetIndexRelationshipWith(parent) == -1) return RelationshipDoesNotExist;
 
 	p->DeleteRelationship(child);
 	c->DeleteRelationship(parent);
-	return true;
-}
-
-void UMLObjectsHolder::RefreshRelationships()
-{
-	UMLRelationship* a, * b;
-	for (auto i : UMLObjects_holder)
-	{
-		for (auto j : UMLObjects_holder)
-		{
-			a = i->GetRelationshipWith(j->ReturnTitle());
-			if (a)
-			{
-				b = j->GetRelationshipWith(i->ReturnTitle());
-				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->type, a->quantifier, b->quantifier);
-			}
-		}
-	}
+	return ElementSuccess;
 }
 
 UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
@@ -411,23 +359,7 @@ int UMLObjectsHolder::GetQuantifierFromString(std::string in)
 	int result = 0;
 	if (in.size() == 0) return result;
 	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
-	if (in == "1" || in == "one") result = RelationshipQuantifierOne;
-	else if (in == "many") result = RelationshipQuantifierMany;
+	if (in == "1" || in == "one" || in[0] == 'o') result = RelationshipQuantifierOne;
+	else if (in == "many" || in[0] == 'm') result = RelationshipQuantifierMany;
 	return result;
-}
-
-bool UMLObjectsHolder::ValidateRelationshipType(std::string in)
-{
-	if (in[0] != 'a' && in[0] != 'c' && in[0] != 'g' && in[0] != 'r')
-		return false;
-
-	return true;
-}
-
-bool UMLObjectsHolder::ValidateQuantifier(std::string in)
-{
-	if (in != "one" && in != "many" && in != "1")
-		return false;
-
-	return true;
 }
