@@ -641,7 +641,7 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
 	RunREPL(holder, "load this_file_does_notexist");
 	RunREPL(holder, "save filename");
-	//RunREPL(holder, "save filename");
+	RunREPL(holder, "save filename_that_is_longer_than_255_characters_So_operating_system_should_not_allow_the_ofstream_to_successfully_open_aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
 	//this is done automatically, but do it again to be sure
 	holder->ClearProject();
 	RunREPL(holder, "load filename");
@@ -702,6 +702,7 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 
 	// mispelled command
 	RunREPL(holder, "add fields test_class1 test_field2 char #");
+	RunREPL(holder, "edit field name test_class1 test_field2 test_field1");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
 
 	// Delete field
