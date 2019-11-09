@@ -505,7 +505,6 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 						else
 							fail();
 					}
-
 					else
 						fail();
 				}

@@ -448,6 +448,7 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
 	RunREPL(holder, "help");
 	RunREPL(holder, "exit");
+	RunREPL(holder, "this is an outrageous command that is expected to fail");
 
 	RunREPL(holder, "add class test_class1");
 	REQUIRE(holder->Size() == 1);
@@ -554,6 +555,10 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 	RunREPL(holder, "add field test_class1 test_field2 char #");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
 
+	// mispelled command
+	RunREPL(holder, "add fields test_class1 test_field2 char #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, {test_field3, bool, Protected}, }");
+
 	// Delete field
 	RunREPL(holder, "delete field test_class1 test_field3");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_field1, int, Public}, {test_field2, str, Private}, }");
@@ -569,6 +574,12 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 	// Edit field name
 	RunREPL(holder, "edit field name test_class1 test_field1 test_fieldA");
 	RunREPL(holder, "edit field name test_class1 test_field2 test_fieldB");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, int, Public}, {test_fieldB, str, Private}, }");
+
+	// mispelled command should fail
+	RunREPL(holder, "edit fields name test_class1 test_field2 test_fieldB");
+	RunREPL(holder, "edit field names test_class1 test_field2 test_fieldB");
+	RunREPL(holder, "edit field names test_classs test_field2 test_fieldB");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, int, Public}, {test_fieldB, str, Private}, }");
 
 	// Edit field in nonexistant class
@@ -599,6 +610,10 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 
 	RunREPL(holder, "edit field visibility test_class1 test_fieldA #");
 	RunREPL(holder, "edit field visibility test_class1 test_fieldB #");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
+
+	// mispelled command
+	RunREPL(holder, "edit field visiblity test_class1 test_fieldB #");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
 
 	// Edit visibility in nonexistant class
@@ -678,6 +693,10 @@ TEST_CASE("Test Terminal Method Functionality", "0")
 	RunREPL(holder, "edit method visibility test_class1 test_methodB public");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Private}, {test_methodB, bool, {}, Public}, }");
 
+	//this one should fail
+	RunREPL(holder, "edit method visibility test_class1 test_methodB privublic");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Private}, {test_methodB, bool, {}, Public}, }");
+
 	RunREPL(holder, "edit method visibility test_class1 test_methodA #");
 	RunREPL(holder, "edit method visibility test_class1 test_methodB #");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Protected}, {test_methodB, bool, {}, Protected}, }");
@@ -701,16 +720,44 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 	RunREPL(holder, "add class test_class2");
 	RunREPL(holder, "add class test_class3");
 
+	//these should pass
 	RunREPL(holder, "add relationship test_class1 test_class2 a 1 m");
 	RunREPL(holder, "add relationship test_class2 test_class3 c many o");
 
+	//these should fail
+	RunREPL(holder, "add relationship test_class1 test_class2 a invalid_quantifier o");
+	RunREPL(holder, "add relationship test_class2 test_class3 c many 12");
+	RunREPL(holder, "add relationship test_class2 test_class3 m many one");
+
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Aggregation Many-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "add relationship test_class2 test_class3 g one many");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Aggregation Many-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "edit relationship test_class1 test_class2 r one one");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Realization One-to-One with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Realization One-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
 
 	RunREPL(holder, "delete relationship test_class test_class2");
 
-	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Aggregation One-to-Many with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Realization One-to-One with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Realization One-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
 
 	RunREPL(holder, "delete relationship test_class1 test_class2");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "edit relationship test_class1 test_class2 a 1 m");
 
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
 	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
