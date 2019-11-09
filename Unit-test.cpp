@@ -182,6 +182,7 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 	}
 
 	holder->UMLObjectPrintContents();
+	holder->UMLObjectReturnTitles();
 
 	delete holder;
 }

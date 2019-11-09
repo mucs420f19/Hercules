@@ -94,6 +94,7 @@ public:
 	//print to console the contents of a class in a pseudo UML manner
 	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
+	std::vector<std::string> UMLObjectReturnTitles();
 	std::vector<std::string> UMLObjectReturnTitlesString();
 
 private:
