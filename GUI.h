@@ -163,7 +163,7 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Enter Method Name"))
 			{
 				//TODO use MVC paradiagm instead of directly touching the model
-				holder->AddMethod(classname, newMethod, type, 1);
+				holder->AddMethod(classname, method, "type goes here", "private");
 				//UMLMethod newMethod;
 				//newMethod.SetName(method);
 				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
@@ -240,7 +240,7 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Enter field Name"))
 			{
 				//TODO MVC
-				holder->AddField(classname, type, 1);
+				holder->AddField(classname, field, "type goes here", "public");
 				//UMLField newField;
 				//newField.SetName(field);
 				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
