@@ -101,9 +101,11 @@ namespace SavingLoadingIO
 
 	bool LoadProject(UMLObjectsHolder* out, std::string filename)
 	{
-		out->ClearProject();
 		std::ifstream in(filename);
 		if (!in.good()) return false;
+
+		///only clear project if we found a good file to load
+		out->ClearProject();
 
 		std::string line;
 		std::vector<std::string> lines;

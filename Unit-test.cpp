@@ -503,6 +503,11 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
     REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
 
+	RunREPL(holder, "load this_file_does_notexist");
+	RunREPL(holder, "save /");
+	RunREPL(holder, "save filename");
+	RunREPL(holder, "load filename");
+
     RunREPL(holder, "delete class test_class4");
     REQUIRE(holder->Size() == 3);
     REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
@@ -614,6 +619,7 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 
 	// mispelled command
 	RunREPL(holder, "edit field visiblity test_class1 test_fieldB #");
+	RunREPL(holder, "edit field visibility test_class1 test_fieldB $");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
 
 	// Edit visibility in nonexistant class
@@ -695,6 +701,8 @@ TEST_CASE("Test Terminal Method Functionality", "0")
 
 	//this one should fail
 	RunREPL(holder, "edit method visibility test_class1 test_methodB privublic");
+	RunREPL(holder, "edit method visiblity test_class1 test_methodB privublic");
+	RunREPL(holder, "edit methods visibility test_class1 test_methodB public");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_methodA, bool, {}, Private}, {test_methodB, bool, {}, Public}, }");
 
 	RunREPL(holder, "edit method visibility test_class1 test_methodA #");
@@ -772,5 +780,8 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{}");
 	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
 	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	//expect this to fail - mispelled
+	RunREPL(holder, "edit relationships test_class1 test_class2 r one one");
 	delete holder;
 }

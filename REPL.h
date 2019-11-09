@@ -222,8 +222,13 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	{
 					  	std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
 
-					  	std::string yn;
-					  	std::cin >> yn;
+						std::string yn;
+						if (run)
+						{
+							std::cin >> yn;
+						}
+						//if we are in test mode, just assign it to "y"
+						else yn = "y";
 
 					  	if (yn == "y")
 					  	{
