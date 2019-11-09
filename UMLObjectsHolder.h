@@ -11,7 +11,7 @@
 
 const int ElementSuccess = 0;
 const int ClassDoesntExist = 1;
-const int ElementExists = 2;
+const int ElementAlreadyExists = 2;
 const int ClassAlreadyExists = 3;
 const int ElementDoesntExist = 4;
 const int RelationshipAlreadyExists = 5;
@@ -37,7 +37,7 @@ public:
 	//returns number of objects in holder
 	size_t Size();
 	//Edit title.. pass in a new title and the name of the old title. returns true if successful
-	bool EditClassTitle(std::string new_title, std::string old_title);
+	int EditClassTitle(std::string new_title, std::string old_title);
 
 	int AddField(std::string class_title, std::string field_title, std::string type, std::string visibility);
 	int EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title);
@@ -51,14 +51,14 @@ public:
 	int EditMethodVisibility(std::string class_title, std::string method_title, std::string vis);
 	int DeleteMethod(std::string class_title, std::string method_title);
 
-	bool AddParameter(std::string class_title, std::string method_title, std::string param_name);
-	bool EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name);
-	bool EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type);
+	int AddParameter(std::string class_title, std::string method_title, std::string param_name);
+	int EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name);
+	int EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type);
 	//this makes the parameter optional, since it has a default value
-	bool EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value);
+	int EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value);
 	//this makes the parameter required again, since it no longer has a default value
-	bool EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name);
-	bool DeleteParameter(std::string class_title, std::string method_title, std::string param_name);
+	int EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name);
+	int DeleteParameter(std::string class_title, std::string method_title, std::string param_name);
 
 	//Add a relationship between a parent and child. returns true if successful
 	int AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2);

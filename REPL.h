@@ -69,7 +69,7 @@ std::string ErrorHandler(int e)
 			out = "The specified class does not exist.";
 			break;
 		}
-		case(ElementExists):
+		case(ElementAlreadyExists):
 		{
 			out = "The specified element already exists.";
 			break;

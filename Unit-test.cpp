@@ -22,20 +22,20 @@ TEST_CASE("Create a Class", "0")
 TEST_CASE("Edit a class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	holder->CreateNewClass("Car");
+	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
 	SECTION("Class Constructor", "0")
 	{
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
 	}
 
-	holder->EditClassTitle("Vehicle", "Car");
+	REQUIRE(holder->EditClassTitle("Vehicle", "Car") == ElementSuccess);
 
 	SECTION("Class Rename", "0")
 	{
 		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
 	}
 
-	holder->CreateNewClass("Vehicle");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ClassAlreadyExists);
 
 	SECTION("Class Creation Duplicate", "0")
 	{
@@ -49,8 +49,8 @@ TEST_CASE("Add multiple classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	holder->CreateNewClass("Vehicle");
-	holder->CreateNewClass("Tire");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Tire") == ElementSuccess);
 
 	SECTION("Class Multiples", "0")
 	{
@@ -65,8 +65,8 @@ TEST_CASE("Add relationship between classes", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	holder->CreateNewClass("Vehicle");
-	holder->CreateNewClass("Tire");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Tire") == ElementSuccess);
 
 	SECTION("Create classes", "0")
 	{
@@ -82,6 +82,55 @@ TEST_CASE("Add relationship between classes", "0")
 		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
 		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
 	}
+	delete holder;
+}
+
+TEST_CASE("Verify model method, field, and parameter functionality", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+
+	REQUIRE(holder->AddMethod("Vehicle", "method1", "type", "public") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+
+	REQUIRE(holder->EditMethodName("Vehicle", "method12353245", "new") == ElementDoesntExist);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+
+	REQUIRE(holder->AddField("Vehicle", "field1", "type", "private") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
+	
+	REQUIRE(holder->EditFieldName("Vehicle", "field14234234", "new") == ElementDoesntExist);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
+
+	REQUIRE(holder->AddParameter("Vehicle", "method1", "param1") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param1, }, Public}, }");
+
+	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param1", "my_new_param_name") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int my_new_param_name, }, Public}, }");
+
+	REQUIRE(holder->EditParameterType("Vehicle", "method1", "my_new_param_name", "my_new_param_type") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+
+	REQUIRE(holder->EditParameterSetDefaultValue("Vehicle", "method1", "my_new_param_name", "my_default_value") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name = my_default_value, }, Public}, }");
+
+	REQUIRE(holder->EditParameterClearDefaultValue("Vehicle", "method1", "my_new_param_name") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+
+	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "my_new_param_name") == ElementSuccess);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+
 	delete holder;
 }
 
@@ -449,6 +498,7 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 	RunREPL(holder, "help");
 	RunREPL(holder, "exit");
 	RunREPL(holder, "this is an outrageous command that is expected to fail");
+	RunREPL(holder, "so_is_this_one");
 
 	RunREPL(holder, "add class test_class1");
 	REQUIRE(holder->Size() == 1);
@@ -504,8 +554,9 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
 
 	RunREPL(holder, "load this_file_does_notexist");
-	RunREPL(holder, "save /");
 	RunREPL(holder, "save filename");
+	//this is done automatically, but do it again to be sure
+	holder->ClearProject();
 	RunREPL(holder, "load filename");
 
     RunREPL(holder, "delete class test_class4");
@@ -620,6 +671,7 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 	// mispelled command
 	RunREPL(holder, "edit field visiblity test_class1 test_fieldB #");
 	RunREPL(holder, "edit field visibility test_class1 test_fieldB $");
+	RunREPL(holder, "edt field visibility test_class1 test_fieldB $");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
 
 	// Edit visibility in nonexistant class
@@ -629,6 +681,9 @@ TEST_CASE("Test Terminal Field Functionality", "0")
 	// Edit field that doesnt exist
 	RunREPL(holder, "edit field type test_class1 test_fieldC -");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnFields() == "{{test_fieldA, bool, Protected}, {test_fieldB, bool, Protected}, }");
+
+	RunREPL(holder, "list");
+	RunREPL(holder, "titles");
 
 	delete holder;
 }
@@ -655,6 +710,9 @@ TEST_CASE("Test Terminal Method Functionality", "0")
 	// Add method that already exists
 	RunREPL(holder, "add method test_class1 test_method2 char #");
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnMethods() == "{{test_method1, int, {}, Public}, {test_method2, str, {}, Private}, {test_method3, bool, {}, Protected}, }");
+
+	RunREPL(holder, "list");
+	RunREPL(holder, "titles");
 
 	// Delete method
 	RunREPL(holder, "delete method test_class1 test_method3");
@@ -753,6 +811,17 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Realization One-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
 	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
 
+	//expect this to fail - mispelled
+	RunREPL(holder, "edit relationships test_class1 test_class2 r one one");
+	RunREPL(holder, "edt relationship test_class1 test_class2 r one one");
+
+	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Realization One-to-One with test_class2}, }");
+	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Child in relationship Realization One-to-One with test_class1}, {test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
+	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
+
+	RunREPL(holder, "list");
+	RunREPL(holder, "titles");
+
 	RunREPL(holder, "delete relationship test_class test_class2");
 
 	REQUIRE(holder->GetUMLObject("test_class1")->ReturnRelationships() == "{{test_class1 is Parent in relationship Realization One-to-One with test_class2}, }");
@@ -781,7 +850,5 @@ TEST_CASE("Test Terminal Relationship Functionality (Deleting)", "0")
 	REQUIRE(holder->GetUMLObject("test_class2")->ReturnRelationships() == "{{test_class2 is Parent in relationship Composition Many-to-One with test_class3}, }");
 	REQUIRE(holder->GetUMLObject("test_class3")->ReturnRelationships() == "{{test_class3 is Child in relationship Composition One-to-Many with test_class2}, }");
 
-	//expect this to fail - mispelled
-	RunREPL(holder, "edit relationships test_class1 test_class2 r one one");
 	delete holder;
 }

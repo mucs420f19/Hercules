@@ -180,6 +180,11 @@ struct UMLMethod
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
 	bool AddParameter(UMLParameter in);
+	bool EditParamName(std::string old, std::string newn);
+	bool EditParamType(std::string name, std::string type);
+	bool SetParamDefaultValue(std::string name, std::string value);
+	bool ClearParamDefaultValue(std::string name);
+	bool DeleteParameter(std::string name);
 private:
 	std::string name;
 	std::string return_type;
@@ -221,10 +226,15 @@ public:
 	bool EditFieldV(std::string fieldName, int vis);
 	bool EditMethodT(std::string methodName, std::string newType);
 	bool EditMethodV(std::string methodName, int vis);
-	
-	bool DoesMethodExist(std::string in);
-	bool DoesFieldExist(std::string in);
 
+	bool AddParameter(std::string method_title, std::string param_name);
+	bool EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name);
+	bool EditParameterType(std::string method_title, std::string param_name, std::string type);
+	bool EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value);
+	bool EditParameterClearDefaultValue(std::string method_title, std::string param_name);
+	bool DeleteParameter(std::string method_title, std::string param_name);
+
+	//these methods dont belong here; should be eventually moved
 	size_t GetLargestStringSize();
 	std::string ReturnFieldsREPL();
 	std::string ReturnMethodsREPL();
@@ -311,9 +321,4 @@ struct UMLRelationship
 	{
 		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
   	}
-
-	std::string ToStringREPL()
-	{
-		
-	}
 };

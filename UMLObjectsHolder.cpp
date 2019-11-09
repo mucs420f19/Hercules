@@ -121,21 +121,21 @@ size_t UMLObjectsHolder::Size()
 	return UMLObjects_holder.size();
 }
 
-bool UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
+int UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
 {
 	for (auto i : UMLObjects_holder)
 	{
-		if (i->ReturnTitle() == new_title) return false;
+		if (i->ReturnTitle() == new_title) return ElementAlreadyExists;
 	}
 	for (auto i : UMLObjects_holder)
 	{
 		if (i->ReturnTitle() == old_title)
 		{
 			i->SetTitle(new_title);
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
 int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
@@ -159,7 +159,7 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
 
 	if (c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility))) == false)
-		return ElementExists;
+		return ElementAlreadyExists;
 	
 	return ElementSuccess;
 }
@@ -223,7 +223,7 @@ int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_titl
 
 	if (c == 0) return ClassDoesntExist;
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
-	if (c->AddMethod(UMLMethod(method_title, type, {}, GetVisibilityTypeFromString(visibility))) == false) return ElementExists;
+	if (c->AddMethod(UMLMethod(method_title, type, {}, GetVisibilityTypeFromString(visibility))) == false) return ElementAlreadyExists;
 	
 	return ElementSuccess;
 }
@@ -280,34 +280,64 @@ int UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_t
 		return ElementSuccess;
 }
 
-bool UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->AddParameter(method_title, param_name)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
+int UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->EditParameterName(method_title, old_param_name, new_param_name)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
+int UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->EditParameterType(method_title, param_name, type)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
+int UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->EditParameterSetDefaultValue(method_title, param_name, value)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->EditParameterClearDefaultValue(method_title, param_name)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
-bool UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
+int UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
 {
-	return false;
+	UMLObject* c = GetUMLObject(class_title);
+
+	if (c == 0) return ClassDoesntExist;
+	if (!c->DeleteParameter(method_title, param_name)) return ElementDoesntExist;
+
+	return ElementSuccess;
 }
 
 int UMLObjectsHolder::AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
