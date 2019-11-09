@@ -162,12 +162,12 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Enter Method Name"))
 			{
-				UMLMethod newMethod;
-				newMethod.SetName(method);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
-				strcpy(classname, overwrite);
 				//TODO use MVC paradiagm instead of directly touching the model
-				//holder->AddMethod(classname, newMethod, type, visiblity);
+				holder->AddMethod(classname, newMethod, type, 1);
+				//UMLMethod newMethod;
+				//newMethod.SetName(method);
+				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
+				strcpy(classname, overwrite);
 			}
 
 			nk_menu_end(ctx);
@@ -240,10 +240,10 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Enter field Name"))
 			{
 				//TODO MVC
-				//holder->AddField(classname, type, visibility);
-				UMLField newField;
-				newField.SetName(field);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
+				holder->AddField(classname, type, 1);
+				//UMLField newField;
+				//newField.SetName(field);
+				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddField(newField);
 				strcpy(classname, overwrite);
 			}
 
