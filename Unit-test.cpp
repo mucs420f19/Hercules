@@ -131,6 +131,17 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
 
+
+
+	//this should never happen
+	holder->GetUMLObject("Vehicle")->EditFieldV("field1", 7);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Invalid Visiblity}, }");
+
+	//or this
+	holder->GetUMLObject("Vehicle")->EditMethodV("method1", 7);
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, }");
+
 	delete holder;
 }
 
@@ -169,6 +180,9 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 			REQUIRE(holder->ReturnPtrToVector()[2 + (i * 2)]->ReturnRelationships() == "{{Tire" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
 		}
 	}
+
+	holder->UMLObjectPrintContents();
+
 	delete holder;
 }
 
@@ -246,6 +260,13 @@ TEST_CASE("Relationships edit functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Cylinders")->ReturnRelationships() == "{{Cylinders is Child in relationship Realization Many-to-Many with Engine}, }");
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet is Parent in relationship Realization One-to-One with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Generalization Many-to-Many with Vehicle}, }");
+	}
+
+	holder->GetUMLObject("Vehicle")->UpdateRelationship(0, 7, 7);
+
+	SECTION("Verify relationships after relationship deletion", "0")
+	{
+		REQUIRE(holder->GetUMLObject("Vehicle")->ReturnRelationships() == "{{Vehicle is Parent in relationship Unrecognized relationship Unrecognized quantifier-to-Many with Tire}, {Vehicle is Parent in relationship Realization Many-to-Many with Door}, {Vehicle is Child in relationship Realization One-to-One with Fleet}, {Vehicle is Child in relationship Generalization Many-to-Many with Driver}, }");
 	}
 
 	delete holder;
@@ -555,6 +576,7 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
 	RunREPL(holder, "load this_file_does_notexist");
 	RunREPL(holder, "save filename");
+	//RunREPL(holder, "save filename");
 	//this is done automatically, but do it again to be sure
 	holder->ClearProject();
 	RunREPL(holder, "load filename");
@@ -581,6 +603,8 @@ TEST_CASE("Test Terminal Class Functionality", "0")
     REQUIRE(holder->Size() == 2);
     REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
     REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
+
+	RunREPL(holder, "save filename");
 
 	RunREPL(holder, "list");
 	RunREPL(holder, "titles");

@@ -94,13 +94,7 @@ public:
 	//print to console the contents of a class in a pseudo UML manner
 	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
-	std::vector<std::string> UMLObjectReturnTitles();
 	std::vector<std::string> UMLObjectReturnTitlesString();
-
-
-	//this function is not used, and under normal conditions should never need to be used
-	//its purpose is to go through the relationships and fix missing quantifiers, but that should not happen 
-	void RefreshRelationships();
 
 private:
 	//these functions are not needed outside of the controller

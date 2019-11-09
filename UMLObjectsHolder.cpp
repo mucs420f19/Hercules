@@ -58,16 +58,6 @@ void UMLObjectsHolder::UMLObjectPrintContentsREPL()
 		std::cout << i->ToStringREPL() << std::endl;
 }
 
-std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
-{
-	std::vector<std::string> out;
-	for (auto  i : UMLObjects_holder)
-	{
-		out.push_back(i->ToString());
-	}
-	return out;
-}
-
 std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitlesString()
 {
 	std::vector<std::string> out;
@@ -389,23 +379,6 @@ int UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 	p->DeleteRelationship(child);
 	c->DeleteRelationship(parent);
 	return ElementSuccess;
-}
-
-void UMLObjectsHolder::RefreshRelationships()
-{
-	UMLRelationship* a, * b;
-	for (auto i : UMLObjects_holder)
-	{
-		for (auto j : UMLObjects_holder)
-		{
-			a = i->GetRelationshipWith(j->ReturnTitle());
-			if (a)
-			{
-				b = j->GetRelationshipWith(i->ReturnTitle());
-				EditRelationship(i->ReturnTitle(), j->ReturnTitle(), a->GetRelationshipTypeName(), a->GetQuantifierName(), b->GetQuantifierName());
-			}
-		}
-	}
 }
 
 UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)

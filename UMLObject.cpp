@@ -406,13 +406,6 @@ std::string UMLMethod::ReturnType()
 {
 	return return_type;
 }
-//returns parameters from vector
-std::vector<std::string> UMLMethod::ReturnParameters()
-{
-	std::vector<std::string> out;
-	for (auto i : parameters) out.push_back(i.ToString());
-	return out;
-}
 //returns parameters unformatted
 std::vector<UMLParameter> UMLMethod::ReturnParametersRaw()
 {

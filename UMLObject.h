@@ -21,9 +21,6 @@ struct UMLRelationship;
 //structure for the field
 struct UMLField
 {
-	UMLField()
-	{ }
-
 	UMLField(std::string inName)
 	{
 		name = inName;
@@ -118,9 +115,6 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
-	UMLMethod()
-	{ }
-
 	UMLMethod(std::string inName)
 	{
 		name = inName;
@@ -172,7 +166,6 @@ struct UMLMethod
 	}
 	std::string ReturnName();
 	std::string ReturnType();
-	std::vector<std::string> ReturnParameters();
 	std::vector<UMLParameter> ReturnParametersRaw();
 	int ReturnVisibility();
 
