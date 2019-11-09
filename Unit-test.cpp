@@ -112,6 +112,7 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
 
 	REQUIRE(holder->EditFieldVisibility("Vehicle", "field14234234", "protected") == ElementDoesntExist);
+	REQUIRE(holder->EditFieldVisibility("Vehicle1", "field14234234", "protected") == ClassDoesntExist);
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
 
@@ -120,6 +121,7 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param1, }, Public}, }");
 
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param1") == ElementAlreadyExists);
+	REQUIRE(holder->AddParameter("Vehicle", "method21", "param1") == ElementDoesntExist);
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param1, }, Public}, }");
 
@@ -128,7 +130,9 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int my_new_param_name, }, Public}, }");
 	
 	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param12", "my_new_param_name1") == ElementDoesntExist);
+	REQUIRE(holder->EditParameterName("Vehicle", "method12", "param12", "my_new_param_name1") == ElementDoesntExist);
 	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param12", "my_new_param_name") == ElementAlreadyExists);
+	REQUIRE(holder->EditParameterType("Vehicle", "method12", "my_new_param_name", "my_new_param_type") == ElementDoesntExist);
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int my_new_param_name, }, Public}, }");
 
@@ -167,6 +171,13 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
 
+
+	REQUIRE(holder->DeleteParameter("Vehicle", "method12", "param4") == ElementDoesntExist);
+	REQUIRE(holder->EditParameterClearDefaultValue("Vehicle", "method12", "param2") == ElementDoesntExist);
+	REQUIRE(holder->EditParameterSetDefaultValue("Vehicle", "method12", "param3", "0") == ElementDoesntExist);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
+
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param4") == ElementSuccess);
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param2") == ElementSuccess);
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param3") == ElementSuccess);
@@ -184,6 +195,16 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	//or this
 	holder->GetUMLObject("Vehicle")->EditMethodV("method1", 7);
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, }");
+
+	REQUIRE(holder->AddMethod("Vehicle", "method2", "type", "public") == ElementSuccess);
+	REQUIRE(holder->EditMethodName("Vehicle", "method1", "method2") == ElementAlreadyExists);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, {method2, type, {}, Public}, }");
+
+	REQUIRE(holder->AddField("Vehicle", "field2", "type", "public") == ElementSuccess);
+	REQUIRE(holder->EditFieldName("Vehicle", "field1", "field2") == ElementAlreadyExists);
+
+	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Invalid Visiblity}, {field2, type, Public}, }");
 
 	delete holder;
 }

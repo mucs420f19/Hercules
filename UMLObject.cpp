@@ -15,11 +15,11 @@ bool UMLObject::AddField(UMLField in)
 	{
 		if (i.ReturnName() == in.ReturnName())
 		{
-			return false;
+			return ElementAlreadyExists;
 		}
 	}
 	fields.push_back(in);
-	return true;
+	return ElementSuccess;
 }
 //adds the methods to the vector
 bool UMLObject::AddMethod(UMLMethod in)

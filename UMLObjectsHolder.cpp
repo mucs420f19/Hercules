@@ -153,24 +153,16 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0) 
-		return ClassDoesntExist;
-
+	if (c == 0) return ClassDoesntExist;
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
-
-	if (c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility))) == false)
-		return ElementAlreadyExists;
-	
-	return ElementSuccess;
+	return c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility)));
 }
 
 int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
+	if (c == 0) return ClassDoesntExist;
 	return c->EditField(old_field_title, new_field_title);
 }
 
@@ -178,21 +170,15 @@ int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_t
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->EditFieldT(field_title, type) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->EditFieldT(field_title, type);
 }
 
 int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
+	if (c == 0) return ClassDoesntExist;
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
 	return c->EditFieldV(field_title, GetVisibilityTypeFromString(visibility));
 }
@@ -201,14 +187,8 @@ int UMLObjectsHolder::DeleteField(std::string class_title, std::string field_tit
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->DeleteField(field_title) == false)
-		return ElementDoesntExist;
-
-	else
-		return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->DeleteField(field_title);
 }
 
 int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, std::string visibility)
@@ -224,9 +204,7 @@ int UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_me
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
+	if (c == 0) return ClassDoesntExist;
 	return c->EditMethod(old_method_name, new_method_name);
 }
 
@@ -234,13 +212,9 @@ int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string 
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
+	if (c == 0) return ClassDoesntExist;
 
-	if (c->EditMethodT(method_name, type) == false)
-		return ElementDoesntExist;
-
-	return ElementSuccess;
+	return c->EditMethodT(method_name, type);
 }
 
 int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
@@ -256,14 +230,8 @@ int UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_t
 {
 	UMLObject* c = GetUMLObject(class_title);
 
-	if (c == 0)
-		return ClassDoesntExist;
-
-	if (c->DeleteMethod(method_title) == false)
-		return ElementDoesntExist;
-
-	else
-		return ElementSuccess;
+	if (c == 0) return ClassDoesntExist;
+	return c->DeleteMethod(method_title);
 }
 
 int UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
