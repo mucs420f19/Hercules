@@ -28,11 +28,11 @@ bool UMLObject::AddMethod(UMLMethod in)
 	{
 		if (i.ReturnName() == in.ReturnName())
 		{
-			return false;
+			return ElementAlreadyExists;
 		}
 	}
 	methods.push_back(in);
-	return true;
+	return ElementSuccess;
 }
 //returns title of object
 const std::string & UMLObject::ReturnTitle() const
@@ -432,46 +432,47 @@ void UMLMethod::SetVisibility(int in)
 	visibility = in;
 }
 //pushes parameters to the vector
-bool UMLMethod::AddParameter(UMLParameter in)
+int UMLMethod::AddParameter(UMLParameter in)
 {
 	for (auto i : parameters)
 	{
-		if (in.name == i.name) return false;
+		if (in.name == i.name) return ElementAlreadyExists;
 	}
 	parameters.push_back(in);
-	return true;
+	return ElementSuccess;
 }
-bool UMLMethod::EditParamName(std::string old, std::string newn)
+
+int UMLMethod::EditParamName(std::string old, std::string newn)
 {
 	for (auto i : parameters)
 	{
-		if (newn == i.name) return false;
+		if (newn == i.name) return ElementAlreadyExists;
 	}
 	for (auto & i : parameters)
 	{
 		if (old == i.name)
 		{
 			i.name = newn;
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLMethod::EditParamType(std::string name, std::string type)
+int UMLMethod::EditParamType(std::string name, std::string type)
 {
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
 		{
 			i.type = type;
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLMethod::SetParamDefaultValue(std::string name, std::string value)
+int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
 {
 	for (auto& i : parameters)
 	{
@@ -479,13 +480,13 @@ bool UMLMethod::SetParamDefaultValue(std::string name, std::string value)
 		{
 			i.deflt = value;
 			i.opt = true;
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLMethod::ClearParamDefaultValue(std::string name)
+int UMLMethod::ClearParamDefaultValue(std::string name)
 {
 	for (auto& i : parameters)
 	{
@@ -493,13 +494,13 @@ bool UMLMethod::ClearParamDefaultValue(std::string name)
 		{
 			i.deflt = "";
 			i.opt = false;
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLMethod::DeleteParameter(std::string name)
+int UMLMethod::DeleteParameter(std::string name)
 {
 	unsigned int count = 0;
 	for (auto i : parameters)
@@ -507,141 +508,136 @@ bool UMLMethod::DeleteParameter(std::string name)
 		if (i.ReturnName() == name)
 		{
 			parameters.erase(parameters.begin() + count);
-			return true;
+			return ElementSuccess;
 		}
 		++count;
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
 //replaces old name of the method to the new one
-bool UMLObject::EditMethod(std::string oldName, std::string newName)
+int UMLObject::EditMethod(std::string oldName, std::string newName)
 {
-  for (auto &i : methods)
-  {
-    if (i.ReturnName() == newName) 
-      return false;
-  }
-  for (auto &i : methods)
-  {
-    if (i.ReturnName() == oldName)
-    {
-      i.SetName(newName);
-      return true;
-    }
-  }
-  return false;
+	for (auto& i : methods)
+	{
+		if (i.ReturnName() == newName)
+			return ElementAlreadyExists;
+	}
+	for (auto& i : methods)
+	{
+		if (i.ReturnName() == oldName)
+		{
+			i.SetName(newName);
+			return ElementSuccess;
+		}
+	}
+	return ElementDoesntExist;
 }
+
 //replaces old name of the field to the new one
-bool UMLObject::EditField(std::string oldName, std::string newName)
+int UMLObject::EditField(std::string oldName, std::string newName)
 {
-  for (auto &i : fields)
-  {
-    if (i.ReturnName() == newName)
-      return false;
-  }
-  for (auto &i : fields)
-  {
-    if (i.ReturnName() == oldName)
-    {
-      i.SetName(newName);
-      return true;
-    }
-  }
-  return false;
+	for (auto& i : fields)
+	{
+		if (i.ReturnName() == newName)
+			return ElementAlreadyExists;
+	}
+	for (auto& i : fields)
+	{
+		if (i.ReturnName() == oldName)
+		{
+			i.SetName(newName);
+			return ElementSuccess;
+		}
+	}
+	return ElementDoesntExist;
 }
+
 //deletes the method
-bool UMLObject::DeleteMethod(std::string in)
+int UMLObject::DeleteMethod(std::string in)
 {
-  unsigned int count = 0;
-  for (auto i : methods)
-  {
-    if (i.ReturnName() == in)
-    {
-      methods.erase(methods.begin() + count);
-      return true;
-    }
-    ++count;
-  }
-  return false;
+	unsigned int count = 0;
+	for (auto i : methods)
+	{
+		if (i.ReturnName() == in)
+		{
+			methods.erase(methods.begin() + count);
+			return ElementSuccess;
+		}
+		++count;
+	}
+	return ElementDoesntExist;
 }
+
 //deletes the field
-bool UMLObject::DeleteField(std::string in)
+int UMLObject::DeleteField(std::string in)
 {
-  unsigned int count = 0;
-  for (auto i : fields)
-  {
-    if (i.ReturnName() == in)
-    {
-      fields.erase(fields.begin() + count);
-      return true;
-    }
-    ++count;
-  }
-  return false;
+	unsigned int count = 0;
+	for (auto i : fields)
+	{
+		if (i.ReturnName() == in)
+		{
+			fields.erase(fields.begin() + count);
+			return ElementSuccess;
+		}
+		++count;
+	}
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditFieldT(std::string fieldName, std::string newType)
+int UMLObject::EditFieldT(std::string fieldName, std::string newType)
 {
 	for (auto &i : fields)
 	{
 		if (i.ReturnName() == fieldName)
 		{
 			i.SetReturnType(newType);
-
-			return true;
+			return ElementSuccess;
 		}
 	}
-
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditFieldV(std::string fieldName, int vis)
+int UMLObject::EditFieldV(std::string fieldName, int vis)
 {
 	for (auto &i : fields)
 	{
 		if (i.ReturnName() == fieldName)
 		{
 			i.SetVisibility(vis);
-
-			return true;
+			return ElementSuccess;
 		}
 	}
-
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditMethodT(std::string methodName, std::string newType)
+int UMLObject::EditMethodT(std::string methodName, std::string newType)
 {
 	for (auto &i : methods)
 	{
 		if (i.ReturnName() == methodName)
 		{
 			i.SetReturnType(newType);
-
-			return true;
+			return ElementSuccess;
 		}
 	}
-
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditMethodV(std::string methodName, int vis)
+int UMLObject::EditMethodV(std::string methodName, int vis)
 {
 	for (auto &i : methods)
 	{
 		if (i.ReturnName() == methodName)
 		{
 			i.SetVisibility(vis);
-
-			return true;
+			return ElementSuccess;
 		}
 	}
-
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::AddParameter(std::string method_title, std::string param_name)
+int UMLObject::AddParameter(std::string method_title, std::string param_name)
 {
 	for (auto& i : methods)
 	{
@@ -650,10 +646,10 @@ bool UMLObject::AddParameter(std::string method_title, std::string param_name)
 			return i.AddParameter({ "int", param_name });
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name)
+int UMLObject::EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name)
 {
 	for (auto& i : methods)
 	{
@@ -662,10 +658,10 @@ bool UMLObject::EditParameterName(std::string method_title, std::string old_para
 			return i.EditParamName(old_param_name, new_param_name);
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditParameterType(std::string method_title, std::string param_name, std::string type)
+int UMLObject::EditParameterType(std::string method_title, std::string param_name, std::string type)
 {
 	for (auto& i : methods)
 	{
@@ -674,10 +670,10 @@ bool UMLObject::EditParameterType(std::string method_title, std::string param_na
 			return i.EditParamType(param_name, type);
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value)
+int UMLObject::EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value)
 {
 	for (auto& i : methods)
 	{
@@ -686,10 +682,10 @@ bool UMLObject::EditParameterSetDefaultValue(std::string method_title, std::stri
 			return i.SetParamDefaultValue(param_name, value);
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::EditParameterClearDefaultValue(std::string method_title, std::string param_name)
+int UMLObject::EditParameterClearDefaultValue(std::string method_title, std::string param_name)
 {
 	for (auto& i : methods)
 	{
@@ -698,10 +694,10 @@ bool UMLObject::EditParameterClearDefaultValue(std::string method_title, std::st
 			return i.ClearParamDefaultValue(param_name);
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
-bool UMLObject::DeleteParameter(std::string method_title, std::string param_name)
+int UMLObject::DeleteParameter(std::string method_title, std::string param_name)
 {
 	for (auto& i : methods)
 	{
@@ -710,5 +706,5 @@ bool UMLObject::DeleteParameter(std::string method_title, std::string param_name
 			return i.DeleteParameter(param_name);
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }

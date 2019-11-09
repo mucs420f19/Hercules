@@ -9,17 +9,6 @@
 
 #include "UMLObject.h"
 
-const int ElementSuccess = 0;
-const int ClassDoesntExist = 1;
-const int ElementAlreadyExists = 2;
-const int ClassAlreadyExists = 3;
-const int ElementDoesntExist = 4;
-const int RelationshipAlreadyExists = 5;
-const int InvalidQuantifier = 6;
-const int InvalidRelationshipType = 7;
-const int RelationshipDoesNotExist = 8;
-const int InvalidVisibility = 9;
-
 class UMLObjectsHolder
 {
 public:
