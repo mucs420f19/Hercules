@@ -70,12 +70,42 @@ std::vector<std::string> UMLObjectsHolder::ReturnAll()
 	return out;
 }
 
-std::vector<std::string> UMLObjectsHolder::ReturnTitlesString()
+std::vector<std::string> UMLObjectsHolder::ReturnTitles()
 {
 	std::vector<std::string> out;
 	for (auto& i : UMLObjects_holder)
 	{
 		out.push_back(i->ReturnTitle());
+	}
+	return out;
+}
+
+std::vector<std::string> UMLObjectsHolder::ReturnFields()
+{
+	std::vector<std::string> out;
+	for (auto& i : UMLObjects_holder)
+	{
+		out.push_back(i->ReturnFields());
+	}
+	return out;
+}
+
+std::vector<std::string> UMLObjectsHolder::ReturnMethods()
+{
+	std::vector<std::string> out;
+	for (auto& i : UMLObjects_holder)
+	{
+		out.push_back(i->ReturnMethods());
+	}
+	return out;
+}
+
+std::vector<std::string> UMLObjectsHolder::ReturnRelationships()
+{
+	std::vector<std::string> out;
+	for (auto& i : UMLObjects_holder)
+	{
+		out.push_back(i->ReturnRelationships());
 	}
 	return out;
 }

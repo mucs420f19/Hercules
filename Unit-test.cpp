@@ -10,11 +10,9 @@ TEST_CASE("Create a Class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
-	UMLObject* a = NULL;
-	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->ReturnTitlesString()[0] == "Car");
+		REQUIRE(holder->ReturnTitles()[0] == "Car");
 	}
 	delete holder;
 }
@@ -25,14 +23,14 @@ TEST_CASE("Edit a class", "0")
 	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->ReturnTitlesString()[0] == "Car");
+		REQUIRE(holder->ReturnTitles()[0] == "Car");
 	}
 
 	REQUIRE(holder->EditClassTitle("Vehicle", "Car") == ElementSuccess);
 
 	SECTION("Class Rename", "0")
 	{
-		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitles()[0] == "Vehicle");
 	}
 
 	REQUIRE(holder->CreateNewClass("Vehicle") == ClassAlreadyExists);
@@ -58,8 +56,8 @@ TEST_CASE("Add multiple classes", "0")
 	SECTION("Class Multiples", "0")
 	{
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
-		REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
+		REQUIRE(holder->ReturnTitles()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitles()[1] == "Tire");
 	}
 	delete holder;
 }
@@ -74,16 +72,16 @@ TEST_CASE("Add relationship between classes", "0")
 	SECTION("Create classes", "0")
 	{
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
-		REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
+		REQUIRE(holder->ReturnTitles()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitles()[1] == "Tire");
 	}
 
 	REQUIRE(holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") == ElementSuccess);
 
 	SECTION("Verify relationship", "0")
 	{
-		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
-		REQUIRE(holder->ReturnPtrToVector()[1]->ReturnRelationships() == "{{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
+		REQUIRE(holder->ReturnRelationships()[0] == "{{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
+		REQUIRE(holder->ReturnRelationships()[1] == "{{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
 	}
 	delete holder;
 }
@@ -96,7 +94,7 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 
 	REQUIRE(holder->AddMethod("Vehicle", "method1", "type", "public") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {}, Public}, }");
 
 	REQUIRE(holder->EditMethodName("Vehicle", "method12353245", "new") == ElementDoesntExist);
 
@@ -104,109 +102,109 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 
 	REQUIRE(holder->EditMethodVisibility("Vehicle", "method12353245", "protected") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {}, Public}, }");
 
 	REQUIRE(holder->AddField("Vehicle", "field1", "type", "private") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
+	REQUIRE(holder->ReturnFields()[0] == "{{field1, type, Private}, }");
 	
 	REQUIRE(holder->EditFieldName("Vehicle", "field14234234", "new") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
+	REQUIRE(holder->ReturnFields()[0] == "{{field1, type, Private}, }");
 
 	REQUIRE(holder->EditFieldVisibility("Vehicle", "field14234234", "protected") == ElementDoesntExist);
 	REQUIRE(holder->EditFieldVisibility("Vehicle1", "field14234234", "protected") == ClassDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Private}, }");
+	REQUIRE(holder->ReturnFields()[0] == "{{field1, type, Private}, }");
 
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param1") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param1, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int param1, }, Public}, }");
 
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param1") == ElementAlreadyExists);
 	REQUIRE(holder->AddParameter("Vehicle", "method21", "param1") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param1, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int param1, }, Public}, }");
 
 	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param1", "my_new_param_name") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int my_new_param_name, }, Public}, }");
 	
 	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param12", "my_new_param_name1") == ElementDoesntExist);
 	REQUIRE(holder->EditParameterName("Vehicle", "method12", "param12", "my_new_param_name1") == ElementDoesntExist);
 	REQUIRE(holder->EditParameterName("Vehicle", "method1", "param12", "my_new_param_name") == ElementAlreadyExists);
 	REQUIRE(holder->EditParameterType("Vehicle", "method12", "my_new_param_name", "my_new_param_type") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int my_new_param_name, }, Public}, }");
 
 	REQUIRE(holder->EditParameterType("Vehicle", "method1", "my_new_param_name", "my_new_param_type") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
 
 	REQUIRE(holder->EditParameterType("Vehicle", "method1", "my_new_param_name2", "my_new_param_type") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
 
 	REQUIRE(holder->EditParameterSetDefaultValue("Vehicle", "method1", "my_new_param_name", "my_default_value") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name = my_default_value, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name = my_default_value, }, Public}, }");
 
 	REQUIRE(holder->EditParameterSetDefaultValue("Vehicle", "method1", "my_new_param_name6", "my_default_value") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name = my_default_value, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name = my_default_value, }, Public}, }");
 
 	REQUIRE(holder->EditParameterClearDefaultValue("Vehicle", "method1", "my_new_param_name") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
 
 	REQUIRE(holder->EditParameterClearDefaultValue("Vehicle", "method1", "my_new_param_name6") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {my_new_param_type my_new_param_name, }, Public}, }");
 
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param2") == ElementSuccess);
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param3") == ElementSuccess);
 	REQUIRE(holder->AddParameter("Vehicle", "method1", "param4") == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() ==  "{{method1, type, {my_new_param_type my_new_param_name, int param2, int param3, int param4, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] ==  "{{method1, type, {my_new_param_type my_new_param_name, int param2, int param3, int param4, }, Public}, }");
 
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "my_new_param_name") == ElementSuccess);
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "my_new_param_name2621") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
 
 
 	REQUIRE(holder->DeleteParameter("Vehicle", "method12", "param4") == ElementDoesntExist);
 	REQUIRE(holder->EditParameterClearDefaultValue("Vehicle", "method12", "param2") == ElementDoesntExist);
 	REQUIRE(holder->EditParameterSetDefaultValue("Vehicle", "method12", "param3", "0") == ElementDoesntExist);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {int param2, int param3, int param4, }, Public}, }");
 
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param4") == ElementSuccess);
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param2") == ElementSuccess);
 	REQUIRE(holder->DeleteParameter("Vehicle", "method1", "param3") == ElementSuccess);
 
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {}, Public}, }");
 
 
 	//this should never happen -- violates MVC and will be removed in a future revision
 	REQUIRE(holder->GetUMLObject("Vehicle")->EditFieldV("field1", 7) == ElementSuccess);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Invalid Visiblity}, }");
+	REQUIRE(holder->ReturnFields()[0] == "{{field1, type, Invalid Visiblity}, }");
 
 	//or this
 	REQUIRE(holder->GetUMLObject("Vehicle")->EditMethodV("method1", 7) == ElementSuccess);
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {}, Invalid Visiblity}, }");
 
 	REQUIRE(holder->AddMethod("Vehicle", "method2", "type", "public") == ElementSuccess);
 	REQUIRE(holder->EditMethodName("Vehicle", "method1", "method2") == ElementAlreadyExists);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, {method2, type, {}, Public}, }");
+	REQUIRE(holder->ReturnMethods()[0] == "{{method1, type, {}, Invalid Visiblity}, {method2, type, {}, Public}, }");
 
 	REQUIRE(holder->AddField("Vehicle", "field2", "type", "public") == ElementSuccess);
 	REQUIRE(holder->EditFieldName("Vehicle", "field1", "field2") == ElementAlreadyExists);
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Invalid Visiblity}, {field2, type, Public}, }");
+	REQUIRE(holder->ReturnFields()[0] == "{{field1, type, Invalid Visiblity}, {field2, type, Public}, }");
 
 	delete holder;
 }
@@ -261,21 +259,21 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 	SECTION("Create classes", "0")
 	{
 		REQUIRE(holder->Size() == 9);
-		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitles()[0] == "Vehicle");
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			REQUIRE(holder->ReturnTitlesString()[1+(i*2)] == "Door" + std::to_string(i + 1));
-			REQUIRE(holder->ReturnTitlesString()[2 + (i*2)] == "Tire" + std::to_string(i + 1));
+			REQUIRE(holder->ReturnTitles()[1+(i*2)] == "Door" + std::to_string(i + 1));
+			REQUIRE(holder->ReturnTitles()[2 + (i*2)] == "Tire" + std::to_string(i + 1));
 		}
 	}
 
 	SECTION("Verify relationship", "0")
 	{
-		REQUIRE(holder->ReturnPtrToVector()[0]->ReturnRelationships() ==   "{{Vehicle is Parent in relationship Composition One-to-Many with Door1}, {Vehicle is Parent in relationship Composition One-to-Many with Tire1}, {Vehicle is Parent in relationship Composition One-to-Many with Door2}, {Vehicle is Parent in relationship Composition One-to-Many with Tire2}, {Vehicle is Parent in relationship Composition One-to-Many with Door3}, {Vehicle is Parent in relationship Composition One-to-Many with Tire3}, {Vehicle is Parent in relationship Composition One-to-Many with Door4}, {Vehicle is Parent in relationship Composition One-to-Many with Tire4}, }");
+		REQUIRE(holder->ReturnRelationships()[0] ==   "{{Vehicle is Parent in relationship Composition One-to-Many with Door1}, {Vehicle is Parent in relationship Composition One-to-Many with Tire1}, {Vehicle is Parent in relationship Composition One-to-Many with Door2}, {Vehicle is Parent in relationship Composition One-to-Many with Tire2}, {Vehicle is Parent in relationship Composition One-to-Many with Door3}, {Vehicle is Parent in relationship Composition One-to-Many with Tire3}, {Vehicle is Parent in relationship Composition One-to-Many with Door4}, {Vehicle is Parent in relationship Composition One-to-Many with Tire4}, }");
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			REQUIRE(holder->ReturnPtrToVector()[1 + (i * 2)]->ReturnRelationships() == "{{Door" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
-			REQUIRE(holder->ReturnPtrToVector()[2 + (i * 2)]->ReturnRelationships() == "{{Tire" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
+			REQUIRE(holder->ReturnRelationships()[1 + (i * 2)] == "{{Door" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
+			REQUIRE(holder->ReturnRelationships()[2 + (i * 2)] == "{{Tire" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
 		}
 	}
 
@@ -330,15 +328,15 @@ TEST_CASE("Relationships edit functionality test", "0")
 	REQUIRE(holder->ReturnAll()[6] == "Title: {Fleet}, Fields:{}, Methods: {}, Relationships: {{Fleet is Parent in relationship Aggregation Many-to-Many with Vehicle}, }");
 	REQUIRE(holder->ReturnAll()[7] == "Title: {Driver}, Fields:{}, Methods: {}, Relationships: {{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
 
-	REQUIRE(holder->ReturnTitlesString().size() == 8);
-	REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
-	REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
-	REQUIRE(holder->ReturnTitlesString()[2] == "Door");
-	REQUIRE(holder->ReturnTitlesString()[3] == "Light");
-	REQUIRE(holder->ReturnTitlesString()[4] == "Cylinders");
-	REQUIRE(holder->ReturnTitlesString()[5] == "Engine");
-	REQUIRE(holder->ReturnTitlesString()[6] == "Fleet");
-	REQUIRE(holder->ReturnTitlesString()[7] == "Driver");
+	REQUIRE(holder->ReturnTitles().size() == 8);
+	REQUIRE(holder->ReturnTitles()[0] == "Vehicle");
+	REQUIRE(holder->ReturnTitles()[1] == "Tire");
+	REQUIRE(holder->ReturnTitles()[2] == "Door");
+	REQUIRE(holder->ReturnTitles()[3] == "Light");
+	REQUIRE(holder->ReturnTitles()[4] == "Cylinders");
+	REQUIRE(holder->ReturnTitles()[5] == "Engine");
+	REQUIRE(holder->ReturnTitles()[6] == "Fleet");
+	REQUIRE(holder->ReturnTitles()[7] == "Driver");
 
 	//these values might not make sense in the real world, they are just for the purpose of the test
 	REQUIRE((
@@ -645,16 +643,16 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
 	RunREPL(holder, "edit class test_class1 new_class_name");
 
-	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "new_class_name");
+	REQUIRE(holder->ReturnTitles()[0] == "new_class_name");
 
 	RunREPL(holder, "edit class new_class_name test_class1");
 
     RunREPL(holder, "add class test_class2");
     RunREPL(holder, "add class test_class3");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "add class a b");
     REQUIRE(holder->Size() == 3);
@@ -664,33 +662,33 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
     RunREPL(holder, "add class test_class2");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "edit class");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "edit class a b");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "edit class test_class1");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "edit class test_class4 test_classA");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
 	RunREPL(holder, "load this_file_does_notexist");
 	RunREPL(holder, "save filename");
@@ -701,26 +699,26 @@ TEST_CASE("Test Terminal Class Functionality", "0")
 
     RunREPL(holder, "delete class test_class4");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "delete class");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "delete class test_class1 a");
     REQUIRE(holder->Size() == 3);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class2");
-    REQUIRE(holder->ReturnPtrToVector()[2]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class2");
+    REQUIRE(holder->ReturnTitles()[2] == "test_class3");
 
     RunREPL(holder, "delete class test_class2");
     REQUIRE(holder->Size() == 2);
-    REQUIRE(holder->ReturnPtrToVector()[0]->ReturnTitle() == "test_class1");
-    REQUIRE(holder->ReturnPtrToVector()[1]->ReturnTitle() == "test_class3");
+    REQUIRE(holder->ReturnTitles()[0] == "test_class1");
+    REQUIRE(holder->ReturnTitles()[1] == "test_class3");
 
 	RunREPL(holder, "save filename");
 

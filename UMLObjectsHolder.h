@@ -84,7 +84,10 @@ public:
 	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
 	std::vector<std::string> ReturnAll();
-	std::vector<std::string> ReturnTitlesString();
+	std::vector<std::string> ReturnTitles();
+	std::vector<std::string> ReturnFields();
+	std::vector<std::string> ReturnMethods();
+	std::vector<std::string> ReturnRelationships();
 
 private:
 	//these functions are not needed outside of the controller
