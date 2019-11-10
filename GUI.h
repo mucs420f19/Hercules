@@ -347,7 +347,7 @@ void RunGUI(UMLObjectsHolder* holder)
 		if (nk_menu_begin_label(ctx, "List Classes, Fields, and Methods", NK_TEXT_CENTERED, nk_vec2(600, 200)))
 		{
 			nk_layout_row_dynamic(ctx, 20, 1);
-			for (auto i : holder->UMLObjectReturnTitles())
+			for (auto i : holder->ReturnAll())
 			{
 				nk_label(ctx, i.c_str(), NK_TEXT_LEFT);
 			}
