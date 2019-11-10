@@ -6,6 +6,8 @@ UMLObjectsHolder::UMLObjectsHolder()
 
 bool UMLObjectsHolder::IsTitleUnique(std::string in)
 {
+	//we will not accept an empty string as a title
+	if (in == "") return false;
 	for (auto i : UMLObjects_holder)
 	{
 		if (i->ReturnTitle() == in) return false;
@@ -123,10 +125,7 @@ size_t UMLObjectsHolder::Size()
 
 int UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
 {
-	for (auto i : UMLObjects_holder)
-	{
-		if (i->ReturnTitle() == new_title) return ElementAlreadyExists;
-	}
+	if (!IsTitleUnique(new_title)) return ElementAlreadyExists;
 	for (auto i : UMLObjects_holder)
 	{
 		if (i->ReturnTitle() == old_title)
@@ -155,7 +154,13 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 
 	if (c == 0) return ClassDoesntExist;
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
-	return c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility)));
+	int result = c->AddField(UMLField(field_title, type, GetVisibilityTypeFromString(visibility)));
+	if (result != ElementSuccess) return result;
+	if (IsFieldReferringToExistingClass(type) != "")
+	{
+		AddRelationship(class_title, IsFieldReferringToExistingClass(type), "composition", "one", "many");
+	}
+	return result;
 }
 
 int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
@@ -169,9 +174,14 @@ int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_fie
 int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
-
 	if (c == 0) return ClassDoesntExist;
-	return c->EditFieldT(field_title, type);
+	int result = c->EditFieldT(field_title, type);
+	if (result != ElementSuccess) return result;
+	if (IsFieldReferringToExistingClass(type) != "")
+	{
+		AddRelationship(class_title, IsFieldReferringToExistingClass(type), "composition", "one", "many");
+	}
+	return result;
 }
 
 int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
@@ -362,4 +372,18 @@ int UMLObjectsHolder::GetQuantifierFromString(std::string in)
 	if (in == "1" || in == "one" || in[0] == 'o') result = RelationshipQuantifierOne;
 	else if (in == "many" || in[0] == 'm') result = RelationshipQuantifierMany;
 	return result;
+}
+
+//this function is used for determining if a user-entered field is actually referring
+//to a class that already exists. If so, this means a relationship should be drawn between that class
+//and the class in which the field was created
+//currently it just checks for a case-sensitive substring, so there will be some false positives
+//If the user does not want the relationship, they can just delete it.
+std::string UMLObjectsHolder::IsFieldReferringToExistingClass(std::string in)
+{
+	for (auto i : UMLObjects_holder)
+	{
+		if (i->ReturnTitle().find(in) != std::string::npos) return i->ReturnTitle();
+	}
+	return "";
 }

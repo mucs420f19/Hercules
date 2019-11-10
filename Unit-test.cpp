@@ -14,7 +14,7 @@ TEST_CASE("Create a Class", "0")
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Car");
 	}
 	delete holder;
 }
@@ -25,14 +25,14 @@ TEST_CASE("Edit a class", "0")
 	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
 	SECTION("Class Constructor", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Car");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Car");
 	}
 
 	REQUIRE(holder->EditClassTitle("Vehicle", "Car") == ElementSuccess);
 
 	SECTION("Class Rename", "0")
 	{
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
 	}
 
 	REQUIRE(holder->CreateNewClass("Vehicle") == ClassAlreadyExists);
@@ -41,6 +41,9 @@ TEST_CASE("Edit a class", "0")
 	{
 		REQUIRE(holder->Size() == 1);
 	}
+
+	//in case the controller tries to create a class with empty title, it should fail
+	REQUIRE(holder->CreateNewClass("") == ClassAlreadyExists);
 	delete holder;
 }
 
@@ -55,8 +58,8 @@ TEST_CASE("Add multiple classes", "0")
 	SECTION("Class Multiples", "0")
 	{
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
-		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
 	}
 	delete holder;
 }
@@ -71,8 +74,8 @@ TEST_CASE("Add relationship between classes", "0")
 	SECTION("Create classes", "0")
 	{
 		REQUIRE(holder->Size() == 2);
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
-		REQUIRE(holder->UMLObjectReturnTitlesString()[1] == "Tire");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
 	}
 
 	holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many");
@@ -186,7 +189,6 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
 
 
-
 	//this should never happen
 	holder->GetUMLObject("Vehicle")->EditFieldV("field1", 7);
 
@@ -209,11 +211,43 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	delete holder;
 }
 
+TEST_CASE("Test correct relationship drawn based on field name", "0")
+{
+	UMLObjectsHolder* holder = new UMLObjectsHolder();
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Tire") == ElementSuccess);
+
+	REQUIRE(holder->AddField("Vehicle", "tires", "Tire", "public") == ElementSuccess);
+
+	REQUIRE(holder->ReturnAll()[0] == "Title: {Vehicle}, Fields:{{tires, Tire, Public}, }, Methods: {}, Relationships: {{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
+	REQUIRE(holder->ReturnAll()[1] == "Title: {Tire}, Fields:{}, Methods: {}, Relationships: {{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
+
+	REQUIRE(holder->CreateNewClass("Headlight") == ElementSuccess);
+	REQUIRE(holder->AddField("Vehicle", "light", "headlight", "public") == ElementSuccess);
+
+	REQUIRE(holder->ReturnAll()[0] == "Title: {Vehicle}, Fields:{{tires, Tire, Public}, {light, headlight, Public}, }, Methods: {}, Relationships: {{Vehicle is Parent in relationship Composition One-to-Many with Tire}, }");
+	REQUIRE(holder->ReturnAll()[1] == "Title: {Tire}, Fields:{}, Methods: {}, Relationships: {{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[2] == "Title: {Headlight}, Fields:{}, Methods: {}, Relationships: {}");
+
+	REQUIRE(holder->EditFieldType("Vehicle", "light", "Headlight") == ElementSuccess);
+
+	REQUIRE(holder->ReturnAll()[0] == "Title: {Vehicle}, Fields:{{tires, Tire, Public}, {light, Headlight, Public}, }, Methods: {}, Relationships: {{Vehicle is Parent in relationship Composition One-to-Many with Tire}, {Vehicle is Parent in relationship Composition One-to-Many with Headlight}, }");
+	REQUIRE(holder->ReturnAll()[1] == "Title: {Tire}, Fields:{}, Methods: {}, Relationships: {{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[2] == "Title: {Headlight}, Fields:{}, Methods: {}, Relationships: {{Headlight is Child in relationship Composition Many-to-One with Vehicle}, }");
+
+	//delete vehicle, and its children should automatically be deleted as well
+	REQUIRE(holder->DeleteClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->Size() == 0);
+	REQUIRE(holder->ReturnAll().size() == 0);
+
+	delete holder;
+}
+
 TEST_CASE("Relationships functionality test multiple relationships on item", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	holder->CreateNewClass("Vehicle");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
 
 	for (unsigned int i = 0; i < 4; i++)
 	{
@@ -227,11 +261,11 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 	SECTION("Create classes", "0")
 	{
 		REQUIRE(holder->Size() == 9);
-		REQUIRE(holder->UMLObjectReturnTitlesString()[0] == "Vehicle");
+		REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
 		for (unsigned int i = 0; i < 4; i++)
 		{
-			REQUIRE(holder->UMLObjectReturnTitlesString()[1+(i*2)] == "Door" + std::to_string(i + 1));
-			REQUIRE(holder->UMLObjectReturnTitlesString()[2 + (i*2)] == "Tire" + std::to_string(i + 1));
+			REQUIRE(holder->ReturnTitlesString()[1+(i*2)] == "Door" + std::to_string(i + 1));
+			REQUIRE(holder->ReturnTitlesString()[2 + (i*2)] == "Tire" + std::to_string(i + 1));
 		}
 	}
 
@@ -244,9 +278,6 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 			REQUIRE(holder->ReturnPtrToVector()[2 + (i * 2)]->ReturnRelationships() == "{{Tire" + std::to_string(i + 1) + " is Child in relationship Composition Many-to-One with Vehicle}, }");
 		}
 	}
-
-	holder->UMLObjectPrintContents();
-	holder->UMLObjectReturnTitles();
 
 	delete holder;
 }
@@ -287,6 +318,27 @@ TEST_CASE("Relationships edit functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Fleet")->ReturnRelationships() == "{{Fleet is Parent in relationship Aggregation Many-to-Many with Vehicle}, }");
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
 	}
+
+	holder->UMLObjectPrintContents();
+	REQUIRE(holder->ReturnAll().size() == 8);
+	REQUIRE(holder->ReturnAll()[0] == "Title: {Vehicle}, Fields:{}, Methods: {}, Relationships: {{Vehicle is Parent in relationship Composition One-to-Many with Tire}, {Vehicle is Parent in relationship Composition One-to-Many with Door}, {Vehicle is Parent in relationship Composition One-to-Many with Light}, {Vehicle is Parent in relationship Composition One-to-One with Engine}, {Vehicle is Child in relationship Aggregation Many-to-Many with Fleet}, {Vehicle is Child in relationship Realization One-to-One with Driver}, }");
+	REQUIRE(holder->ReturnAll()[1] == "Title: {Tire}, Fields:{}, Methods: {}, Relationships: {{Tire is Child in relationship Composition Many-to-One with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[2] == "Title: {Door}, Fields:{}, Methods: {}, Relationships: {{Door is Child in relationship Composition Many-to-One with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[3] == "Title: {Light}, Fields:{}, Methods: {}, Relationships: {{Light is Child in relationship Composition Many-to-One with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[4] == "Title: {Cylinders}, Fields:{}, Methods: {}, Relationships: {{Cylinders is Child in relationship Composition Many-to-One with Engine}, }");
+	REQUIRE(holder->ReturnAll()[5] == "Title: {Engine}, Fields:{}, Methods: {}, Relationships: {{Engine is Child in relationship Composition One-to-One with Vehicle}, {Engine is Parent in relationship Composition One-to-Many with Cylinders}, }");
+	REQUIRE(holder->ReturnAll()[6] == "Title: {Fleet}, Fields:{}, Methods: {}, Relationships: {{Fleet is Parent in relationship Aggregation Many-to-Many with Vehicle}, }");
+	REQUIRE(holder->ReturnAll()[7] == "Title: {Driver}, Fields:{}, Methods: {}, Relationships: {{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
+
+	REQUIRE(holder->ReturnTitlesString().size() == 8);
+	REQUIRE(holder->ReturnTitlesString()[0] == "Vehicle");
+	REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
+	REQUIRE(holder->ReturnTitlesString()[2] == "Door");
+	REQUIRE(holder->ReturnTitlesString()[3] == "Light");
+	REQUIRE(holder->ReturnTitlesString()[4] == "Cylinders");
+	REQUIRE(holder->ReturnTitlesString()[5] == "Engine");
+	REQUIRE(holder->ReturnTitlesString()[6] == "Fleet");
+	REQUIRE(holder->ReturnTitlesString()[7] == "Driver");
 
 	//these values might not make sense in the real world, they are just for the purpose of the test
 	REQUIRE((
@@ -374,7 +426,7 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
 	}
 
-	holder->DeleteUMLObject("Door");
+	holder->DeleteClass("Door");
 
 	//Delete just one class, see what happens
 	SECTION("Verify relationships after class deletion", "0")
@@ -384,7 +436,7 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Door") == NULL);
 	}
 
-	holder->DeleteUMLObject("Vehicle");
+	holder->DeleteClass("Vehicle");
 
 	//tire and light should be deleted, since they are both composed children of Vehicle with no other connections
 	//fleet and driver lost their only relationship (which was with vehcile)

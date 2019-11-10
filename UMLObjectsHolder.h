@@ -93,4 +93,5 @@ private:
 	int GetRelationshipTypeFromString(std::string in);
 	int GetVisibilityTypeFromString(std::string in);
 	int GetQuantifierFromString(std::string in);
+	std::string IsFieldReferringToExistingClass(std::string in);
 };
