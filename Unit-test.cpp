@@ -9,7 +9,7 @@
 TEST_CASE("Create a Class", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
-	holder->CreateNewClass("Car");
+	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
 	UMLObject* a = NULL;
 	a = holder->ReturnPtrToVector()[0];
 	SECTION("Class Constructor", "0")
@@ -78,7 +78,7 @@ TEST_CASE("Add relationship between classes", "0")
 		REQUIRE(holder->ReturnTitlesString()[1] == "Tire");
 	}
 
-	holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many");
+	REQUIRE(holder->AddRelationship("Vehicle", "Tire", "Composition", "one", "many") == ElementSuccess);
 
 	SECTION("Verify relationship", "0")
 	{
@@ -189,13 +189,13 @@ TEST_CASE("Verify model method, field, and parameter functionality", "0")
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Public}, }");
 
 
-	//this should never happen
-	holder->GetUMLObject("Vehicle")->EditFieldV("field1", 7);
+	//this should never happen -- violates MVC and will be removed in a future revision
+	REQUIRE(holder->GetUMLObject("Vehicle")->EditFieldV("field1", 7) == ElementSuccess);
 
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnFields() == "{{field1, type, Invalid Visiblity}, }");
 
 	//or this
-	holder->GetUMLObject("Vehicle")->EditMethodV("method1", 7);
+	REQUIRE(holder->GetUMLObject("Vehicle")->EditMethodV("method1", 7) == ElementSuccess);
 	REQUIRE(holder->ReturnPtrToVector()[0]->ReturnMethods() == "{{method1, type, {}, Invalid Visiblity}, }");
 
 	REQUIRE(holder->AddMethod("Vehicle", "method2", "type", "public") == ElementSuccess);
@@ -251,11 +251,11 @@ TEST_CASE("Relationships functionality test multiple relationships on item", "0"
 
 	for (unsigned int i = 0; i < 4; i++)
 	{
-		holder->CreateNewClass("Door" + std::to_string(i + 1));
-		holder->AddRelationship("Vehicle", "Door" + std::to_string(i + 1), "Composition", "one", "many");
+		REQUIRE(holder->CreateNewClass("Door" + std::to_string(i + 1)) == ElementSuccess);
+		REQUIRE(holder->AddRelationship("Vehicle", "Door" + std::to_string(i + 1), "Composition", "one", "many") == ElementSuccess);
 
-		holder->CreateNewClass("Tire" + std::to_string(i + 1));
-		holder->AddRelationship("Vehicle", "Tire" + std::to_string(i + 1), "Composition", "one", "many");
+		REQUIRE(holder->CreateNewClass("Tire" + std::to_string(i + 1)) == ElementSuccess);
+		REQUIRE(holder->AddRelationship("Vehicle", "Tire" + std::to_string(i + 1), "Composition", "one", "many") == ElementSuccess);
 	}
 
 	SECTION("Create classes", "0")
@@ -286,14 +286,14 @@ TEST_CASE("Relationships edit functionality test", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	holder->CreateNewClass("Vehicle");
-	holder->CreateNewClass("Tire");
-	holder->CreateNewClass("Door");
-	holder->CreateNewClass("Light");
-	holder->CreateNewClass("Cylinders");
-	holder->CreateNewClass("Engine");
-	holder->CreateNewClass("Fleet");
-	holder->CreateNewClass("Driver");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Tire") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Door") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Light") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Cylinders") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Engine") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Fleet") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Driver") == ElementSuccess);
 
 	//every one of these must succeed
 	REQUIRE((
@@ -363,8 +363,8 @@ TEST_CASE("Relationships edit functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Generalization Many-to-Many with Vehicle}, }");
 	}
 
-	holder->DeleteRelationship("Light", "Vehicle");
-	holder->DeleteRelationship("Vehicle", "Engine");
+	REQUIRE(holder->DeleteRelationship("Light", "Vehicle") == ElementSuccess);
+	REQUIRE(holder->DeleteRelationship("Vehicle", "Engine") == ElementSuccess);
 
 	SECTION("Verify relationships after relationship deletion", "0")
 	{
@@ -379,6 +379,7 @@ TEST_CASE("Relationships edit functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Generalization Many-to-Many with Vehicle}, }");
 	}
 
+	//violates MVC, should never happen and will be removed
 	holder->GetUMLObject("Vehicle")->UpdateRelationship(0, 7, 7);
 
 	SECTION("Verify relationships after relationship deletion", "0")
@@ -393,14 +394,14 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 {
 	UMLObjectsHolder* holder = new UMLObjectsHolder();
 
-	holder->CreateNewClass("Vehicle");
-	holder->CreateNewClass("Tire");
-	holder->CreateNewClass("Door");
-	holder->CreateNewClass("Light");
-	holder->CreateNewClass("Cylinders");
-	holder->CreateNewClass("Engine");
-	holder->CreateNewClass("Fleet");
-	holder->CreateNewClass("Driver");
+	REQUIRE(holder->CreateNewClass("Vehicle") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Tire") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Door") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Light") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Cylinders") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Engine") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Fleet") == ElementSuccess);
+	REQUIRE(holder->CreateNewClass("Driver") == ElementSuccess);
 
 	//every one of these must succeed
 	REQUIRE((
@@ -426,7 +427,7 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Driver")->ReturnRelationships() == "{{Driver is Parent in relationship Realization One-to-One with Vehicle}, }");
 	}
 
-	holder->DeleteClass("Door");
+	REQUIRE(holder->DeleteClass("Door") == ElementSuccess);
 
 	//Delete just one class, see what happens
 	SECTION("Verify relationships after class deletion", "0")
@@ -436,7 +437,7 @@ TEST_CASE("Relationships composite delete functionality test", "0")
 		REQUIRE(holder->GetUMLObject("Door") == NULL);
 	}
 
-	holder->DeleteClass("Vehicle");
+	REQUIRE(holder->DeleteClass("Vehicle") == ElementSuccess);
 
 	//tire and light should be deleted, since they are both composed children of Vehicle with no other connections
 	//fleet and driver lost their only relationship (which was with vehcile)
@@ -470,9 +471,9 @@ TEST_CASE("Test Saving Loading All Items", "0")
 	REQUIRE(holder->CreateNewClass("Car") == ElementSuccess);
 	a = holder->ReturnPtrToVector()[0];
 	std::vector<UMLParameter> testVec;
-	a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic));
-	a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic));
-	a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate));
+	REQUIRE(a->AddField(UMLField("Color", "string", UMLFieldVisibilityPublic)) == ElementSuccess);
+	REQUIRE(a->AddField(UMLField("Make", "string", UMLFieldVisibilityPublic)) == ElementSuccess);
+	REQUIRE(a->AddMethod(UMLMethod("Drive()", "void", testVec, UMLFieldVisibilityPrivate)) == ElementSuccess);
 	a->SetXPosition(100);
 	a->SetYPosition(200);
 
@@ -481,14 +482,14 @@ TEST_CASE("Test Saving Loading All Items", "0")
 	testVec.clear();
 	testVec.push_back(UMLParameter("int", "Dummy param 1"));
 	testVec.push_back(UMLParameter("float", "Dummy param 2", "true", "0.0f"));
-	b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic));
-	b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic));
-	b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate));
+	REQUIRE(b->AddField(UMLField("Manufacturer", "string", UMLFieldVisibilityPublic)) == ElementSuccess);
+	REQUIRE(b->AddField(UMLField("Diameter", "unsigned int", UMLFieldVisibilityPublic)) == ElementSuccess);
+	REQUIRE(b->AddMethod(UMLMethod("Rotate()", "unsigned int", testVec, UMLFieldVisibilityPrivate)) == ElementSuccess);
 	b->SetXPosition(300);
 	b->SetYPosition(400);
 
-	holder->EditClassTitle("Tire", "Wheel");
-	holder->AddRelationship("Car", "Tire", "Composition", "one", "many");
+	REQUIRE(holder->EditClassTitle("Tire", "Wheel") == ElementSuccess);
+	REQUIRE(holder->AddRelationship("Car", "Tire", "Composition", "one", "many") == ElementSuccess);
 
 
 	REQUIRE(SavingLoadingIO::SaveProjectToFile(holder, "tempfile.txt", true) == SaveSuccess);
