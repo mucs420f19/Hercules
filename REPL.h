@@ -287,7 +287,7 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 				  	else if (substrings[0] == "delete")
 				  	{
 					  	// Class exists and is deleted
-						result = holder->DeleteUMLObject(substrings[2]);
+						result = holder->DeleteClass(substrings[2]);
 						if (result)
 						{
 							std::cout << ErrorHandler(result) << std::endl;

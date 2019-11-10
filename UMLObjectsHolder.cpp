@@ -58,7 +58,7 @@ void UMLObjectsHolder::UMLObjectPrintContentsREPL()
 		std::cout << i->ToStringREPL() << std::endl;
 }
 
-std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
+std::vector<std::string> UMLObjectsHolder::ReturnAll()
 {
 	std::vector<std::string> out;
 	for (auto  i : UMLObjects_holder)
@@ -68,7 +68,7 @@ std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitles()
 	return out;
 }
 
-std::vector<std::string> UMLObjectsHolder::UMLObjectReturnTitlesString()
+std::vector<std::string> UMLObjectsHolder::ReturnTitlesString()
 {
 	std::vector<std::string> out;
 	for (auto& i : UMLObjects_holder)
@@ -88,7 +88,7 @@ void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 	if (in != NULL) UMLObjects_holder.push_back(in);
 }
 
-bool UMLObjectsHolder::DeleteUMLObject(std::string title)
+int UMLObjectsHolder::DeleteClass(std::string title)
 {
 	std::vector<UMLObject*> UMLObjects_holder_temp = UMLObjects_holder;
 	for (unsigned int i = 0; i < UMLObjects_holder.size(); i++)
@@ -103,17 +103,17 @@ bool UMLObjectsHolder::DeleteUMLObject(std::string title)
 					// and the child has no other relationships..... delete the child as well
 					if (j->GetRelationshipWith(title)->type == RelationshipComposition && j->GetRelationshipWith(title)->parent == 0 && j->RelationshipsSize() == 1)
 					{
-						DeleteUMLObject(j->ReturnTitle());
+						DeleteClass(j->ReturnTitle());
 					}
 					j->DeleteRelationship(title);
 				}
 			}
 		  
 			UMLObjects_holder.erase(UMLObjects_holder.begin() + i);
-			return true;
+			return ElementSuccess;
 		}
 	}
-	return false;
+	return ElementDoesntExist;
 }
 
 size_t UMLObjectsHolder::Size()

@@ -202,8 +202,8 @@ class UMLObject
 public:
 	UMLObject();
 	void SetTitle(std::string in);
-	bool AddField(UMLField in);
-	bool AddMethod(UMLMethod in);
+	int AddField(UMLField in);
+	int AddMethod(UMLMethod in);
 	const std::string & ReturnTitle() const;
 	std::string ReturnFields();
 	std::string ReturnMethods();

@@ -9,7 +9,7 @@ void UMLObject::SetTitle(std::string in)
 	title = in;
 }
 //adds the fields into the vector
-bool UMLObject::AddField(UMLField in)
+int UMLObject::AddField(UMLField in)
 {
 	for (auto i : fields)
 	{
@@ -22,7 +22,7 @@ bool UMLObject::AddField(UMLField in)
 	return ElementSuccess;
 }
 //adds the methods to the vector
-bool UMLObject::AddMethod(UMLMethod in)
+int UMLObject::AddMethod(UMLMethod in)
 {
 	for (auto i : methods)
 	{
