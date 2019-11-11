@@ -119,6 +119,18 @@ You may either enter the visibility, or enter a shortcut shown below.
 - Protected / #
 ```
 
+## Quantifiers
+When prompted to enter a quantifier, the following types below are acceptable.
+  - When entering a quantifier of one, you may either enter "one" or 1".
+
+You will be prompted to enter quantifier 1 (q1) and quantifier 2 (q2).
+Quantifers are represented as a q1-to-q2 relationship.
+  - For example, if q1 is equal to many and q2 is equal to one, then you have a many-to-one relationship.
+```
+- One / 1
+- Many
+```
+
 ## Tests
 
 The project includes a dedicated unit test executable used to verify functionality
