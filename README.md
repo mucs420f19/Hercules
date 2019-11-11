@@ -109,6 +109,16 @@ You may either enter the entire relationship type, or simply enter the first let
 - Realization
 ```
 
+## Visibility Types
+When prompted for a visibility, the following types below are acceptable.
+You may either enter the visibility, or enter a shortcut shown below.
+  - For example, to specify a protected visibility, you may type "#" where prompted.
+```
+- Public    / +
+- Private   / -
+- Protected / #
+```
+
 ## Tests
 
 The project includes a dedicated unit test executable used to verify functionality
