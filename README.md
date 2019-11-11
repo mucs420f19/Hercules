@@ -99,30 +99,14 @@ enter method/field name button
 -To List you Classes,Field, and Methods click the List you Classes,Field, and Methods button.
 ```
 ## Relationship Types
--When prompted for a relationship type input the number asscoiated with the type you want, types and numbers are listed below.
+When prompted for a relationship type, the following types below are acceptable. 
+You may either enter the entire relationship type, or simply enter the first letter. 
+  - For example, to specify a composition type, you may type "c" where prompted.
 ```
--RelationshipAbstraction = 1
--RelationshipAggregation = 2
--RelationshipAssociation = 3
--RelationshipBinding     = 4
--RelationshipCommunicationPath = 5
--RelationshipComposition = 6
--RelationshipControlFlow = 7
--RelationshipDependency = 8
--RelationshipDeploy = 9
--RelationshipDirectedAssociation = 10
--RelationshipExtend = 11
--RelationshipGeneralization = 12
--RelationshipInterfaceRealization = 13
--RelationshipInclude = 14
--RelationshipManifestation = 15
--RelationshipNoteAttachment = 16
--RelationshipObjectFlow = 17
--RelationshipRealization = 18
--RelationshipUsage = 19
-
-
-
+- Aggregation
+- Composition
+- Generalization
+- Realization
 ```
 
 ## Tests
