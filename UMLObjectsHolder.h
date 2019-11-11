@@ -21,8 +21,8 @@ public:
 	//this method is used to add a new class. the holder will keep track of bookkeeping and everything
 	int CreateNewClass(std::string title);
 
-	//deletes an object using title as primary key
-	bool DeleteUMLObject(std::string title);
+	//deletes a class using title as primary key
+	int DeleteClass(std::string title);
 	//returns number of objects in holder
 	size_t Size();
 	//Edit title.. pass in a new title and the name of the old title. returns true if successful
@@ -83,8 +83,11 @@ public:
 	//print to console the contents of a class in a pseudo UML manner
 	void UMLObjectPrintContentsREPL();
 	//Returns a vector containing just the object titles
-	std::vector<std::string> UMLObjectReturnTitles();
-	std::vector<std::string> UMLObjectReturnTitlesString();
+	std::vector<std::string> ReturnAll();
+	std::vector<std::string> ReturnTitles();
+	std::vector<std::string> ReturnFields();
+	std::vector<std::string> ReturnMethods();
+	std::vector<std::string> ReturnRelationships();
 
 private:
 	//these functions are not needed outside of the controller
@@ -93,4 +96,5 @@ private:
 	int GetRelationshipTypeFromString(std::string in);
 	int GetVisibilityTypeFromString(std::string in);
 	int GetQuantifierFromString(std::string in);
+	std::string IsFieldReferringToExistingClass(std::string in);
 };

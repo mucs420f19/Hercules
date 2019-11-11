@@ -368,7 +368,7 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         if (nk_contextual_item_label(ctx, "Delete", NK_TEXT_CENTERED))
         {
             node_editor_pop(nodeedit, nodeedit->hovered);
-			holder->DeleteUMLObject(nodeedit->hovered->name);
+			holder->DeleteClass(nodeedit->hovered->name);
             node_editor_push(nodeedit, nodeedit->hovered, true);
             node_editor_clean_links(nodeedit);
             node_editor_clear_gaps(nodeedit);
