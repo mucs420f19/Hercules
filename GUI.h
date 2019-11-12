@@ -41,8 +41,6 @@ static void error_callback(int e, const char* d)
 	printf("Error %d: %s\n", e, d);
 }
 
-static void draw_info(struct node* cnode, struct nk_context* ctx);
-
 void RunGUI(UMLObjectsHolder* holder)
 {
 	/* Platform */

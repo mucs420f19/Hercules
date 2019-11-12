@@ -71,6 +71,9 @@ struct node {
     int output_count;
     struct node *next;
     struct node *prev;
+    char method[32];
+    char field[32];
+    char relationship[32];
 
     node_functions ftable;
 };
@@ -120,8 +123,7 @@ char overwrite[32] = {0};
 
 static void draw_info(struct node* cnode, struct nk_context* ctx)
 {
-	nk_propertyi(ctx, "#ID:", 0, cnode->ID, 255, 1,1);
-	nk_propertyi(ctx, "#Inp:", 0, cnode->input_count, 255, 1,1);
+
 }
 
 #ifndef NDE_FUNCTIONS
@@ -475,7 +477,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                             it->bounds.y - nodeedit->scrolling.y, it->bounds.w, it->bounds.h));
 
                 /* execute node window */
-                if (nk_group_begin(ctx, it->name, NK_WINDOW_MOVABLE|NK_WINDOW_NO_SCROLLBAR|NK_WINDOW_BORDER|NK_WINDOW_TITLE))
+                if (nk_group_begin(ctx, it->name, NK_WINDOW_MOVABLE|NK_WINDOW_BORDER|NK_WINDOW_TITLE|NK_WINDOW_SCALABLE))
                 {
                     /* always have last selected node on top */
 
@@ -491,6 +493,13 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         nodeedit->hovered = it;
 
                     /* ================= NODE CONTENT =====================*/
+                    it->ftable.draw(it, ctx);
+                    nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+                    nk_layout_row_push(ctx, 405);
+                    for (auto i : holder->GetUMLObject(it->name)->ReturnMethodsRaw())
+                        {
+                            nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
+                        }
                     it->ftable.draw(it, ctx);
                     /* ====================================================*/
                     nk_group_end(ctx);
@@ -512,7 +521,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         circle.y = node->bounds.y + space * (float)(n+1);
                         circle.w = 8; circle.h = 8;
                         nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
-
+ 
                         /* start linking process */
                         if (nk_window_is_active(ctx, title) && nk_input_has_mouse_click_down_in_rect(in, NK_BUTTON_LEFT, circle, nk_true)) {
                             nodeedit->linking.active = nk_true;
