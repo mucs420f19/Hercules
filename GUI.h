@@ -141,11 +141,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Add Class"))
 			{
 				//TODO add error checking here... and for all of them after. See error handler method in REPL
-				if (!(holder->CreateNewClass(add)))
-                {
-                    node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
-                }
-				
+				(holder->CreateNewClass(add));
+				node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 			}
 		}
 
