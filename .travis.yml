@@ -27,18 +27,26 @@ matrix:
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
         - pip install --user conan
+        - pip install --user cpp-coveralls
+      script:
+        - cd build
+        - cmake -DCOVERALLS=ON -DCMAKE_BUILD_TYPE=Debug ..
+        - cmake --build .
+        - ctest -C Debug --verbose
+      after_success:
+        - coveralls --root ../ --build-root ./ --exclude-pattern '.+/usr/' --exclude 'style.c' --exclude 'nuklear.h' --exclude 'node_editor.h' --exclude 'GUI.h' --exclude 'Main.cpp' --exclude 'nuklear_glfw_gl3.h' --exclude-pattern '.+/CMakeFiles/' --gcov /usr/bin/gcov --gcov-options '\--long-file-names --preserve-paths' --verbose;
     - os: linux
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
       before_install:
         - pip install --user conan
-    #- os: osx
-      #compiler: clang
-      #env: PATH=$HOME/.local/bin:$PATH
-      #before_install:
-        #- pip install python
-        #- python -m pip install --upgrade pip
-        #- pip install conan
+    - os: osx
+      compiler: clang
+      env: PATH=$HOME/.local/bin:$PATH
+      before_install:
+        - pip install python
+        - python -m pip install --upgrade pip
+        - pip install conan
     - os: windows
       env: PATH=/c/Python38:/c/Python38/Scripts:$PATH
       before_install:
@@ -51,11 +59,6 @@ matrix:
         - cd build
         - conan install .. -s arch=x86 -s compiler="Visual Studio" -s compiler.version=15 -s compiler.runtime=MD --build missing
         - cd ..
-      script:
-        - cd build
-        - cmake ..
-        - cmake --build .
-        - ctest -C Debug
 
 install:
   - conan user

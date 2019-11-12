@@ -5,26 +5,27 @@
 
 const int UMLFieldVisibilityPublic = 1;
 const int UMLFieldVisibilityPrivate = 2;
+const int UMLFieldVisibilityProtected = 3;
 
-const int RelationshipAbstraction =1;
-const int RelationshipAggregation = 2;
-const int RelationshipAssociation = 3;
-const int RelationshipBinding = 4;
-const int RelationshipCommunicationPath = 5;
-const int RelationshipComposition = 6;
-const int RelationshipControlFlow = 7;
-const int RelationshipDependency =8;
-const int RelationshipDeploy = 9;
-const int RelationshipDirectedAssociation = 10;
-const int RelationshipExtend = 11;
-const int RelationshipGeneralization = 12;
-const int RelationshipInterfaceRealization = 13;
-const int RelationshipInclude = 14;
-const int RelationshipManifestation = 15;
-const int RelationshipNoteAttachment = 16;
-const int RelationshipObjectFlow = 17;
-const int RelationshipRealization = 18;
-const int RelationshipUsage = 19;
+const int RelationshipAggregation = 1;
+const int RelationshipComposition = 2;
+const int RelationshipGeneralization = 3;
+const int RelationshipRealization = 4;
+
+const int RelationshipQuantifierOne = 1;
+const int RelationshipQuantifierMany = 2;
+
+//error codes
+const int ElementSuccess = 0;
+const int ClassDoesntExist = 1;
+const int ElementAlreadyExists = 2;
+const int ClassAlreadyExists = 3;
+const int ElementDoesntExist = 4;
+const int RelationshipAlreadyExists = 5;
+const int InvalidQuantifier = 6;
+const int InvalidRelationshipType = 7;
+const int RelationshipDoesNotExist = 8;
+const int InvalidVisibility = 9;
 
 //forward declaration
 struct UMLRelationship;
@@ -32,22 +33,17 @@ struct UMLRelationship;
 //structure for the field
 struct UMLField
 {
-	UMLField();
+	UMLField(std::string inName)
+	{
+		name = inName;
+		type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
 	UMLField(std::string inName, std::string inType, int inVisibility)
 	{
 		name = inName;
 		type = inType;
 		visibility = inVisibility;
-	}
-	UMLField(std::string in_name, std::string in_type, std::string in_visiblity = "1")
-	{
-		name = in_name;
-		type = in_type;
-		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
-		{
-			visibility = UMLFieldVisibilityPublic;
-		}
-		else visibility = UMLFieldVisibilityPrivate;
 	}
 	std::string GetVisibilityString()
 	{
@@ -64,6 +60,13 @@ struct UMLField
 				out = "Private";
 				break;
 			}
+			case UMLFieldVisibilityProtected:
+			{
+				out = "Protected";
+				break;
+			}
+			default:
+				out = "Invalid Visiblity";
 		}
 		return out;
 	}
@@ -78,7 +81,7 @@ struct UMLField
 	void SetName(std::string in);
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
-private:
+//private:
 	std::string name;
 	std::string type;
 	int visibility;
@@ -124,24 +127,18 @@ struct UMLParameter
 //structure for the methods
 struct UMLMethod
 {
-	UMLMethod();
+	UMLMethod(std::string inName)
+	{
+		name = inName;
+		return_type = "no type defined";
+		visibility = UMLFieldVisibilityPrivate;
+	}
 	UMLMethod(std::string inName, std::string inType, std::vector<UMLParameter> inParameters, int inVisibility)
 	{
 		name = inName;
 		return_type = inType;
 		parameters = inParameters;
 		visibility = inVisibility;
-	}
-	UMLMethod(std::string in_name, std::string in_type, std::vector<UMLParameter> in_parameters, std::string in_visiblity = "1")
-	{
-		name = in_name;
-		return_type = in_type;
-		parameters = in_parameters;
-		if (std::stoi(in_visiblity) == UMLFieldVisibilityPublic)
-		{
-			visibility = UMLFieldVisibilityPublic;
-		}
-		else visibility = UMLFieldVisibilityPrivate;
 	}
 	std::string GetVisibilityString()
 	{
@@ -158,6 +155,13 @@ struct UMLMethod
 			out = "Private";
 			break;
 		}
+		case UMLFieldVisibilityProtected:
+		{
+			out = "Protected";
+			break;
+		}
+		default:
+			out = "Invalid Visiblity";
 		}
 		return out;
 	}
@@ -174,15 +178,19 @@ struct UMLMethod
 	}
 	std::string ReturnName();
 	std::string ReturnType();
-	std::vector<std::string> ReturnParameters();
 	std::vector<UMLParameter> ReturnParametersRaw();
 	int ReturnVisibility();
 
 	void SetName(std::string in);
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
-	bool AddParameter(UMLParameter in);
-private:
+	int AddParameter(UMLParameter in);
+	int EditParamName(std::string old, std::string newn);
+	int EditParamType(std::string name, std::string type);
+	int SetParamDefaultValue(std::string name, std::string value);
+	int ClearParamDefaultValue(std::string name);
+	int DeleteParameter(std::string name);
+//private:
 	std::string name;
 	std::string return_type;
 	std::vector<UMLParameter> parameters;
@@ -193,37 +201,63 @@ class UMLObject
 {
 public:
 	UMLObject();
-	UMLObject(UMLObject * copy);
 	void SetTitle(std::string in);
-	void AddField(UMLField in);
-	void AddMethod(UMLMethod in);
+	int AddField(UMLField in);
+	int AddMethod(UMLMethod in);
 	const std::string & ReturnTitle() const;
 	std::string ReturnFields();
 	std::string ReturnMethods();
+	std::vector<const char *> ReturnMethodsgui();
 	std::string ToString();
+
+	//these need to be saved every time for the GUI, so they are included here
+	int GetXPosition();
+	int GetYPosition();
+	void SetXPosition(int in);
+	void SetYPosition(int it);
 
 	std::string ReturnRelationships();
 	void AddRelationship(UMLRelationship in);
 	size_t GetIndexRelationshipWith(std::string in);
-	void UpdateRelationship(size_t index, int type);
-	void DeleteRelationship(size_t index);
+	UMLRelationship * GetRelationshipWith(std::string in);
+	void UpdateRelationship(size_t index, int type, int quantifier);
+	void DeleteRelationship(std::string in);
 	
-	bool EditMethod(std::string oldName, std::string newName);
-	bool EditField(std::string oldName, std::string newName);
-	bool DeleteMethod(std::string in);
-	bool DeleteField(std::string in);
-	
-	bool DoesMethodExist(std::string in);
-	bool DoesFieldExist(std::string in);
+	int EditMethod(std::string oldName, std::string newName);
+	int EditField(std::string oldName, std::string newName);
+	int DeleteMethod(std::string in);
+	int DeleteField(std::string in);
 
+	int EditFieldT(std::string fieldName, std::string newType);
+	int EditFieldV(std::string fieldName, int vis);
+	int EditMethodT(std::string methodName, std::string newType);
+	int EditMethodV(std::string methodName, int vis);
+
+	int AddParameter(std::string method_title, std::string param_name);
+	int EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name);
+	int EditParameterType(std::string method_title, std::string param_name, std::string type);
+	int EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value);
+	int EditParameterClearDefaultValue(std::string method_title, std::string param_name);
+	int DeleteParameter(std::string method_title, std::string param_name);
+
+	//these methods dont belong here; should be eventually moved
+	size_t GetLargestStringSize();
+	std::string ReturnFieldsREPL();
+	std::string ReturnMethodsREPL();
+	std::string ToStringREPL();
+	std::string ReturnRelationshipsREPL();
+	
 	std::vector<UMLField> ReturnFieldsRaw();
 	std::vector<UMLMethod> ReturnMethodsRaw();
 	std::vector<UMLRelationship> ReturnRelationshipsRaw();
+	size_t RelationshipsSize();
 private:
 	std::string title;
 	std::vector<UMLField> fields;
 	std::vector<UMLMethod> methods;
 	std::vector<UMLRelationship> relationships;
+	//these will be used as the coordinates for display on the GUI
+	int x = 0, y = 0;
 };
 
 //Relationship objects are part of UMLObjects but they cannot be edited directly
@@ -231,21 +265,66 @@ private:
 struct UMLRelationship
 {
 	int type;
+	int quantifier;
+	//the other object it has a relationship with
 	UMLObject* object;
+	//the object this relationship belongs to
+	UMLObject* thisObject;
+	//is this the parent in the relationship?
 	bool parent;
+
 	//There is no editing allowed besides changing the type of relationship
 	//Changing who the relationship is attached to is considered a new relationship
 	//So you must delete this relationship and start a new one (just like how the GUI would be)
 	void SetType(int in) { type = in; }
+  int GetType() { return type; }
+	void SetQuantifier(int in) { quantifier = in; }
 	std::string GetObject() { return object->ReturnTitle(); }
-	std::string ToString()
+  
+  std::string GetQuantifier() { return GetQuantifierName(); }
+	std::string GetOtherQuantifier() { return object->GetRelationshipWith(thisObject->ReturnTitle())->GetQuantifier(); }
+	bool GetParent() { return parent; }
+	std::string GetRelationshipTypeName()
 	{
-		if (parent == true)
-		  return "{Type: " + std::to_string(type) + ", Parent of: " + object->ReturnTitle() + "}";
-		
-		else
-		  return "{Type: " + std::to_string(type) + ", Child of: " + object->ReturnTitle() + "}";
-		
-		//return "{ type: " + std::to_string(type) + ", object: " + object->ReturnTitle() + ", parent: " + std::to_string(parent) + "}";
+		std::string out;
+		switch (type)
+		{
+		case RelationshipAggregation:
+			out = "Aggregation";
+			break;
+		case RelationshipComposition:
+			out = "Composition";
+			break;
+		case RelationshipGeneralization:
+			out = "Generalization";
+			break;
+		case RelationshipRealization:
+			out = "Realization";
+			break;
+		default:
+			out = "Unrecognized relationship";
+		}
+		return out;
 	}
+	std::string GetQuantifierName()
+	{
+		std::string out;
+		switch (quantifier)
+		{
+		case RelationshipQuantifierOne:
+			out = "One";
+			break;
+		case RelationshipQuantifierMany:
+			out = "Many";
+			break;
+		default:
+			out = "Unrecognized quantifier";
+		}
+		return out;
+	}
+  
+  std::string ToString()
+	{
+		return "{" + thisObject->ReturnTitle() + ((parent) ? " is Parent" : " is Child") + " in relationship " + GetRelationshipTypeName() + " " + GetQuantifierName() + "-to-" + GetOtherQuantifier() + " with " + GetObject() + "}";
+  	}
 };

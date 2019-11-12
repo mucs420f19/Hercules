@@ -1,5 +1,7 @@
 # Hercules
 
+[![Build Status](https://travis-ci.org/mucs420f19/Hercules.svg?branch=develop)](https://travis-ci.org/mucs420f19/Hercules)
+[![Coverage Status](https://coveralls.io/repos/github/mucs420f19/Hercules/badge.svg?branch=develop)](https://coveralls.io/github/mucs420f19/Hercules?branch=develop)
 ## Description
 
 Team Hercules UML editor written in C++
@@ -97,30 +99,36 @@ enter method/field name button
 -To List you Classes,Field, and Methods click the List you Classes,Field, and Methods button.
 ```
 ## Relationship Types
--When prompted for a relationship type input the number asscoiated with the type you want, types and numbers are listed below.
+When prompted for a relationship type, the following types below are acceptable. 
+You may either enter the entire relationship type, or simply enter the first letter. 
+  - For example, to specify a composition type, you may type "c" where prompted.
 ```
--RelationshipAbstraction = 1
--RelationshipAggregation = 2
--RelationshipAssociation = 3
--RelationshipBinding     = 4
--RelationshipCommunicationPath = 5
--RelationshipComposition = 6
--RelationshipControlFlow = 7
--RelationshipDependency = 8
--RelationshipDeploy = 9
--RelationshipDirectedAssociation = 10
--RelationshipExtend = 11
--RelationshipGeneralization = 12
--RelationshipInterfaceRealization = 13
--RelationshipInclude = 14
--RelationshipManifestation = 15
--RelationshipNoteAttachment = 16
--RelationshipObjectFlow = 17
--RelationshipRealization = 18
--RelationshipUsage = 19
+- Aggregation
+- Composition
+- Generalization
+- Realization
+```
 
+## Visibility Types
+When prompted for a visibility, the following types below are acceptable.
+You may either enter the visibility, or enter a shortcut shown below.
+  - For example, to specify a protected visibility, you may type "#" where prompted.
+```
+- Public    / +
+- Private   / -
+- Protected / #
+```
 
+## Quantifiers
+When prompted to enter a quantifier, the following types below are acceptable.
+  - When entering a quantifier of one, you may either enter "one" or 1".
 
+You will be prompted to enter quantifier 1 (q1) and quantifier 2 (q2).
+Quantifers are represented as a q1-to-q2 relationship.
+  - For example, if q1 is equal to many and q2 is equal to one, then you have a many-to-one relationship.
+```
+- One / 1
+- Many
 ```
 
 ## Tests

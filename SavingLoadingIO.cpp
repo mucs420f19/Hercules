@@ -84,9 +84,16 @@ namespace SavingLoadingIO
 				out << "      Type:\n";
 				out << "        - " << j.type << "\n";
 
+				out << "      Quantifier:\n";
+				out << "        - " << j.quantifier << "\n";
+
 				out << "      Parent:\n";
 				out << "        - " << j.parent << "\n";
 			}
+			out << "    X:\n";
+			out << "      - " << i->GetXPosition() << "\n";
+			out << "    Y:\n";
+			out << "      - " << i->GetYPosition() << "\n";
 		}
 		out.close();
 		return SaveSuccess;
@@ -94,9 +101,11 @@ namespace SavingLoadingIO
 
 	bool LoadProject(UMLObjectsHolder* out, std::string filename)
 	{
-		out->ClearProject();
 		std::ifstream in(filename);
 		if (!in.good()) return false;
+
+		///only clear project if we found a good file to load
+		out->ClearProject();
 
 		std::string line;
 		std::vector<std::string> lines;
@@ -116,7 +125,7 @@ namespace SavingLoadingIO
 		ProcessResults(t, out, rela);
 		for (auto i : rela)
 		{
-			out->AddRelationship(i.parent, i.child, std::stoi(i.type));
+			out->GetUMLObject(i.parent)->AddRelationship({ std::stoi(i.type), std::stoi(i.quantifier), out->GetUMLObject(i.child), out->GetUMLObject(i.parent), i.bparent });
 		}
 		LoadingCleanup(t);
 		return out;
@@ -229,7 +238,7 @@ namespace SavingLoadingIO
 					{
 						if (j->key == "UMLField")
 						{
-							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), FindChildWhere(j, "Visibility"));
+							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), std::stoi(FindChildWhere(j, "Visibility")));
 							a->AddField(field);
 						}
 						else if (j->key == "UMLMethod")
@@ -246,16 +255,20 @@ namespace SavingLoadingIO
 								}
 								
 							}
-							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, FindChildWhere(j, "Visibility"));
+							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, std::stoi(FindChildWhere(j, "Visibility")));
 							a->AddMethod(method);
 						}
 						else if (j->key == "UMLRelationship")
 						{
-							if (FindChildWhere(j, "Parent") == "1")
-							{
-								relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type")));
-							}
-							else relationships.push_back(Relationship(FindChildWhere(j, "Object"), title, FindChildWhere(j, "Type")));
+							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier"), std::stoi(FindChildWhere(j, "Parent"))));
+						}
+						else if (j->key == "X")
+						{
+							a->SetXPosition(std::stoi(j->contents[0]));
+						}
+						else if (j->key == "Y")
+						{
+							a->SetYPosition(std::stoi(j->contents[0]));
 						}
 					}
 				}
@@ -272,7 +285,7 @@ namespace SavingLoadingIO
 			{
 				if (i->contents.size() == 1)
 				{
-					out = i->contents[0];
+					out = RemoveQuotes(i->contents[0]);
 					break;
 				}
 			}

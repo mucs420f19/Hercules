@@ -98,7 +98,7 @@ set_style(struct nk_context *ctx, enum theme theme)
         table[NK_COLOR_TEXT] = nk_rgba(210, 210, 210, 255);
         table[NK_COLOR_WINDOW] = nk_rgba(57, 67, 71, 215);
         table[NK_COLOR_HEADER] = nk_rgba(51, 51, 56, 220);
-        table[NK_COLOR_BORDER] = nk_rgba(46, 46, 46, 255);
+        table[NK_COLOR_BORDER] = nk_rgba(252, 186, 3, 255);
         table[NK_COLOR_BUTTON] = nk_rgba(48, 83, 111, 255);
         table[NK_COLOR_BUTTON_HOVER] = nk_rgba(58, 93, 121, 255);
         table[NK_COLOR_BUTTON_ACTIVE] = nk_rgba(63, 98, 126, 255);
