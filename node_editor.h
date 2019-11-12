@@ -195,7 +195,7 @@ struct node* node_editor_find(struct node_editor *editor, int ID)
 }
 
 void node_editor_add(struct node_editor *editor, const char *name, struct nk_rect bounds,
-        struct node_data data, int in_count, int out_count, node_functions ftable, bool infinite_inputs = false, int gapped_inputs = 0, struct nk_color gapped_color = nk_rgb(100, 70, 70))
+        struct node_data data, int in_count, int out_count, node_functions ftable, bool infinite_inputs = false, int gapped_inputs = 0, struct nk_color gapped_color = nk_rgb(252, 227, 3))
 {
     struct node *node;
     if (!editor->deleted_begin)
@@ -357,9 +357,6 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         nodeedit->popupOpened = true;
         const char *grid_option[] = {"Show Grid", "Hide Grid"};
         nk_layout_row_dynamic(ctx, 25, 1);
-        if (nk_contextual_item_label(ctx, "New", NK_TEXT_CENTERED))
-            node_editor_add(nodeedit, className, nk_rect(400, 260, 180, 220),
-                            node_data(), 1, 2, node_ftables[1], true, 1);
         if (nk_contextual_item_label(ctx, grid_option[nodeedit->show_grid],NK_TEXT_CENTERED))
             nodeedit->show_grid = !nodeedit->show_grid;
         nk_contextual_end(ctx);
@@ -382,6 +379,7 @@ static void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx
         {
             if(!(holder->CreateNewClass(tempName)))
             {
+                holder->DeleteClass(nodeedit->hovered->name);
                 holder->EditClassTitle(tempName, nodeedit->hovered->name);
             }
             strcpy(nodeedit->hovered->name, tempName);
@@ -466,7 +464,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                 l1.x -= nodeedit->scrolling.x;
                 l1.y -= nodeedit->scrolling.y;
                 nk_stroke_curve(canvas, l0.x, l0.y, l0.x + 50.0f, l0.y,
-                        l1.x - 50.0f, l1.y, l1.x, l1.y, 1.0f, nk_rgb(100, 100, 100));
+                        l1.x - 50.0f, l1.y, l1.x, l1.y, 3.0f, nk_rgb(252, 227, 3));
             }
 
             /* execute each node as a movable group */
@@ -494,10 +492,25 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
 
                     /* ================= NODE CONTENT =====================*/
                     it->ftable.draw(it, ctx);
-                    nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-                    nk_layout_row_push(ctx, 405);
+
                     for (auto i : holder->GetUMLObject(it->name)->ReturnMethodsRaw())
                         {
+                            nk_layout_row_begin(ctx, NK_STATIC, 25, 3);
+                            nk_layout_row_push(ctx, 155);
+                            nk_label(ctx, i.return_type.c_str(), NK_TEXT_LEFT);
+                            nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
+                        }
+
+                    nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+                    nk_layout_row_push(ctx, 155);
+                        {
+                            nk_label(ctx, "________________________", NK_TEXT_LEFT);
+                        }
+
+                    for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
+                        {
+                            nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+                            nk_layout_row_push(ctx, 155);
                             nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
                         }
                     it->ftable.draw(it, ctx);
@@ -519,8 +532,8 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         struct nk_rect circle;
                         circle.x = node->bounds.x + node->bounds.w-4;
                         circle.y = node->bounds.y + space * (float)(n+1);
-                        circle.w = 8; circle.h = 8;
-                        nk_fill_circle(canvas, circle, nk_rgb(100, 100, 100));
+                        circle.w = 15; circle.h = 15;
+                        nk_fill_circle(canvas, circle, nk_rgb(252, 186, 3));
  
                         /* start linking process */
                         if (nk_window_is_active(ctx, title) && nk_input_has_mouse_click_down_in_rect(in, NK_BUTTON_LEFT, circle, nk_true)) {
@@ -545,8 +558,8 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         struct nk_rect circle;
                         circle.x = node->bounds.x-4;
                         circle.y = node->bounds.y + space * (float)(n+1);
-                        circle.w = 8; circle.h = 8;
-                        nk_fill_circle(canvas, circle, n < it->input_gapped ? it->gapped_color :  nk_rgb(100, 100, 100));
+                        circle.w = 15; circle.h = 15;
+                        nk_fill_circle(canvas, circle, n < it->input_gapped ? it->gapped_color :  nk_rgb(252, 186, 3));
 
                         /* start linking process */
                         if (nk_window_is_active(ctx, title) && nk_input_has_mouse_click_down_in_rect(in, NK_BUTTON_LEFT, circle, nk_true) && it->inputs[n]) {
@@ -581,7 +594,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
             /* draw curve from linked node slot to mouse position */
             if (drawLink)
                 nk_stroke_curve(canvas, link_l0.x, link_l0.y, link_l0.x + 50.0f, link_l0.y,
-                        link_l1.x - 50.0f, link_l1.y, link_l1.x, link_l1.y, 1.0f, nk_rgb(100, 100, 100));
+                        link_l1.x - 50.0f, link_l1.y, link_l1.x, link_l1.y, 3.0f, nk_rgb(252, 227, 3));
 
             /* reset linking connection */
             if (nodeedit->linking.active && nk_input_is_mouse_released(in, NK_BUTTON_LEFT)) {
@@ -636,7 +649,7 @@ void node_editor_push(struct node_editor *editor, struct node *node, bool delete
 struct node* node_editor_pop(struct node_editor *editor, struct node *node, bool delete_list = false);
 struct node* node_editor_find(struct node_editor *editor, int ID);
 void node_editor_add(struct node_editor *editor, const char *name, struct nk_rect bounds,
-					 struct node_data data, int in_count, int out_count, node_functions ftable, bool infinite_inputs = false, int gapped_inputs = 0, struct nk_color gapped_color = nk_rgb(100, 70, 70));
+					 struct node_data data, int in_count, int out_count, node_functions ftable, bool infinite_inputs = false, int gapped_inputs = 0, struct nk_color gapped_color = nk_rgb(252, 227, 3));
 void contextual_menu(struct node_editor* nodeedit, struct nk_context* ctx, const char* title);
 void node_editor_clear_gaps(struct node_editor* editor);
 void node_editor_clean_links(struct node_editor* editor);
