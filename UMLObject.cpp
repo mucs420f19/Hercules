@@ -64,6 +64,16 @@ std::string UMLObject::ReturnMethods()
 	return out;
 }
 
+std::vector<const char *> UMLObject::ReturnMethodsgui()
+{
+    std::vector<const char *> out;
+    for (auto& i : methods)
+    {
+        out.push_back(i.ToString().c_str());
+    }
+    return out;
+}
+
 //concatenates all the objects return types
 std::string UMLObject::ToString()
 {

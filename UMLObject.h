@@ -81,7 +81,7 @@ struct UMLField
 	void SetName(std::string in);
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
-private:
+//private:
 	std::string name;
 	std::string type;
 	int visibility;
@@ -190,7 +190,7 @@ struct UMLMethod
 	int SetParamDefaultValue(std::string name, std::string value);
 	int ClearParamDefaultValue(std::string name);
 	int DeleteParameter(std::string name);
-private:
+//private:
 	std::string name;
 	std::string return_type;
 	std::vector<UMLParameter> parameters;
@@ -207,6 +207,7 @@ public:
 	const std::string & ReturnTitle() const;
 	std::string ReturnFields();
 	std::string ReturnMethods();
+	std::vector<const char *> ReturnMethodsgui();
 	std::string ToString();
 
 	//these need to be saved every time for the GUI, so they are included here
