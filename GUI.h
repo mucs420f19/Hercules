@@ -23,8 +23,8 @@
 #define NK_GLFW_GL3_IMPLEMENTATION
 #define NK_KEYSTATE_BASED_INPUT
 #define INCLUDE_STYLE
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
 #include "nuklear.h"
 #include "nuklear_glfw_gl3.h"
@@ -117,8 +117,7 @@ void RunGUI(UMLObjectsHolder* holder)
 
 		/* GUI */
 		if (nk_begin(ctx, " ", nk_rect(0, 0, 450, WINDOW_HEIGHT),
-			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-			NK_WINDOW_TITLE))
+			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE))
 
 			//Begin menubar here or core dump later on		
 			nk_menubar_begin(ctx);
@@ -144,6 +143,7 @@ void RunGUI(UMLObjectsHolder* holder)
 				if (!(holder->CreateNewClass(add)))
                 {
                     node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+					strcpy(add,overwrite);
                 }
 				
 			}

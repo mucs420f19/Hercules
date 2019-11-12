@@ -412,7 +412,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
     }
 
 #ifndef NDE_NO_WINDOW
-    if (nk_begin(ctx, title, nk_rect(450, 0, 800, WINDOW_HEIGHT),
+    if (nk_begin(ctx, title, nk_rect(450, 0, 1400, 1015),
                 NK_WINDOW_BORDER|NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE))
     {
 #endif
