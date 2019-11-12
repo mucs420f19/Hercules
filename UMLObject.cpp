@@ -332,7 +332,7 @@ size_t UMLObject::GetIndexRelationshipWith(std::string in)
 	return out;
 }
 
-
+// Iterates through the relationships and returns the index of the relationship connected to string "in"
 UMLRelationship * UMLObject::GetRelationshipWith(std::string in)
 {
 	UMLRelationship * out = 0;
@@ -453,10 +453,16 @@ int UMLMethod::AddParameter(UMLParameter in)
 	}
 	parameters.push_back(in);
 	return ElementSuccess;
-}
-
-int UMLMethod::EditParamName(std::string old, std::string newn)
-{
+}
+
+
+// Searches for a paramater "old" and changes its name to "new"
+// If no such parameter exists, return an error
+// If "new" already exists, return an error
+int UMLMethod::EditParamName(std::string old, std::string newn)
+
+{
+
 	for (auto i : parameters)
 	{
 		if (newn == i.name) return ElementAlreadyExists;
@@ -469,11 +475,16 @@ int UMLMethod::EditParamName(std::string old, std::string newn)
 			return ElementSuccess;
 		}
 	}
-	return ElementDoesntExist;
-}
-
-int UMLMethod::EditParamType(std::string name, std::string type)
-{
+	return ElementDoesntExist;
+
+}
+
+// Searches for a paramater "name" and changes its type to "type"
+// If no such parameter exists, return an error
+int UMLMethod::EditParamType(std::string name, std::string type)
+
+{
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -482,11 +493,16 @@ int UMLMethod::EditParamType(std::string name, std::string type)
 			return ElementSuccess;
 		}
 	}
-	return ElementDoesntExist;
-}
-
-int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
-{
+	return ElementDoesntExist;
+
+}
+
+// Searches for a paramater "name" and changes its value to "value"
+// If no such parameter exists, return an error
+int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
+
+{
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -496,11 +512,16 @@ int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
 			return ElementSuccess;
 		}
 	}
-	return ElementDoesntExist;
-}
-
-int UMLMethod::ClearParamDefaultValue(std::string name)
-{
+	return ElementDoesntExist;
+
+}
+
+// Searches for a paramater "name" and clears its value
+// If no such parameter exists, return an error
+int UMLMethod::ClearParamDefaultValue(std::string name)
+
+{
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -510,11 +531,16 @@ int UMLMethod::ClearParamDefaultValue(std::string name)
 			return ElementSuccess;
 		}
 	}
-	return ElementDoesntExist;
-}
-
-int UMLMethod::DeleteParameter(std::string name)
-{
+	return ElementDoesntExist;
+
+}
+
+// Searches for a paramater "name" and deletes it
+// If no such parameter exists, return an error
+int UMLMethod::DeleteParameter(std::string name)
+
+{
+
 	unsigned int count = 0;
 	for (auto i : parameters)
 	{
@@ -656,9 +682,11 @@ int UMLObject::EditMethodV(std::string methodName, int vis)
 		}
 	}
 	return ElementDoesntExist;
-}
-
-int UMLObject::AddParameter(std::string method_title, std::string param_name)
+}
+
+// Searches for method "method_title" and adds a parameter "param_name"
+// If no such method exists, return an error
+int UMLObject::AddParameter(std::string method_title, std::string param_name)
 {
 	for (auto& i : methods)
 	{
@@ -666,60 +694,88 @@ int UMLObject::AddParameter(std::string method_title, std::string param_name)
 		{
 			return i.AddParameter({ "int", param_name });
 		}
-	}
-	return ElementDoesntExist;
-}
-
-int UMLObject::EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name)
-{
+	}
+
+	return ElementDoesntExist;
+
+}
+
+// Searches for paramater "old_param_name" in method "method_title" and replace it with "new_param_name"
+// If no such method exists, return an error
+int UMLObject::EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name)
+{
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
 		{
 			return i.EditParamName(old_param_name, new_param_name);
 		}
-	}
-	return ElementDoesntExist;
-}
-
-int UMLObject::EditParameterType(std::string method_title, std::string param_name, std::string type)
-{
+	}
+
+	return ElementDoesntExist;
+
+}
+
+// Searches for paramater "param_name" in method "method_title" and set its type to "type"
+// If no such method exists, return an error
+int UMLObject::EditParameterType(std::string method_title, std::string param_name, std::string type)
+{
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
 		{
 			return i.EditParamType(param_name, type);
 		}
-	}
-	return ElementDoesntExist;
-}
-
-int UMLObject::EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value)
-{
+	}
+
+	return ElementDoesntExist;
+
+}
+
+// Searches for paramater "param_name" in method "method_title" and set its value to "value"
+// If no such method exists, return an error
+int UMLObject::EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value)
+
+{
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
 		{
 			return i.SetParamDefaultValue(param_name, value);
 		}
-	}
-	return ElementDoesntExist;
-}
-
-int UMLObject::EditParameterClearDefaultValue(std::string method_title, std::string param_name)
-{
+	}
+
+	return ElementDoesntExist;
+
+}
+
+// Searches for paramater "param_name" in method "method_title" and clears its value
+// If no such method exists, return an error
+int UMLObject::EditParameterClearDefaultValue(std::string method_title, std::string param_name)
+
+{
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
 		{
 			return i.ClearParamDefaultValue(param_name);
 		}
-	}
-	return ElementDoesntExist;
-}
-
-int UMLObject::DeleteParameter(std::string method_title, std::string param_name)
-{
+	}
+
+	return ElementDoesntExist;
+
+}
+
+// Searches for paramater "param_name" in method "method_title" and deletes the paramater
+// If no such method exists, return an error
+int UMLObject::DeleteParameter(std::string method_title, std::string param_name)
+
+{
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
