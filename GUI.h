@@ -42,29 +42,18 @@ static void error_callback(int e, const char* d)
 }
 
 void RunGUI(UMLObjectsHolder* holder)
-{
+{	
+	/*Variables for class control */
+	char add[256] = {0}, edit[256]= {0}, del[256]= {0}, save[256]= {0}, load[256]= {0}, method[256]= {0}, editMethod[256]= {0}, tempName[256]= {0}, 
+		field[256]= {0}, editField[256]= {0}, classname[256]= {0}, overwrite[256]= {0}, type[256]= {0};
+	node_ftables[1].draw = &draw_info;
+	static struct node_editor node1;
+
 	/* Platform */
 	static GLFWwindow *win;
 	int width = 0, height = 0;
 	struct nk_context *ctx;
 	struct nk_colorf bg;
-	char add[256] = { 0 };
-	char edit[256] = { 0 };
-	char del[256] = { 0 };
-	char save[256] = { 0 };
-	char load[256] = { 0 };
-	char method[256] = { 0 };
-	char editMethod[256] = { 0 };
-	char tempName[256] = { 0 };
-	char field[256] = { 0 };
-	char editField[256] = { 0 };
-	char classname[256] = { 0 };
-	char overwrite[256] = { 0 };
-	char type[256] = { 0 };
-	static int popup_active;
-	node_ftables[1].draw = &draw_info;
-	static struct node_editor node1;
-	static struct node_editor node2;
 
 	/* GLFW */
 	glfwSetErrorCallback(error_callback);
@@ -169,6 +158,8 @@ void RunGUI(UMLObjectsHolder* holder)
 				//newMethod.SetName(method);
 				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
 				strcpy(classname, overwrite);
+				strcpy(add,overwrite);
+				strcpy(method, overwrite);
 			}
 
 			nk_menu_end(ctx);

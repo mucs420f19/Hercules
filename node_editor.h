@@ -464,7 +464,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                 l1.x -= nodeedit->scrolling.x;
                 l1.y -= nodeedit->scrolling.y;
                 nk_stroke_curve(canvas, l0.x, l0.y, l0.x + 50.0f, l0.y,
-                        l1.x - 50.0f, l1.y, l1.x, l1.y, 3.0f, nk_rgb(252, 227, 3));
+                        l1.x - 50.0f, l1.y, l1.x, l1.y, 3.0f, nk_rgb(252, 227, 3));                         
             }
 
             /* execute each node as a movable group */
@@ -475,7 +475,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                             it->bounds.y - nodeedit->scrolling.y, it->bounds.w, it->bounds.h));
 
                 /* execute node window */
-                if (nk_group_begin(ctx, it->name, NK_WINDOW_MOVABLE|NK_WINDOW_BORDER|NK_WINDOW_TITLE|NK_WINDOW_SCALABLE))
+                if (nk_group_begin(ctx, it->name, NK_WINDOW_MOVABLE|NK_WINDOW_BORDER| NK_WINDOW_SCALABLE))
                 {
                     /* always have last selected node on top */
 
@@ -491,6 +491,13 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         nodeedit->hovered = it;
 
                     /* ================= NODE CONTENT =====================*/
+                    
+                    //Adds name to top of class box
+                    nk_layout_row_begin(ctx, NK_STATIC, 25, 1);
+                    nk_layout_row_push(ctx,100);
+                    nk_label(ctx, it->name, NK_TEXT_CENTERED);
+
+                    //Loops through the holder and returns methods to the corresponding class
                     for (auto i : holder->GetUMLObject(it->name)->ReturnMethodsRaw())
                         {
                             nk_layout_row_begin(ctx, NK_STATIC, 25, 3);
@@ -498,13 +505,15 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                             nk_label(ctx, i.return_type.c_str(), NK_TEXT_LEFT);
                             nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
                         }
-
+                    
+                    //Line Break.  TODO figure out how to scale the line dynamically
                     nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
                     nk_layout_row_push(ctx, 155);
                         {
                             nk_label(ctx, "________________________", NK_TEXT_LEFT);
                         }
-
+                        
+                    //Loops through the holder and returns fields to the corresponding class
                     for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
                         {
                             nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
