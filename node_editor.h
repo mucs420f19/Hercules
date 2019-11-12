@@ -491,12 +491,10 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         nodeedit->hovered = it;
 
                     /* ================= NODE CONTENT =====================*/
-                    it->ftable.draw(it, ctx);
-
                     for (auto i : holder->GetUMLObject(it->name)->ReturnMethodsRaw())
                         {
                             nk_layout_row_begin(ctx, NK_STATIC, 25, 3);
-                            nk_layout_row_push(ctx, 155);
+                            nk_layout_row_push(ctx,100);
                             nk_label(ctx, i.return_type.c_str(), NK_TEXT_LEFT);
                             nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
                         }
@@ -510,16 +508,10 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                     for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
                         {
                             nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-                            nk_layout_row_push(ctx, 155);
+                            nk_layout_row_push(ctx,100);
                             nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
+							nk_label(ctx, i.type.c_str(), NK_TEXT_LEFT);
                         }
-					nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-					nk_layout_row_push(ctx, 405);
-					for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
-					{
-						nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
-					}
-                    it->ftable.draw(it, ctx);
                     /* ====================================================*/
                     nk_group_end(ctx);
                 }
