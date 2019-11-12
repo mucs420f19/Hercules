@@ -493,33 +493,34 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                     /* ================= NODE CONTENT =====================*/
                     
                     //Adds name to top of class box
-                    nk_layout_row_begin(ctx, NK_STATIC, 25, 1);
-                    nk_layout_row_push(ctx,100);
+                    nk_layout_row_begin(ctx, NK_STATIC, 5, 1);
+                    nk_layout_row_dynamic(ctx, 1, 1);
                     nk_label(ctx, it->name, NK_TEXT_CENTERED);
 
                     //Loops through the holder and returns methods to the corresponding class
                     for (auto i : holder->GetUMLObject(it->name)->ReturnMethodsRaw())
                         {
                             nk_layout_row_begin(ctx, NK_STATIC, 25, 3);
-                            nk_layout_row_push(ctx,100);
-                            nk_label(ctx, i.return_type.c_str(), NK_TEXT_LEFT);
-                            nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
+                            nk_layout_row_dynamic(ctx, 1, 2);
+                            nk_label(ctx, i.return_type.c_str(), NK_TEXT_CENTERED);
+                            nk_label(ctx, i.name.c_str(), NK_TEXT_CENTERED);
                         }
                     
                     //Line Break.  TODO figure out how to scale the line dynamically
                     nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
                     nk_layout_row_push(ctx, 155);
                         {
-                            nk_label(ctx, "________________________", NK_TEXT_LEFT);
+                            nk_layout_row_dynamic(ctx, 20, 1);
+                            nk_label(ctx, "________________________", NK_TEXT_CENTERED);
                         }
-                        
+
                     //Loops through the holder and returns fields to the corresponding class
                     for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
                         {
-                            nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-                            nk_layout_row_push(ctx,100);
-                            nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
-							nk_label(ctx, i.type.c_str(), NK_TEXT_LEFT);
+                            nk_layout_row_begin(ctx, NK_STATIC, 25, 3);
+                            nk_layout_row_dynamic(ctx, 1, 2);
+                            nk_label(ctx, i.name.c_str(), NK_TEXT_CENTERED);
+							nk_label(ctx, i.type.c_str(), NK_TEXT_CENTERED);
                         }
                     /* ====================================================*/
                     nk_group_end(ctx);
