@@ -27,7 +27,7 @@ void UMLObjectsHolder::ClearProject()
   
   UMLObjects_holder.clear();
 }
-
+// creates a new class with unique title
 int UMLObjectsHolder::CreateNewClass(std::string title)
 {
 	if (!IsTitleUnique(title)) return ClassAlreadyExists;
@@ -36,7 +36,7 @@ int UMLObjectsHolder::CreateNewClass(std::string title)
 	UMLObjects_holder.push_back(a);
 	return ElementSuccess;
 }
-
+// prints the title of the class
 void UMLObjectsHolder::UMLObjectPrintTitles()
 {
 	int count = 1;
@@ -47,19 +47,19 @@ void UMLObjectsHolder::UMLObjectPrintTitles()
 		++count;
 	}
 }
-
+//prints contents of holder
 void UMLObjectsHolder::UMLObjectPrintContents()
 {
 	for (auto i : UMLObjects_holder)
 		std::cout << i->ToString() << std::endl;
 }
-
+//prints the content of the repl
 void UMLObjectsHolder::UMLObjectPrintContentsREPL()
 {
 	for (auto i : UMLObjects_holder)
 		std::cout << i->ToStringREPL() << std::endl;
 }
-
+// returns a vector with all content	
 std::vector<std::string> UMLObjectsHolder::ReturnAll()
 {
 	std::vector<std::string> out;
@@ -69,7 +69,7 @@ std::vector<std::string> UMLObjectsHolder::ReturnAll()
 	}
 	return out;
 }
-
+// returns titles from vector	
 std::vector<std::string> UMLObjectsHolder::ReturnTitles()
 {
 	std::vector<std::string> out;
@@ -79,7 +79,7 @@ std::vector<std::string> UMLObjectsHolder::ReturnTitles()
 	}
 	return out;
 }
-
+// returns fields from the vector
 std::vector<std::string> UMLObjectsHolder::ReturnFields()
 {
 	std::vector<std::string> out;
@@ -89,7 +89,7 @@ std::vector<std::string> UMLObjectsHolder::ReturnFields()
 	}
 	return out;
 }
-
+// returns mehods from the vector
 std::vector<std::string> UMLObjectsHolder::ReturnMethods()
 {
 	std::vector<std::string> out;
@@ -99,7 +99,7 @@ std::vector<std::string> UMLObjectsHolder::ReturnMethods()
 	}
 	return out;
 }
-
+// returns relationships from the vector
 std::vector<std::string> UMLObjectsHolder::ReturnRelationships()
 {
 	std::vector<std::string> out;
@@ -109,17 +109,17 @@ std::vector<std::string> UMLObjectsHolder::ReturnRelationships()
 	}
 	return out;
 }
-
+// Returns the pointer that points to the holder
 std::vector<UMLObject*> UMLObjectsHolder::ReturnPtrToVector()
 {
 	return UMLObjects_holder;
 }
-
+//grabs the contnents of the holder into the object
 void UMLObjectsHolder::AddUMLObject(UMLObject* in)
 {
 	if (in != NULL) UMLObjects_holder.push_back(in);
 }
-
+// deletes the class based off title
 int UMLObjectsHolder::DeleteClass(std::string title)
 {
 	std::vector<UMLObject*> UMLObjects_holder_temp = UMLObjects_holder;
@@ -147,12 +147,12 @@ int UMLObjectsHolder::DeleteClass(std::string title)
 	}
 	return ElementDoesntExist;
 }
-
+// returns the size of the object
 size_t UMLObjectsHolder::Size()
 {
 	return UMLObjects_holder.size();
 }
-
+// Allows to edit based off the title 
 int UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_title)
 {
 	if (!IsTitleUnique(new_title)) return ElementAlreadyExists;
@@ -166,7 +166,7 @@ int UMLObjectsHolder::EditClassTitle(std::string new_title, std::string old_titl
 	}
 	return ElementDoesntExist;
 }
-
+// Gets visibility on the stromh with its respected privacy
 int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
 {
 	int result = 0;
@@ -177,7 +177,7 @@ int UMLObjectsHolder::GetVisibilityTypeFromString(std::string in)
 	else if (in == "protected" || in[0] == '#') result = UMLFieldVisibilityProtected;
 	return result;
 }
-
+// adds a field with visibilities 
 int UMLObjectsHolder::AddField(std::string class_title, std::string field_title, std::string type, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -192,7 +192,7 @@ int UMLObjectsHolder::AddField(std::string class_title, std::string field_title,
 	}
 	return result;
 }
-
+//allows to edit field name of class
 int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_field_title, std::string new_field_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -200,7 +200,7 @@ int UMLObjectsHolder::EditFieldName(std::string class_title, std::string old_fie
 	if (c == 0) return ClassDoesntExist;
 	return c->EditField(old_field_title, new_field_title);
 }
-
+// allows to edit the field type of class
 int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_title, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -213,7 +213,7 @@ int UMLObjectsHolder::EditFieldType(std::string class_title, std::string field_t
 	}
 	return result;
 }
-
+// edits field with respect to visibility 
 int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string field_title, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -222,7 +222,7 @@ int UMLObjectsHolder::EditFieldVisibility(std::string class_title, std::string f
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
 	return c->EditFieldV(field_title, GetVisibilityTypeFromString(visibility));
 }
-
+// deletes the field 
 int UMLObjectsHolder::DeleteField(std::string class_title, std::string field_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -230,7 +230,7 @@ int UMLObjectsHolder::DeleteField(std::string class_title, std::string field_tit
 	if (c == 0) return ClassDoesntExist;
 	return c->DeleteField(field_title);
 }
-
+// adds method with respect to its visibility 
 int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_title, std::string type, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -239,7 +239,7 @@ int UMLObjectsHolder::AddMethod(std::string class_title, std::string method_titl
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
 	return c->AddMethod(UMLMethod(method_title, type, {}, GetVisibilityTypeFromString(visibility)));
 }
-
+// edits method name with respect to visibility
 int UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_method_name, std::string new_method_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -247,7 +247,7 @@ int UMLObjectsHolder::EditMethodName(std::string class_title, std::string old_me
 	if (c == 0) return ClassDoesntExist;
 	return c->EditMethod(old_method_name, new_method_name);
 }
-
+// edits the methods return type of the class
 int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string method_name, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -256,7 +256,7 @@ int UMLObjectsHolder::EditMethodReturnType(std::string class_title, std::string 
 
 	return c->EditMethodT(method_name, type);
 }
-
+// edits method title with respect to visibility
 int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string method_title, std::string visibility)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -265,7 +265,7 @@ int UMLObjectsHolder::EditMethodVisibility(std::string class_title, std::string 
 	if (!GetVisibilityTypeFromString(visibility)) return InvalidVisibility;
 	return c->EditMethodV(method_title, GetVisibilityTypeFromString(visibility));
 }
-
+// deletes the method
 int UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_title)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -273,7 +273,7 @@ int UMLObjectsHolder::DeleteMethod(std::string class_title, std::string method_t
 	if (c == 0) return ClassDoesntExist;
 	return c->DeleteMethod(method_title);
 }
-
+// adds parameter to title 
 int UMLObjectsHolder::AddParameter(std::string class_title, std::string method_title, std::string param_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -281,7 +281,7 @@ int UMLObjectsHolder::AddParameter(std::string class_title, std::string method_t
 	if (c == 0) return ClassDoesntExist;
 	return c->AddParameter(method_title, param_name);
 }
-
+// allows paramete name to be edited 
 int UMLObjectsHolder::EditParameterName(std::string class_title, std::string method_title, std::string old_param_name, std::string new_param_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -289,7 +289,7 @@ int UMLObjectsHolder::EditParameterName(std::string class_title, std::string met
 	if (c == 0) return ClassDoesntExist;
 	return c->EditParameterName(method_title, old_param_name, new_param_name);
 }
-
+// allows parameter type to be edited
 int UMLObjectsHolder::EditParameterType(std::string class_title, std::string method_title, std::string param_name, std::string type)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -297,7 +297,7 @@ int UMLObjectsHolder::EditParameterType(std::string class_title, std::string met
 	if (c == 0) return ClassDoesntExist;
 	return c->EditParameterType(method_title, param_name, type);
 }
-
+// allows parameters default value to be edited
 int UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std::string method_title, std::string param_name, std::string value)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -305,7 +305,7 @@ int UMLObjectsHolder::EditParameterSetDefaultValue(std::string class_title, std:
 	if (c == 0) return ClassDoesntExist;
 	return c->EditParameterSetDefaultValue(method_title, param_name, value);
 }
-
+// allows to clear the default value of the parameter
 int UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, std::string method_title, std::string param_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -313,7 +313,7 @@ int UMLObjectsHolder::EditParameterClearDefaultValue(std::string class_title, st
 	if (c == 0) return ClassDoesntExist;
 	return c->EditParameterClearDefaultValue(method_title, param_name);
 }
-
+// deletes parameter
 int UMLObjectsHolder::DeleteParameter(std::string class_title, std::string method_title, std::string param_name)
 {
 	UMLObject* c = GetUMLObject(class_title);
@@ -321,7 +321,7 @@ int UMLObjectsHolder::DeleteParameter(std::string class_title, std::string metho
 	if (c == 0) return ClassDoesntExist;
 	return c->DeleteParameter(method_title, param_name);
 }
-
+// adds relationship between parent and child
 int UMLObjectsHolder::AddRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
@@ -339,7 +339,7 @@ int UMLObjectsHolder::AddRelationship(std::string parent, std::string child, std
 
 	return ElementSuccess;
 }
-
+// allows to edit relationships between parent and child
 int UMLObjectsHolder::EditRelationship(std::string parent, std::string child, std::string type, std::string quantifier1, std::string quantifier2)
 {
 	UMLObject* p, * c;
@@ -356,7 +356,7 @@ int UMLObjectsHolder::EditRelationship(std::string parent, std::string child, st
 	c->UpdateRelationship(c->GetIndexRelationshipWith(parent), GetRelationshipTypeFromString(type), GetQuantifierFromString(quantifier2));
 	return ElementSuccess;
 }
-
+// deletes relationship between parent and child
 int UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 {
 	UMLObject* p, * c;
@@ -372,7 +372,7 @@ int UMLObjectsHolder::DeleteRelationship(std::string parent, std::string child)
 	c->DeleteRelationship(parent);
 	return ElementSuccess;
 }
-
+//returns the title from the holder
 UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 {
 	for (auto i : UMLObjects_holder)
@@ -381,7 +381,7 @@ UMLObject* UMLObjectsHolder::GetUMLObject(std::string title)
 	}
 	return 0;
 }
-
+// gets the relationship type based off the string
 int UMLObjectsHolder::GetRelationshipTypeFromString(std::string in)
 {
 	int result = 0;
@@ -393,7 +393,7 @@ int UMLObjectsHolder::GetRelationshipTypeFromString(std::string in)
 	else if (in[0] == 'r') result = RelationshipRealization;
 	return result;
 }
-
+// gets quantifier from the string
 int UMLObjectsHolder::GetQuantifierFromString(std::string in)
 {
 	int result = 0;
