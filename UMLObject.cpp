@@ -97,6 +97,8 @@ void UMLObject::SetYPosition(int in)
 	y = in;
 }
 
+// Designed for use in the REPL
+// Finds the largest string size in order to automatically adjust the size of the UML boxes in the CLI
 size_t UMLObject::GetLargestStringSize()
 {
 	size_t maxSize = 0;
@@ -140,6 +142,8 @@ size_t UMLObject::GetLargestStringSize()
 	return maxSize;
 }
 
+// Designed for use in the REPL
+// Concatenates fields with their types and visibilities to match the format of the UML boxes
 std::string UMLObject::ReturnFieldsREPL()
 {
 	std::string out;
@@ -171,6 +175,8 @@ std::string UMLObject::ReturnFieldsREPL()
 	return out;
 }
 
+// Designed for use in the REPL
+// Concatenates methods with their types and visibilities to match the format of the UML boxes
 std::string UMLObject::ReturnMethodsREPL()
 {
 	std::string out;
@@ -202,6 +208,8 @@ std::string UMLObject::ReturnMethodsREPL()
 	return out;
 }
 
+// Designed for use in the REPL
+// Displays relationships in a list below each UML box
 std::string UMLObject::ReturnRelationshipsREPL()
 {
 	std::string out;
@@ -216,6 +224,8 @@ std::string UMLObject::ReturnRelationshipsREPL()
 	return out;
 }
 
+// Designed for use in the REPL
+// Function that creates the UML boxes in the CLI and prints them to the screen
 std::string UMLObject::ToStringREPL()
 {
 	std::string out;
@@ -317,6 +327,7 @@ void UMLObject::AddRelationship(UMLRelationship in)
 	relationships.push_back(in);
 }
 
+// Iterates through the relationships and returns the index of the relationship connected to string "in"
 size_t UMLObject::GetIndexRelationshipWith(std::string in)
 {
 	size_t out = -1;
@@ -330,6 +341,8 @@ size_t UMLObject::GetIndexRelationshipWith(std::string in)
 	}
 	return out;
 }
+
+// Iterates through the relationships and returns the index of the relationship connected to string "in"
 UMLRelationship * UMLObject::GetRelationshipWith(std::string in)
 {
 	UMLRelationship * out = 0;
@@ -452,8 +465,14 @@ int UMLMethod::AddParameter(UMLParameter in)
 	return ElementSuccess;
 }
 
+
+// Searches for a paramater "old" and changes its name to "new"
+// If no such parameter exists, return an error
+// If "new" already exists, return an error
 int UMLMethod::EditParamName(std::string old, std::string newn)
+
 {
+
 	for (auto i : parameters)
 	{
 		if (newn == i.name) return ElementAlreadyExists;
@@ -467,10 +486,15 @@ int UMLMethod::EditParamName(std::string old, std::string newn)
 		}
 	}
 	return ElementDoesntExist;
+
 }
 
+// Searches for a paramater "name" and changes its type to "type"
+// If no such parameter exists, return an error
 int UMLMethod::EditParamType(std::string name, std::string type)
+
 {
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -480,10 +504,15 @@ int UMLMethod::EditParamType(std::string name, std::string type)
 		}
 	}
 	return ElementDoesntExist;
+
 }
 
+// Searches for a paramater "name" and changes its value to "value"
+// If no such parameter exists, return an error
 int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
+
 {
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -494,10 +523,15 @@ int UMLMethod::SetParamDefaultValue(std::string name, std::string value)
 		}
 	}
 	return ElementDoesntExist;
+
 }
 
+// Searches for a paramater "name" and clears its value
+// If no such parameter exists, return an error
 int UMLMethod::ClearParamDefaultValue(std::string name)
+
 {
+
 	for (auto& i : parameters)
 	{
 		if (name == i.name)
@@ -508,10 +542,15 @@ int UMLMethod::ClearParamDefaultValue(std::string name)
 		}
 	}
 	return ElementDoesntExist;
+
 }
 
+// Searches for a paramater "name" and deletes it
+// If no such parameter exists, return an error
 int UMLMethod::DeleteParameter(std::string name)
+
 {
+
 	unsigned int count = 0;
 	for (auto i : parameters)
 	{
@@ -595,6 +634,8 @@ int UMLObject::DeleteField(std::string in)
 	return ElementDoesntExist;
 }
 
+// Searches for field "fieldName" and sets its type to "newType"
+// If no such field exists, return an error
 int UMLObject::EditFieldT(std::string fieldName, std::string newType)
 {
 	for (auto &i : fields)
@@ -608,6 +649,8 @@ int UMLObject::EditFieldT(std::string fieldName, std::string newType)
 	return ElementDoesntExist;
 }
 
+// Searches for field "fieldName" and sets its visibility to "vis"
+// If no such field exists, return an error
 int UMLObject::EditFieldV(std::string fieldName, int vis)
 {
 	for (auto &i : fields)
@@ -621,6 +664,8 @@ int UMLObject::EditFieldV(std::string fieldName, int vis)
 	return ElementDoesntExist;
 }
 
+// Searches for method "methodName" and sets its type to "newType"
+// If no such method exists, return an error
 int UMLObject::EditMethodT(std::string methodName, std::string newType)
 {
 	for (auto &i : methods)
@@ -634,6 +679,8 @@ int UMLObject::EditMethodT(std::string methodName, std::string newType)
 	return ElementDoesntExist;
 }
 
+// Searches for method "methodName" and sets its visibility to "vis"
+// If no such method exists, return an error
 int UMLObject::EditMethodV(std::string methodName, int vis)
 {
 	for (auto &i : methods)
@@ -647,6 +694,8 @@ int UMLObject::EditMethodV(std::string methodName, int vis)
 	return ElementDoesntExist;
 }
 
+// Searches for method "method_title" and adds a parameter "param_name"
+// If no such method exists, return an error
 int UMLObject::AddParameter(std::string method_title, std::string param_name)
 {
 	for (auto& i : methods)
@@ -656,11 +705,16 @@ int UMLObject::AddParameter(std::string method_title, std::string param_name)
 			return i.AddParameter({ "int", param_name });
 		}
 	}
+
 	return ElementDoesntExist;
+
 }
 
+// Searches for paramater "old_param_name" in method "method_title" and replace it with "new_param_name"
+// If no such method exists, return an error
 int UMLObject::EditParameterName(std::string method_title, std::string old_param_name, std::string new_param_name)
 {
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
@@ -668,11 +722,16 @@ int UMLObject::EditParameterName(std::string method_title, std::string old_param
 			return i.EditParamName(old_param_name, new_param_name);
 		}
 	}
+
 	return ElementDoesntExist;
+
 }
 
+// Searches for paramater "param_name" in method "method_title" and set its type to "type"
+// If no such method exists, return an error
 int UMLObject::EditParameterType(std::string method_title, std::string param_name, std::string type)
 {
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
@@ -680,11 +739,17 @@ int UMLObject::EditParameterType(std::string method_title, std::string param_nam
 			return i.EditParamType(param_name, type);
 		}
 	}
+
 	return ElementDoesntExist;
+
 }
 
+// Searches for paramater "param_name" in method "method_title" and set its value to "value"
+// If no such method exists, return an error
 int UMLObject::EditParameterSetDefaultValue(std::string method_title, std::string param_name, std::string value)
+
 {
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
@@ -692,11 +757,17 @@ int UMLObject::EditParameterSetDefaultValue(std::string method_title, std::strin
 			return i.SetParamDefaultValue(param_name, value);
 		}
 	}
+
 	return ElementDoesntExist;
+
 }
 
+// Searches for paramater "param_name" in method "method_title" and clears its value
+// If no such method exists, return an error
 int UMLObject::EditParameterClearDefaultValue(std::string method_title, std::string param_name)
+
 {
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
@@ -704,11 +775,17 @@ int UMLObject::EditParameterClearDefaultValue(std::string method_title, std::str
 			return i.ClearParamDefaultValue(param_name);
 		}
 	}
+
 	return ElementDoesntExist;
+
 }
 
+// Searches for paramater "param_name" in method "method_title" and deletes the paramater
+// If no such method exists, return an error
 int UMLObject::DeleteParameter(std::string method_title, std::string param_name)
+
 {
+
 	for (auto& i : methods)
 	{
 		if (i.ReturnName() == method_title)
