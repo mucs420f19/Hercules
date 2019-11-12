@@ -81,7 +81,7 @@ struct UMLField
 	void SetName(std::string in);
 	void SetReturnType(std::string in);
 	void SetVisibility(int in);
-private:
+//private:
 	std::string name;
 	std::string type;
 	int visibility;

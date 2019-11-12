@@ -500,6 +500,12 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                         {
                             nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
                         }
+					nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
+					nk_layout_row_push(ctx, 405);
+					for (auto i : holder->GetUMLObject(it->name)->ReturnFieldsRaw())
+					{
+						nk_label(ctx, i.name.c_str(), NK_TEXT_LEFT);
+					}
                     it->ftable.draw(it, ctx);
                     /* ====================================================*/
                     nk_group_end(ctx);
