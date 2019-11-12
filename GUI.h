@@ -131,7 +131,15 @@ void RunGUI(UMLObjectsHolder* holder)
 				SavingLoadingIO::SaveProjectToFile(holder, save, true);
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Load"))
+			{
 				SavingLoadingIO::LoadProject(holder, load);
+				for (auto & i : holder->ReturnTitles())
+				{
+					strcpy(add, i.c_str());
+					node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+				}
+				strcpy(add, overwrite);
+			}
 		}
 		//Creates Buttons for class control
 		{
