@@ -473,7 +473,8 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                 /* calculate scrolled node window position and size */
                 nk_layout_space_push(ctx, nk_rect(it->bounds.x - nodeedit->scrolling.x,
                             it->bounds.y - nodeedit->scrolling.y, it->bounds.w, it->bounds.h));
-
+				holder->GetUMLObject(it->name)->SetXPosition(it->bounds.x);
+				holder->GetUMLObject(it->name)->SetYPosition(it->bounds.y);
                 /* execute node window */
                 if (nk_group_begin(ctx, it->name, NK_WINDOW_MOVABLE|NK_WINDOW_BORDER|NK_WINDOW_TITLE|NK_WINDOW_SCALABLE))
                 {

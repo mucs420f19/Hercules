@@ -136,7 +136,7 @@ void RunGUI(UMLObjectsHolder* holder)
 				for (auto & i : holder->ReturnTitles())
 				{
 					strcpy(add, i.c_str());
-					node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+					node_editor_add(&node1, add, nk_rect(holder->GetUMLObject(i)->GetXPosition(), holder->GetUMLObject(i)->GetYPosition(), 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 				}
 				strcpy(add, overwrite);
 			}
