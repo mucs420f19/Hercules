@@ -436,14 +436,14 @@ int UMLObjectsHolder::SetY(std::string which_class, int y)
 	m->SetYPosition(y);
 	return ElementSuccess;
 }
-
+//takes in the name of a class and returns the x position of that node 
 int UMLObjectsHolder::GetX(std::string which_class)
 {
 	UMLObject * m = GetUMLObject(which_class);
 	if (m == NULL) return ClassDoesntExist;
 	return m->GetXPosition();
 }
-
+//takes in the name of a class and returns the y position of that node 
 int UMLObjectsHolder::GetY(std::string which_class)
 {
 	UMLObject * m = GetUMLObject(which_class);
