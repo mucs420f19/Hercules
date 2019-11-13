@@ -62,7 +62,10 @@ public:
 	//the functions below are "naughty" functions because they allow direct access to the model
 	//this violates the MVC principle because they effectively skip the controller
 	//this could allow for mistakes or bad practices to be implemented
-
+	int SetY(std::string which_class, int y);
+	int SetX(std::string which_class, int x);
+	int GetX(std::string which_class);
+	int GetY(std::string which_class);
 	//returns a vector containing pointers to the classes
 	//this allows direct access to the objects and might not be best practice
 	std::vector<UMLObject*> ReturnPtrToVector();

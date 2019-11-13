@@ -417,3 +417,36 @@ std::string UMLObjectsHolder::IsFieldReferringToExistingClass(std::string in)
 	}
 	return "";
 }
+
+
+//takes in the name of a class and the x position and sets that x postion 
+int UMLObjectsHolder::SetX(std::string which_class, int x)
+{
+	UMLObject * node = GetUMLObject(which_class);
+	if (node == NULL) return ClassDoesntExist;
+	node->SetXPosition(x);
+	return ElementSuccess;
+}
+
+//takes in the name of a class and the y position and sets that y postion 
+int UMLObjectsHolder::SetY(std::string which_class, int y)
+{
+	UMLObject * node = GetUMLObject(which_class);
+	if (node == NULL) return ClassDoesntExist;
+	node->SetYPosition(y);
+	return ElementSuccess;
+}
+//takes in the name of a class and returns the x position of that node 
+int UMLObjectsHolder::GetX(std::string which_class)
+{
+	UMLObject * node = GetUMLObject(which_class);
+	if (node == NULL) return ClassDoesntExist;
+	return node->GetXPosition();
+}
+//takes in the name of a class and returns the y position of that node 
+int UMLObjectsHolder::GetY(std::string which_class)
+{
+	UMLObject * node = GetUMLObject(which_class);
+	if (node == NULL) return ClassDoesntExist;
+	return node->GetYPosition();
+}
