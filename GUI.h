@@ -35,6 +35,9 @@
 #define MAX_ELEMENT_BUFFER 128 * 1024
 
 void RunGUI(UMLObjectsHolder* holder);
+void GUI_Label(nk_context *ctx, std::string in, std::string alignment);
+void GUI_Text_Box(nk_context *ctx, char temp[256]);
+int GUI_Button(nk_context *ctx, const char * name);
 
 static void error_callback(int e, const char* d)
 {
@@ -126,11 +129,14 @@ void RunGUI(UMLObjectsHolder* holder)
 		//Saving and Loading buttons
 		{
 			nk_layout_row_static(ctx, 50, 200, 2);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Save"))
+			//nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
+			GUI_Text_Box(ctx, save);
+			//if (nk_button_label(ctx, "Save"))
+			if (GUI_Button(ctx, "Save"))
 				SavingLoadingIO::SaveProjectToFile(holder, save, true);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Load"))
+			//nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
+			GUI_Text_Box(ctx, load);
+			if (GUI_Button(ctx, "Save"))
 			{
 				SavingLoadingIO::LoadProject(holder, load);
 				for (auto & i : holder->ReturnTitles())
@@ -150,10 +156,10 @@ void RunGUI(UMLObjectsHolder* holder)
 			{
 				//TODO add error checking here... and for all of them after. See error handler method in REPL
 				if (!(holder->CreateNewClass(add)))
-                {
-                    node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
-                }
-				
+				{
+					node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+				}
+
 			}
 		}
 
@@ -358,7 +364,8 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_layout_row_dynamic(ctx, 20, 1);
 			for (auto i : holder->ReturnAll())
 			{
-				nk_label(ctx, i.c_str(), NK_TEXT_LEFT);
+				//nk_label(ctx, i.c_str(), NK_TEXT_LEFT);
+				GUI_Label(ctx, i, "left");
 			}
 			nk_menu_end(ctx);
 		}
@@ -383,4 +390,30 @@ void RunGUI(UMLObjectsHolder* holder)
 	}
 	nk_glfw3_shutdown();
 	glfwTerminate();
+}
+
+void GUI_Label(nk_context *ctx, std::string in, std::string alignment)
+{
+	if (alignment == "left")
+	{
+		nk_label(ctx, in.c_str(), NK_TEXT_LEFT);
+	}
+	else if (alignment == "right")
+	{
+		nk_label(ctx, in.c_str(), NK_TEXT_RIGHT);
+	}
+	else if (alignment == "center")
+	{
+		nk_label(ctx, in.c_str(), NK_TEXT_CENTERED);
+	}
+}
+
+void GUI_Text_Box(nk_context *ctx, char * temp)
+{
+	nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, temp, 255, nk_filter_default);
+}
+
+int GUI_Button(nk_context *ctx, const char * name)
+{
+	return nk_button_label(ctx, name);
 }
