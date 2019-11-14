@@ -12,22 +12,11 @@
 #include "GL/glew.h"
 #include "GLFW/glfw3.h"
 
-#define NK_INCLUDE_FIXED_TYPES
-#define NK_INCLUDE_STANDARD_IO
-#define NK_INCLUDE_STANDARD_VARARGS
-#define NK_INCLUDE_DEFAULT_ALLOCATOR
-#define NK_INCLUDE_VERTEX_BUFFER_OUTPUT
-#define NK_INCLUDE_FONT_BAKING
-#define NK_INCLUDE_DEFAULT_FONT
 #define NK_IMPLEMENTATION
 #define NK_GLFW_GL3_IMPLEMENTATION
-#define NK_KEYSTATE_BASED_INPUT
-#define INCLUDE_STYLE
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
-
-#include "nuklear.h"
+#include "nuklear_config.h"
 #include "nuklear_glfw_gl3.h"
+
 #include "style.c"
 #include "node_editor.h"
 
@@ -136,7 +125,7 @@ void RunGUI(UMLObjectsHolder* holder)
 				for (auto & i : holder->ReturnTitles())
 				{
 					strcpy(add, i.c_str());
-					node_editor_add(&node1, add, nk_rect(holder->GetX(i), holder->GetY(i), 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+					node1.add(add, nk_rect(holder->GetX(i), holder->GetY(i), 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
 				}
 				strcpy(add, overwrite);
 			}
@@ -151,7 +140,7 @@ void RunGUI(UMLObjectsHolder* holder)
 				//TODO add error checking here... and for all of them after. See error handler method in REPL
 				if (!(holder->CreateNewClass(add)))
                 {
-                    node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
+                    node1.add(add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
                 }
 				
 			}
