@@ -38,6 +38,8 @@ void RunGUI(UMLObjectsHolder* holder);
 void GUI_Label(nk_context *ctx, std::string in, std::string alignment);
 void GUI_Text_Box(nk_context *ctx, char temp[256]);
 int GUI_Button(nk_context *ctx, const char * name);
+int GUI_Textbox_Button(nk_context *ctx, char * temp, const char * name);
+void GUI_menu(nk_context *ctx, int buttons, char * temp);
 
 static void error_callback(int e, const char* d)
 {
@@ -130,13 +132,15 @@ void RunGUI(UMLObjectsHolder* holder)
 		{
 			nk_layout_row_static(ctx, 50, 200, 2);
 			//nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
-			GUI_Text_Box(ctx, save);
+			//GUI_Text_Box(ctx, save);
 			//if (nk_button_label(ctx, "Save"))
-			if (GUI_Button(ctx, "Save"))
+			//if (GUI_Button(ctx, "Save"))
+			if(GUI_Textbox_Button(ctx, save, "Save"))
 				SavingLoadingIO::SaveProjectToFile(holder, save, true);
 			//nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
-			GUI_Text_Box(ctx, load);
-			if (GUI_Button(ctx, "Save"))
+			//GUI_Text_Box(ctx, load);
+			//if GUI_Button(ctx, "Load"))
+			if (GUI_Textbox_Button(ctx, load, "Load"))
 			{
 				SavingLoadingIO::LoadProject(holder, load);
 				for (auto & i : holder->ReturnTitles())
@@ -151,8 +155,9 @@ void RunGUI(UMLObjectsHolder* holder)
 		{
 			nk_layout_row_static(ctx, 0, 100, 2);
 			//Adds new class to holder
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Add Class"))
+			//nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+			//if (nk_button_label(ctx, "Add Class"))
+			if(GUI_Textbox_Button(ctx, add, "Add Class"))
 			{
 				//TODO add error checking here... and for all of them after. See error handler method in REPL
 				if (!(holder->CreateNewClass(add)))
@@ -166,6 +171,8 @@ void RunGUI(UMLObjectsHolder* holder)
 		//Add method
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
+		GUI_menu(ctx, 2, save);
+		/*
 		if (nk_menu_begin_label(ctx, "Add method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
 		{
 			nk_layout_row_static(ctx, 0, 150, 1);
@@ -187,7 +194,7 @@ void RunGUI(UMLObjectsHolder* holder)
 
 			nk_menu_end(ctx);
 		}
-
+		*/
 		//Edit method
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 200);
@@ -417,3 +424,21 @@ int GUI_Button(nk_context *ctx, const char * name)
 {
 	return nk_button_label(ctx, name);
 }
+
+ int GUI_Textbox_Button(nk_context *ctx, char * temp, const char * name)
+ {
+	 nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, temp, 255, nk_filter_default);
+	 return nk_button_label(ctx, name);
+ }
+ void GUI_menu(nk_context *ctx ,int buttons, char * temp)
+ {
+	 if (nk_menu_begin_label(ctx, "test", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+	 {
+		 for (int i = 0; i < buttons; ++i)
+		 {
+			 nk_layout_row_static(ctx, 0, 150, 1);
+			 GUI_Textbox_Button(ctx, temp, "Save");
+		 }
+		 nk_menu_end(ctx);
+	 }
+ }
