@@ -22,10 +22,10 @@ const std::string Class::&name() const
     return mName;
 }
 
-// ==================================================
+// Returns the raw name of a class
 const char *Class::rawName() const
 {
-
+    return mName;
 }
 
 // Adds a field to the classes' field vector
