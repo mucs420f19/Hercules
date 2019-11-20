@@ -42,6 +42,29 @@ private:
   std::string mName;
 };
 
+class EditClassCommand : public Command {
+
+public:
+	EditClassCommand(const std::string &oldname, const std::string &name);
+
+	virtual void execute() const override;
+
+private:
+	std::string mOldname;
+	std::string mName;
+};
+
+class DeleteClassCommand : public Command {
+
+public:
+	DeleteClassCommand(const std::string &name);
+
+	virtual void execute() const override;
+
+private:
+	std::string mName;
+};
+
 class AddRelationshipCommand : public Command {
   AddRelationshipCommand (const std::string &parent, const std::string &child, const std::string &type);
 

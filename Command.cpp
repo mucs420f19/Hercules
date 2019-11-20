@@ -35,6 +35,19 @@ void AddClassCommand::execute() const override {
   Command::modelInstance->addClass(mName);
 }
 
+EditClassCommand::EditClassCommand(const std::string &oldname, const std::string &name) : mOldname(oldname) :mName(name) {}
+
+void EditClassCommand::execute() const override {
+	Command::modelInstance->editClass(mOldname,mName);
+}
+
+DeleteClassCommand::DeleteClassCommand(const std::string &name) : mName(name) {}
+
+void DeleteClassCommand::execute() const override {
+	Command::modelInstance->removeClass(mName);
+}
+
+
 AddRelationshipCommand::AddClassCommand(const std::string &parent,
                                         const std::string &child,
                                         const std::string &type)
