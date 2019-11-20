@@ -8,6 +8,8 @@ class Model {
 public:
   void addClass(const std::string &name);
 
+  void editClass(const std::string &Oldname, const std::string &Newname);
+
   void removeClass(const std::string &name);
 
   void addRelationship(const std::string &parent, const std::string &child,
