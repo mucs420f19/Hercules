@@ -23,6 +23,7 @@ private:
 
 class Field : public Attribute {
 
+public:
   const std::string &type() const;
   const char* rawType() const;
 
@@ -32,6 +33,7 @@ private:
 
 class Parameter {
 
+public:
   Parameter (const std::string &type, const std::string &name);
 
   void setType (const std::string &type);

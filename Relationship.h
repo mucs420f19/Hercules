@@ -18,6 +18,8 @@ public:
 
   RelationshipType type() const;
 
+  void operator=(const Relationship &);
+
   void setType (RelationshipType type);
 
 private:

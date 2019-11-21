@@ -7,7 +7,11 @@ void Command::setModelInstance(Model *instance) {
   Command::modelInstance = instance;
 }
 
-const std::vector<std::string> &Command::allCommands() {}
+const std::vector<std::string> &Command::allCommands() {
+	//TODO
+	std::vector<std::string> temp = { "temp" };
+	return temp;
+}
 
 const std::string &Command::helpFor(const std::string &name) {
 	static std::unordered_map<std::string, std::string> HELP{
@@ -20,6 +24,8 @@ const std::string &Command::helpFor(const std::string &name) {
 					 "    - className: name for the new class\n"}
 
       }};
+	//TODO
+	return "temp";
 }
 
 ErrorCommand::ErrorCommand(std::ostream &where, const std::string &name): mWhere(where), mName (name) {}
@@ -57,7 +63,7 @@ AddRelationshipCommand::AddRelationshipCommand(const std::string &parent,
 	RelationshipType &type)
     : mParent(parent), mChild(child), mType(type) {}
 
-void AddRelationshipCommand::execute() const
+void AddRelationshipCommand::execute() const 
 {
   Command::modelInstance->addRelationship(mParent, mChild, mType);
 }

@@ -1,5 +1,6 @@
 #include "ConsoleView.h"
 #include "Command.h"
+#include "CommandFactory.h"
 #include <string>
 
 const std::string PROMPT_STRING = "> ";
@@ -12,7 +13,7 @@ ConsoleView::runREPL() {
   std::string line;
   os << PROMPT_STRING << std::flush;
   while (std::getline(is, line)) {
-    make_command(split(line))->execute();
+    make_command(os,split(line))->execute();
     os << PROMPT_STRING << std::flush;
   }
 }

@@ -105,8 +105,8 @@ const std::string & Method::params() const
 	for (auto & i : mParameters)
 	{
 		//Work on This
-		//params += "Type: " + i.type();
-		//params += "Name: " + i.name() + ",";
+		params += "Type: " + i.type();
+		params += "Name: " + i.name() + ",";
 	}
 	return params;
 }
@@ -117,8 +117,8 @@ const char * Method::rawParams() const
 	for (auto & i : mParameters)
 	{
 		//Work on This
-		//params += "Type: " + i.type();
-		//params += "Name: " + i.name() + ",";
+		params += "Type: " + i.type();
+		params += "Name: " + i.name() + ",";
 	}
 	return params.c_str();
 }

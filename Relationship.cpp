@@ -19,6 +19,11 @@ RelationshipType Relationship::type() const
 	return mType;
 }
 
+void Relationship::operator=(const Relationship &)
+{
+
+}
+
 void Relationship::setType(RelationshipType type)
 {
 	mType = type;
