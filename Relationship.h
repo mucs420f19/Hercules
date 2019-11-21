@@ -1,12 +1,19 @@
 #pragma once
 
 #include "Class.h"
+#include <iostream>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <locale>
+#include <cctype>
 
 enum class RelationshipType {
-  AGGREGATION = 0,
-  COMPOSITION = 1,
-  ASSOCIATION = 2,
-  DEPENDENCY = 3
+	AGGREGATION = 0,
+	COMPOSITION = 1,
+	ASSOCIATION = 2,
+	DEPENDENCY = 3,
+	ERROR = -1
 };
 
 class Relationship {
@@ -16,9 +23,9 @@ public:
   const Class &parent() const;
   const Class &child() const;
 
-  RelationshipType type() const;
+  Relationship& operator=(const Relationship &other);
 
-  void operator=(const Relationship &);
+  RelationshipType type() const;
 
   void setType (RelationshipType type);
 
@@ -27,6 +34,9 @@ private:
   const Class &mChild;
   RelationshipType mType;
 };
+
+
+RelationshipType typeConvert(const std::string &type);
 
 const std::string &ToString(RelationshipType t);
 const char* ToRawString(RelationshipType t);

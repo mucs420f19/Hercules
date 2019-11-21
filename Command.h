@@ -14,7 +14,7 @@ public:
 
   static const std::string& helpFor(const std::string&)
 ;
-//private:
+protected:
   static Model *modelInstance;
 };
 
@@ -67,7 +67,7 @@ private:
 
 class AddRelationshipCommand : public Command {
 public:
-  AddRelationshipCommand (const std::string &parent, const std::string &child, RelationshipType &type);
+  AddRelationshipCommand (const std::string &parent, const std::string &child, const std::string &type);
 
   virtual void execute() const override;
 

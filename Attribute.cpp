@@ -125,36 +125,11 @@ const char * Method::rawParams() const
 
 const std::string & ToString(Visibility v)
 {
-	std::string temp;
-	switch (v)
-	{
-		case Visibility::PUBLIC:
-			temp = "Public";
-			break;
-		case Visibility::PROTECTED:
-			temp = "Protected";
-			break;
-		case Visibility::PRIVATE:
-			temp = "Private";
-			break;
-	}
-	return temp;
+	static const std::string str[3] = { "Public", "Protected", "Private" };
+	return str[static_cast<int>(v)];
 }
 
 const char * ToRawString(Visibility v)
 {
-	std::string temp;
-	switch (v)
-	{
-	case Visibility::PUBLIC:
-		temp = "Public";
-		break;
-	case Visibility::PROTECTED:
-		temp = "Protected";
-		break;
-	case Visibility::PRIVATE:
-		temp = "Private";
-		break;
-	}
-	return temp.c_str();
+	return ToString(v).c_str();
 }
