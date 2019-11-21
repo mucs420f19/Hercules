@@ -60,37 +60,37 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
     return make_unique<AddClassCommand>(cmdLineArgs[1]);
   }
   // and for each other command
-  if (cmdName == "edit_class") {
+  if (cmdName == "edit_class"s) {
 	  return make_unique<EditClassCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
-  if (cmdName == "delete_class") {
+  if (cmdName == "delete_class"s) {
 	  return make_unique<DeleteClassCommand>(cmdLineArgs[1]);
   }
-  if (cmdName == "add_field") {
+  if (cmdName == "add_field"s) {
 	  return make_unique<AddFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
-  if (cmdName == "edit_field") {
+  if (cmdName == "edit_field"s) {
 	  return make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
-  if (cmdName == "delete_field") {
+  if (cmdName == "delete_field"s) {
 	  return make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
-  if (cmdName == "add_method") {
+  if (cmdName == "add_method"s) {
 	  return make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
-  if (cmdName == "edit_method") {
+  if (cmdName == "edit_method"s) {
 	  return make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
-  if (cmdName == "delete_method") {
+  if (cmdName == "delete_method"s) {
 	  return make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
-  if (cmdName == "add_relationship") {
+  if (cmdName == "add_relationship"s) {
 	  return make_unique<AddRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
-  if (cmdName == "edit_relationship") {
+  if (cmdName == "edit_relationship"s) {
 	  return make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
-  if (cmdName == "delete_relationship") {
+  if (cmdName == "delete_relationship"s) {
 	  return make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "help") {

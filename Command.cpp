@@ -24,7 +24,7 @@ const std::string &Command::helpFor(const std::string &name) {
 
 ErrorCommand::ErrorCommand(std::ostream &where, const std::string &name): mWhere(where), mName (name) {}
 
-virtual void ErrorCommand::execute() const override
+void ErrorCommand::execute() const
 {
   mWhere << mName << std::flush;
 }
@@ -32,19 +32,22 @@ virtual void ErrorCommand::execute() const override
 
 AddClassCommand::AddClassCommand(const std::string &name) : mName(name) {}
 
-void AddClassCommand::execute() const override {
+void AddClassCommand::execute() const
+{
   Command::modelInstance->addClass(mName);
 }
 
 EditClassCommand::EditClassCommand(const std::string &oldname, const std::string &name) : mOldname(oldname) ,mName(name) {}
 
-void EditClassCommand::execute() const override {
+void EditClassCommand::execute() const
+{
 	Command::modelInstance->editClass(mOldname,mName);
 }
 
 DeleteClassCommand::DeleteClassCommand(const std::string &name) : mName(name) {}
 
-void DeleteClassCommand::execute() const override {
+void DeleteClassCommand::execute() const
+{
 	Command::modelInstance->removeClass(mName);
 }
 
@@ -54,6 +57,7 @@ AddRelationshipCommand::AddRelationshipCommand(const std::string &parent,
 	RelationshipType &type)
     : mParent(parent), mChild(child), mType(type) {}
 
-void AddRelationshipCommand::execute() const override {
+void AddRelationshipCommand::execute() const
+{
   Command::modelInstance->addRelationship(mParent, mChild, mType);
 }
