@@ -73,7 +73,7 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  return make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_field") {
-	  return make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	  return make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_method") {
 	  return make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
@@ -82,7 +82,7 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  return make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_method") {
-	  return make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	  return make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_relationship") {
 	  return make_unique<AddRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
@@ -91,7 +91,7 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  return make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "delete_relationship") {
-	  return make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	  return make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "help") {
 	  return make_unique<HelpCommand>();
