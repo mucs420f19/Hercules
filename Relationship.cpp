@@ -26,34 +26,42 @@ void Relationship::setType(RelationshipType type)
 
 const std::string & ToString(RelationshipType t)
 {
+	std::string temp;
 	switch (t)
 	{
-	case 0:
-		return "Aggregation";
-	case 1:
-		return "Composition";
-	case 2:
-		return "Association";
-	case 3:
-		return "Dependency";
+	case RelationshipType::AGGREGATION:
+		temp = "Aggregation";
+		break;
+	case RelationshipType::COMPOSITION:
+		temp = "Composition";
+		break;
+	case RelationshipType::ASSOCIATION:
+		temp = "Association";
+		break;
+	case RelationshipType::DEPENDENCY:
+		temp = "Dependency";
+		break;
 	}
+	return temp;
 }
 
 const char * ToRawString(RelationshipType t)
 {
-	std::string A = "Aggregation";
-	std::string C = "Composition";
-	std::string Assoc = "Association";
-	std::string D = "Dependency";
+	std::string temp;
 	switch (t)
 	{
-		case 0:
-			return A.c_str();
-		case 1:
-			return C.c_str();
-		case 2:
-			return Assoc.c_str();
-		case 3:
-			return D.c_str();
+	case RelationshipType::AGGREGATION:
+		temp = "Aggregation";
+		break;
+	case RelationshipType::COMPOSITION:
+		temp = "Composition";
+		break;
+	case RelationshipType::ASSOCIATION:
+		temp = "Association";
+		break;
+	case RelationshipType::DEPENDENCY:
+		temp = "Dependency";
+		break;
 	}
+	return temp.c_str();
 }

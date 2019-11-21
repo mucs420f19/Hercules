@@ -2,8 +2,8 @@
 
 void Model::addClass(const std::string & name)
 {
-	Class temp = Class::Class(name);
-	mClasses.push_back(temp);
+	Class *temp = new Class(name);
+	mClasses.push_back(*temp);
 }
 
 void Model::editClass(const std::string & Oldname, const std::string & Newname)
@@ -45,8 +45,8 @@ void Model::addRelationship(const std::string & parent, const std::string & chil
 			c = i;
 		}
 	}
-	Relationship temp = Relationship::Relationship(p, c, type);
-	mRelationships.push_back(temp);
+	Relationship *temp = new Relationship(p, c, type);
+	mRelationships.push_back(*temp);
 }
 
 void Model::removeRelationship(const std::string & one, const std::string & two)
