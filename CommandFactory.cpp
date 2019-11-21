@@ -67,45 +67,45 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  return std::make_unique<DeleteClassCommand>(cmdLineArgs[1]);
   }
   if (cmdName == "add_field") {
-	  return std::make_unique<AddFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	  //return std::make_unique<AddFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "edit_field") {
-	  return std::make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	  //return std::make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_field") {
-	  return std::make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	 // return std::make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_method") {
-	  return std::make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	 // return std::make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "edit_method") {
-	  return std::make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	 // return std::make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_method") {
-	  return std::make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	  //return std::make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_relationship") {
 	  return std::make_unique<AddRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "edit_relationship") {
-	  return std::make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
+	  //return std::make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "delete_relationship") {
-	  return std::make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	 // return std::make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "help") {
-	  return std::make_unique<HelpCommand>();
+	  //return std::make_unique<HelpCommand>();
   }
   if (cmdName == "list") {
-	  return std::make_unique<ListCommand>();
+	 // return std::make_unique<ListCommand>();
   }
   if (cmdName == "exit") {
-	  return std::make_unique<ExitCommand>();
+	 // return std::make_unique<ExitCommand>();
   }
   if (cmdName == "save") {
-	  return std::make_unique<SaveCommand>(cmdLineArgs[1]);
+	 // return std::make_unique<SaveCommand>(cmdLineArgs[1]);
   }
   if (cmdName == "load") {
-	  return std::make_unique<LoadCommand>(cmdLineArgs[1]);
+	  //return std::make_unique<LoadCommand>(cmdLineArgs[1]);
   }
 }
