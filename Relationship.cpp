@@ -26,3 +26,43 @@ void Relationship::setType(RelationshipType type)
 {
 	mType = type;
 }
+
+const std::string & ToString(RelationshipType t)
+{
+	if (t == 0)
+	{
+		return "Aggregation";
+	}
+	else if (t == 1)
+	{
+		return "Composition";
+	}
+	else if (t == 2)
+	{
+		return "Association";
+	}
+	else if (t == 3)
+	{
+		return "Dependency";
+	}
+}
+
+const char * ToRawString(RelationshipType t)
+{
+	if (t == 0)
+	{
+		return "Aggregation";
+	}
+	else if (t == 1)
+	{
+		return "Composition";
+	}
+	else if (t == 2)
+	{
+		return "Association";
+	}
+	else if (t == 3)
+	{
+		return "Dependency";
+	}
+}
