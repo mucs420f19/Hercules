@@ -18,17 +18,17 @@ const std::string & Attribute::name() const
 
 const std::string & Attribute::visibility() const
 {
-	return mVisibility;
+	return ToString(mVisibility);
 }
 
 const char * Attribute::rawName() const
 {
-	return mName;
+	return mName.c_str();
 }
 
 const char * Attribute::rawVisibility() const
 {
-	return mVisibility;
+	return ToString(mVisibility).c_str();
 }
 
 void Parameter::setType(const std::string & type)
@@ -53,12 +53,12 @@ const std::string & Parameter::name() const
 
 const char * Parameter::rawType() const
 {
-	return mType;
+	return mType.c_str();
 }
 
 const char * Parameter::rawName() const
 {
-	return mName;
+	return mName.c_str();
 }
 
 const std::string & Field::type() const
@@ -68,7 +68,7 @@ const std::string & Field::type() const
 
 const char * Field::rawType() const
 {
-	return mType;
+	return mType.c_str();
 }
 
 void Method::appendParameter(const Parameter & param)
@@ -78,7 +78,7 @@ void Method::appendParameter(const Parameter & param)
 
 void Method::removeParameter(int index)
 {
-	mParameters.erase(index)
+	mParameters.erase(mParameters.begin() + index);
 }
 
 void Method::setParameters(const std::vector<Parameter>& params)
@@ -91,9 +91,11 @@ void Method::setParameters(const std::vector<Parameter>& params)
 
 void Method::clearParameters()
 {
+	int index = 0;
 	for (auto & i : mParameters)
 	{
-		mParmeters.erase(i);
+		mParameters.erase(mParameters.begin() + index);
+		++index;
 	}
 }
 
@@ -102,8 +104,9 @@ const std::string & Method::params() const
 	std::string params;
 	for (auto & i : mParameters)
 	{
-		params += "Type: " + i.type();
-		params += "Name: " + i.name() + ",";
+		//Work on This
+		//params += "Type: " + i.type();
+		//params += "Name: " + i.name() + ",";
 	}
 	return params;
 }
@@ -113,40 +116,38 @@ const char * Method::rawParams() const
 	std::string params;
 	for (auto & i : mParameters)
 	{
-		params += "Type: " + i.type();
-		params += "Name: " + i.name() + ",";
+		//Work on This
+		//params += "Type: " + i.type();
+		//params += "Name: " + i.name() + ",";
 	}
-	return params;
+	return params.c_str();
 }
 
 const std::string & ToString(Visibility v)
 {
-	if (v == 0)
+	switch (v)
 	{
-		return "Public";
-	}
-	else if (v == 1)
-	{
-		return "Protected";
-	}
-	else if (v == 2)
-	{
-		return "Private";
+		case 0:
+			return "Public";
+		case 1:
+			return "Protected";
+		case 2:
+			return "Private";
 	}
 }
 
 const char * ToRawString(Visibility v)
 {
-	if (v == 0)
+	std::string pub = "Public";
+	std::string pro = "Protected";
+	std::string priv = "Private";
+	switch (v)
 	{
-		return "Public";
-	}
-	else if (v == 1)
-	{
-		return "Protected";
-	}
-	else if (v == 2)
-	{
-		return "Private";
+	case 0:
+		return pub.c_str();
+	case 1:
+		return pro.c_str();
+	case 2:
+		return priv.c_str();
 	}
 }

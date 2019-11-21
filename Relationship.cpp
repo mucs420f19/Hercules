@@ -1,10 +1,7 @@
 #include "Relationship.h"
 
-Relationship::Relationship(const Class & parent, const Class & child, RelationshipType type)
+Relationship::Relationship(const Class & parent, const Class & child, RelationshipType type) :mParent(parent), mChild(child), mType(type)
 {
-	mParent = parent;
-	mChild = child;
-	mType = type;
 }
 
 const Class & Relationship::parent() const
@@ -29,40 +26,34 @@ void Relationship::setType(RelationshipType type)
 
 const std::string & ToString(RelationshipType t)
 {
-	if (t == 0)
+	switch (t)
 	{
+	case 0:
 		return "Aggregation";
-	}
-	else if (t == 1)
-	{
+	case 1:
 		return "Composition";
-	}
-	else if (t == 2)
-	{
+	case 2:
 		return "Association";
-	}
-	else if (t == 3)
-	{
+	case 3:
 		return "Dependency";
 	}
 }
 
 const char * ToRawString(RelationshipType t)
 {
-	if (t == 0)
+	std::string A = "Aggregation";
+	std::string C = "Composition";
+	std::string Assoc = "Association";
+	std::string D = "Dependency";
+	switch (t)
 	{
-		return "Aggregation";
-	}
-	else if (t == 1)
-	{
-		return "Composition";
-	}
-	else if (t == 2)
-	{
-		return "Association";
-	}
-	else if (t == 3)
-	{
-		return "Dependency";
+		case 0:
+			return A.c_str();
+		case 1:
+			return C.c_str();
+		case 2:
+			return Assoc.c_str();
+		case 3:
+			return D.c_str();
 	}
 }

@@ -25,7 +25,7 @@ const std::string & Class::name() const
 // Returns the raw name of a class
 const char *Class::rawName() const
 {
-    return mName;
+    return mName.c_str();
 }
 
 // Adds a field to the classes' field vector
@@ -43,7 +43,7 @@ void Class::addMethod(const Method& method)
 // Removes a field from the vector of fields at the given index
 void Class::removeField(int index)
 {
-    mFields.erase(index);
+    mFields.erase(mFields.begin() + index);
 }
 
 // Removes a field from the vector of fields after finding its index
@@ -53,7 +53,7 @@ void Class::removeField(const std::string& name)
 	for (auto i : mFields)
 	{
 		if (i.name() == name)
-			mFields.removeField(index);
+			mFields.erase(mFields.begin() + index);
 		
         ++index;
 	}
@@ -62,7 +62,7 @@ void Class::removeField(const std::string& name)
 // Removes a method from the vector of methods at the given index
 void Class::removeMethod(int index)
 {
-    mMethods.erase(index);
+    mMethods.erase(mMethods.begin() + index);
 }
 
 // Removes a method from the vector of methods after finding its index
@@ -72,7 +72,7 @@ void Class::removeMethod(const std::string& name)
 	for (auto i : mMethods)
 	{
 		if (i.name() == name)
-			mMethods.removeMethod(index);
+			mMethods.erase(mMethods.begin() + index);
 		
         ++index;
 	}

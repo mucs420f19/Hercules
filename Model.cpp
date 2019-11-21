@@ -19,12 +19,14 @@ void Model::editClass(const std::string & Oldname, const std::string & Newname)
 
 void Model::removeClass(const std::string & name)
 {
+	int index = 0;
 	for (auto & i : mClasses)
 	{
 		if (i.name() == name)
 		{
-			mClasses.erase(i);
+			mClasses.erase(mClasses.begin()+index);
 		}
+		++index;
 	}
 }
 
@@ -49,22 +51,33 @@ void Model::addRelationship(const std::string & parent, const std::string & chil
 
 void Model::removeRelationship(const std::string & one, const std::string & two)
 {
-	for (auto & i : mRelationships)
+	int index = 0;
+	for (auto i : mRelationships)
 	{
-		if (i.parent() == one && i.child() == two)
+		if (i.parent().name() == one && i.child().name() == two)
 		{
-			mRelationships.erase(i);
+			//Ask About this error
+			mRelationships.erase(mRelationships.begin() + index);
 		}
+		++index;
 	}
 }
 
 Relationship * Model::findRelationship(const std::string & one, const std::string & two)
 {
-	for (auto & i : mRelationships)
+	Class p;
+	Class c;
+	std::string pString;
+	std::string cString;
+	for (auto  i : mRelationships)
 	{
-		if (i.parent() == one && i.child() == two)
+		p = i.parent();
+		pString = p.name();
+		c = i.child();
+		cString = c.name();
+		if (pString == one && cString == two)
 		{
-			return i;
+			return &i;
 		}
 	}
 	return nullptr;
@@ -72,24 +85,31 @@ Relationship * Model::findRelationship(const std::string & one, const std::strin
 
 const Relationship * Model::findRelationship(const std::string & one, const std::string & two) const
 {
-	for (auto & i : mRelationships)
+	Class p;
+	Class c;
+	std::string pString;
+	std::string cString;
+	for (auto i : mRelationships)
 	{
-		if (i.parent() == one && i.child() == two)
+		p = i.parent();
+		pString = p.name();
+		c = i.child();
+		cString = c.name();
+		if (pString == one && cString == two)
 		{
-			return i;
+			return &i;
 		}
 	}
-	return nullptr;
 	return nullptr;
 }
 
 Class * Model::findClass(const std::string & name)
 {
-	for (auto & i : mClasses)
+	for (auto  i : mClasses)
 	{
 		if (i.name() == name)
 		{
-			return i;
+			return &i;
 		}
 	}
 	return nullptr;
@@ -97,11 +117,11 @@ Class * Model::findClass(const std::string & name)
 
 const Class * Model::findClass(const std::string & name) const
 {
-	for (auto & i : mClasses)
+	for (auto  i : mClasses)
 	{
 		if (i.name() == name)
 		{
-			return i;
+			return &i;
 		}
 	}
 	return nullptr;
