@@ -107,3 +107,35 @@ const std::string & Method::params() const
 	}
 	return params;
 }
+
+const std::string & ToString(Visibility v)
+{
+	if (v == 0)
+	{
+		return "Public";
+	}
+	else if (v == 1)
+	{
+		return "Protected";
+	}
+	else if (v == 2)
+	{
+		return "Private";
+	}
+}
+
+const char * ToRawString(Visibility v)
+{
+	if (v == 0)
+	{
+		return "Public";
+	}
+	else if (v == 1)
+	{
+		return "Protected";
+	}
+	else if (v == 2)
+	{
+		return "Private";
+	}
+}
