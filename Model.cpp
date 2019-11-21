@@ -52,7 +52,7 @@ void Model::addRelationship(const std::string & parent, const std::string & chil
 void Model::removeRelationship(const std::string & one, const std::string & two)
 {
 	int index = 0;
-	for (auto i : mRelationships)
+	for (auto & i : mRelationships)
 	{
 		if (i.parent().name() == one && i.child().name() == two)
 		{

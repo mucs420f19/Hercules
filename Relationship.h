@@ -23,7 +23,7 @@ public:
   const Class &parent() const;
   const Class &child() const;
 
-  Relationship& operator=(const Relationship &other);
+  const Relationship& operator=(const Relationship &other);
 
   RelationshipType type() const;
 

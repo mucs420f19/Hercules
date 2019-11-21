@@ -33,9 +33,9 @@ RelationshipType Relationship::type() const
 	return mType;
 }
 
-void Relationship::operator=(const Relationship &)
+const Relationship& Relationship::operator=(const Relationship &other)
 {
-
+	return other;
 }
 
 void Relationship::setType(RelationshipType type)
