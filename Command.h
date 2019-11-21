@@ -26,7 +26,7 @@ public:
   virtual void execute() const override;
 
 private:
-  std::ostream& where;
+  std::ostream& mWhere;
   std::string mName;
 };
 
@@ -66,12 +66,12 @@ private:
 };
 
 class AddRelationshipCommand : public Command {
-  AddRelationshipCommand (const std::string &parent, const std::string &child, const std::string &type);
+  AddRelationshipCommand (const std::string &parent, const std::string &child, RelationshipType &type);
 
   virtual void execute() const override;
 
 private:
   std::string mParent;
   std::string mChild;
-  std::string mType;
+  RelationshipType mType;
 };
