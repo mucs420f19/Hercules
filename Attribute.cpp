@@ -100,10 +100,21 @@ void Method::clearParameters()
 const std::string & Method::params() const
 {
 	std::string params;
-	for (auto & i : mParamters)
+	for (auto & i : mParameters)
 	{
-		params += "Type: " + i->type();
-		params += "Name: " + i->name();
+		params += "Type: " + i.type();
+		params += "Name: " + i.name() + ",";
+	}
+	return params;
+}
+
+const char * Method::rawParams() const
+{
+	std::string params;
+	for (auto & i : mParameters)
+	{
+		params += "Type: " + i.type();
+		params += "Name: " + i.name() + ",";
 	}
 	return params;
 }
