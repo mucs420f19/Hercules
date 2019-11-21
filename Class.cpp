@@ -17,7 +17,7 @@ void Class::rename(const std::string &newName)
 }
 
 // Returns the name of a class
-const std::string Class::&name() const
+const std::string & Class::name() const
 {
     return mName;
 }
