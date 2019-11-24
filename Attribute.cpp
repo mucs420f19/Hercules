@@ -1,9 +1,19 @@
+// System Includes 
+
+#include <initializer_list>
+
+// local includes 
+
 #include "Attribute.h"
 
+// Using declarations
+
+using std::initializer_list;
+
 Attribute::Attribute(const std::string & name, Visibility v)
+: mName(name), mVisibility(v)
 {
-	mName = name;
-	mVisibility = v;
+
 }
 
 void Attribute::setVisibility(Visibility v)
@@ -83,20 +93,12 @@ void Method::removeParameter(int index)
 
 void Method::setParameters(const std::vector<Parameter>& params)
 {
-	for (auto & i : params)
-	{
-		mParameters.push_back(i);
-	}
+	mParameters = params;
 }
 
 void Method::clearParameters()
 {
-	int index = 0;
-	for (auto & i : mParameters)
-	{
-		mParameters.erase(mParameters.begin() + index);
-		++index;
-	}
+	mParameters.clear();
 }
 
 const std::string & Method::params() const

@@ -24,7 +24,7 @@ void Model::removeClass(const std::string & name)
 	{
 		if (i.name() == name)
 		{
-			mClasses.erase(mClasses.begin()+index);
+			mClasses.erase(mClasses.begin(), index);
 		}
 		++index;
 	}
@@ -57,7 +57,7 @@ void Model::removeRelationship(const std::string & one, const std::string & two)
 		if (i.parent().name() == one && i.child().name() == two)
 		{
 			//Ask About this error
-			mRelationships.erase(mRelationships.begin() + index);
+			mRelationships.erase(mRelationships.begin(), index);
 		}
 		++index;
 	}
@@ -69,7 +69,7 @@ Relationship * Model::findRelationship(const std::string & one, const std::strin
 	Class c;
 	std::string pString;
 	std::string cString;
-	for (auto  i : mRelationships)
+	for (auto &i : mRelationships)
 	{
 		p = i.parent();
 		pString = p.name();
@@ -89,7 +89,7 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 	Class c;
 	std::string pString;
 	std::string cString;
-	for (auto i : mRelationships)
+	for (auto &i : mRelationships)
 	{
 		p = i.parent();
 		pString = p.name();
@@ -105,7 +105,7 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 
 Class * Model::findClass(const std::string & name)
 {
-	for (auto  i : mClasses)
+	for (auto  &i : mClasses)
 	{
 		if (i.name() == name)
 		{
@@ -117,7 +117,7 @@ Class * Model::findClass(const std::string & name)
 
 const Class * Model::findClass(const std::string & name) const
 {
-	for (auto  i : mClasses)
+	for (auto  &i : mClasses)
 	{
 		if (i.name() == name)
 		{

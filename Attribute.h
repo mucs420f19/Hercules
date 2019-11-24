@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <list>
 
 enum class Visibility { PUBLIC = 0, PROTECTED = 1, PRIVATE = 2 };
 

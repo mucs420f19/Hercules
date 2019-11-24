@@ -24,6 +24,6 @@ public:
   const Class* findClass (const std::string &name) const;
 
 private:
-  std::vector<Class> mClasses;
-  std::vector<Relationship> mRelationships;
+  std::list<Class> mClasses;
+  std::list<Relationship> mRelationships;
 };

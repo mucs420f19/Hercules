@@ -43,7 +43,7 @@ void Relationship::setType(RelationshipType type)
 	mType = type;
 }
 
-const std::string & ToString(RelationshipType t)
+const std::string & FromString(RelationshipType t)
 {
 	std::string temp;
 	switch (t)

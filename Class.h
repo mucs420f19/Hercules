@@ -32,6 +32,6 @@ public:
 
 private:
   std::string mName;
-  std::vector<Field> mFields;
-  std::vector<Method> mMethods;
+  std::list<Field> mFields;
+  std::list<Method> mMethods;
 };

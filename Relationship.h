@@ -38,5 +38,5 @@ private:
 
 RelationshipType typeConvert(const std::string &type);
 
-const std::string &ToString(RelationshipType t);
+const std::string &FromString(RelationshipType t);
 const char* ToRawString(RelationshipType t);
