@@ -86,12 +86,9 @@ public:
 
 class HelpCommand : public Command {
 public:
-  HelpCommand (const std::vector<std::string> &vectorCommands);
+  HelpCommand ();
 
   virtual void execute() const override;
-
-private:
-  std::vector<std::string> mVector;
 };
 
 class HelpForCommand : public Command {
