@@ -40,6 +40,11 @@ AddClassCommand::AddClassCommand(const std::string &name) : mName(name) {}
 
 void AddClassCommand::execute() const
 {
+	if (Command::modelInstance == nullptr)
+	{
+		Model * test = new Model;
+		setModelInstance(test);
+	}
   Command::modelInstance->addClass(mName);
 }
 
@@ -61,9 +66,18 @@ void DeleteClassCommand::execute() const
 AddRelationshipCommand::AddRelationshipCommand(const std::string &parent,
                                         const std::string &child,
 	const std::string &type)
-    : mParent(parent), mChild(child), mType(typeConvert(type)) {}
+    : mParent(parent), mChild(child), mType(FromString(type)) {}
 
 void AddRelationshipCommand::execute() const 
 {
   Command::modelInstance->addRelationship(mParent, mChild, mType);
+}
+
+ListCommand::ListCommand()
+{
+}
+
+void ListCommand::execute() const
+{
+	Command::modelInstance->list();
 }
