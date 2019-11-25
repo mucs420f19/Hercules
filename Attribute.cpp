@@ -87,20 +87,12 @@ void Method::removeParameter(int index)
 
 void Method::setParameters(const std::vector<Parameter>& params)
 {
-	for (auto & i : params)
-	{
-		mParameters.push_back(i);
-	}
+	mParameters = params;
 }
 
 void Method::clearParameters()
 {
-	int index = 0;
-	for (auto & i : mParameters)
-	{
-		mParameters.erase(mParameters.begin() + index);
-		++index;
-	}
+	mParameters.clear();
 }
 
 const std::string & Method::params() const
