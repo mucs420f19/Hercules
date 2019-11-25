@@ -95,7 +95,7 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	 // return std::make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "help") {
-	  //return std::make_unique<HelpCommand>();
+	  return std::make_unique<HelpCommand>();
   }
   if (cmdName == "help_for") {
     return std::make_unique<HelpForCommand>(cmdLineArgs[1]);

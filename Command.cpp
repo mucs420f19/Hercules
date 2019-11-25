@@ -8,9 +8,13 @@ void Command::setModelInstance(Model *instance) {
 }
 
 const std::vector<std::string> &Command::allCommands() {
-	//TODO
-	std::vector<std::string> temp = { "temp" };
-	return temp;
+
+	std::vector<std::string> commands = { "help", "help_for", "list", "save", "load", "exit", "",
+	                                      "add_class", "add_field", "add_method", "add_relationship", "",
+										  "edit_class", "edit_field", "edit_method", "edit_relationship", "",
+										  "delete_class", "delete_field", "delete_method", "delete_relationship" };
+
+	return commands;
 }
 
 const std::string &Command::helpFor(const std::string &name) {
@@ -64,7 +68,6 @@ void DeleteClassCommand::execute() const
 	Command::modelInstance->removeClass(mName);
 }
 
-
 AddRelationshipCommand::AddRelationshipCommand(const std::string &parent,
                                         const std::string &child,
 	const std::string &type)
@@ -75,18 +78,24 @@ void AddRelationshipCommand::execute() const
   Command::modelInstance->addRelationship(mParent, mChild, mType);
 }
 
-ListCommand::ListCommand()
-{
-}
+ListCommand::ListCommand() {}
 
 void ListCommand::execute() const
 {
 	Command::modelInstance->list();
 }
 
-HelpForCommand::HelpForCommand(const std::string &name) : mName(name)
+HelpCommand::HelpCommand(const std::vector<std::string> &vectorCommands) : mVector(vectorCommands) {}
+
+void HelpCommand::execute() const
 {
+	mVector = allCommands();
+
+	for (auto i : mVector)
+		std::cout << i << std::endl;
 }
+
+HelpForCommand::HelpForCommand(const std::string &name) : mName(name) {}
 
 void HelpForCommand::execute() const
 {
