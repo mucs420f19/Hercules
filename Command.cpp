@@ -18,14 +18,16 @@ const std::string &Command::helpFor(const std::string &name) {
 		{{"exit", "exit\n"
 				  "  quits the application\n"
 				  "    parameters: none\n"},
-	   {"add_class", "add_class (className)\n"
+	    {"add_class", "add_class (className)\n"
 					 "  adds a new class to the UML diagram\n"
 					 "    parameters:\n"
 					 "    - className: name for the new class\n"}
 
       }};
-	//TODO
-	return "temp";
+	
+	auto out = HELP.find(name);
+
+	return (*out).second;
 }
 
 ErrorCommand::ErrorCommand(std::ostream &where, const std::string &name): mWhere(where), mName (name) {}
@@ -80,4 +82,13 @@ ListCommand::ListCommand()
 void ListCommand::execute() const
 {
 	Command::modelInstance->list();
+}
+
+HelpForCommand::HelpForCommand(const std::string &name) : mName(name)
+{
+}
+
+void HelpForCommand::execute() const
+{
+	helpFor(mName);
 }

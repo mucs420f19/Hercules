@@ -14,6 +14,7 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     {"exit", 1},
     {"save", 2},
     {"load", 2},
+    {"help_for", 2},
     // add
     {"add_class", 2},
     {"add_field", 5},
@@ -95,6 +96,9 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
   }
   if (cmdName == "help") {
 	  //return std::make_unique<HelpCommand>();
+  }
+  if (cmdName == "help_for") {
+    return std::make_unique<HelpForCommand>(cmdLineArgs[1]);
   }
   if (cmdName == "list") {
 	 return std::make_unique<ListCommand>();

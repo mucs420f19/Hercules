@@ -83,3 +83,14 @@ public:
 
 	virtual void execute() const override;
 };
+
+
+class HelpForCommand : public Command {
+public:
+  HelpForCommand (const std::string &name);
+
+  virtual void execute() const override;
+
+private:
+  std::string mName;
+};
