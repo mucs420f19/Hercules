@@ -2,8 +2,8 @@
 
 void Model::addClass(const std::string & name)
 {
-	Class *temp = new Class(name);
-	mClasses.push_back(*temp);
+	Class a(name);
+	mClasses.push_back(a);
 }
 
 void Model::editClass(const std::string & Oldname, const std::string & Newname)
@@ -19,65 +19,55 @@ void Model::editClass(const std::string & Oldname, const std::string & Newname)
 
 void Model::removeClass(const std::string & name)
 {
-	int index = 0;
-	for (auto & i : mClasses)
-	{
-		if (i.name() == name)
-		{
-			mClasses.erase(mClasses.begin(), index);
-		}
-		++index;
-	}
+	auto it = find(mClasses.begin(), mClasses.end(), name);
+	mClasses.erase(it);
 }
 
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)
 {
-	Class p;
-	Class c;
-	for (auto & i : mClasses)
-	{
-		if (i.name() == parent)
-		{
-			p = i;
-		}
-		if (i.name() == child)
-		{
-			c = i;
-		}
-	}
-	Relationship *temp = new Relationship(p, c, type);
-	mRelationships.push_back(*temp);
+	auto p = find(mClasses.begin(), mClasses.end(), parent);
+	auto c = find(mClasses.begin(), mClasses.end(), child);
+	mRelationships.push_back(Relationship((*p), (*c), type));
 }
 
 void Model::removeRelationship(const std::string & one, const std::string & two)
 {
-	int index = 0;
+	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
+	{
+		if ((*it).parent().name() == one && (*it).child().name() == two)
+		{
+			mRelationships.erase(it);
+		}
+		if ((*it).parent().name() == two && (*it).child().name() == one)
+		{
+			mRelationships.erase(it);
+		}
+	}
+}
+
+void Model::list()
+{
+	for (auto & i : mClasses)
+	{
+		std::cout << i.name() << "\n";
+	}
 	for (auto & i : mRelationships)
 	{
-		if (i.parent().name() == one && i.child().name() == two)
-		{
-			//Ask About this error
-			mRelationships.erase(mRelationships.begin(), index);
-		}
-		++index;
+		std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
 	}
 }
 
 Relationship * Model::findRelationship(const std::string & one, const std::string & two)
 {
-	Class p;
-	Class c;
-	std::string pString;
-	std::string cString;
-	for (auto &i : mRelationships)
+	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		p = i.parent();
-		pString = p.name();
-		c = i.child();
-		cString = c.name();
-		if (pString == one && cString == two)
+		if ((*it).parent().name() == one && (*it).child().name() == two)
 		{
-			return &i;
+			return &(*it);
+		}
+		if ((*it).parent().name() == two && (*it).child().name() == one)
+		{
+			return &(*it);
 		}
 	}
 	return nullptr;
@@ -85,19 +75,15 @@ Relationship * Model::findRelationship(const std::string & one, const std::strin
 
 const Relationship * Model::findRelationship(const std::string & one, const std::string & two) const
 {
-	Class p;
-	Class c;
-	std::string pString;
-	std::string cString;
-	for (auto &i : mRelationships)
+	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		p = i.parent();
-		pString = p.name();
-		c = i.child();
-		cString = c.name();
-		if (pString == one && cString == two)
+		if ((*it).parent().name() == one && (*it).child().name() == two)
 		{
-			return &i;
+			return &(*it);
+		}
+		if ((*it).parent().name() == two && (*it).child().name() == one)
+		{
+			return &(*it);
 		}
 	}
 	return nullptr;
