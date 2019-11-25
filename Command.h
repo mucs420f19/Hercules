@@ -10,7 +10,7 @@ public:
 
   static void setModelInstance(Model *instance);
 
-  static const std::vector<std::string>& allCommands();
+  static const std::vector<std::string> allCommands();
 
   static const std::string& helpFor(const std::string&)
 ;
@@ -89,6 +89,7 @@ public:
   HelpCommand ();
 
   virtual void execute() const override;
+
 };
 
 class HelpForCommand : public Command {

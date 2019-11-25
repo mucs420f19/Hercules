@@ -7,17 +7,12 @@ void Command::setModelInstance(Model *instance) {
   Command::modelInstance = instance;
 }
 
-const std::vector<std::string> &Command::allCommands() {
-
-	std::vector<std::string> commands; 
-	/*
-	{ "help", "help_for", "list", "save", "load", "exit", "",
+const std::vector<std::string> Command::allCommands() {
+	std::vector<std::string> myvector{ "help", "help_for", "list", "save", "load", "exit", "",
 	                                      "add_class", "add_field", "add_method", "add_relationship", "",
 										  "edit_class", "edit_field", "edit_method", "edit_relationship", "",
 								  "delete_class", "delete_field", "delete_method", "delete_relationship"};
-								  */
-	commands.push_back("help");
-	return commands;
+	return myvector;
 }
 
 const std::string &Command::helpFor(const std::string &name) {
@@ -92,10 +87,10 @@ HelpCommand::HelpCommand(){}
 
 void HelpCommand::execute() const
 {
-	auto test = allCommands();
-	for (auto &i: test)
+	std::vector<std::string> test = allCommands();
+	for (auto & i : test)
 	{
-		std::cout << i;
+		std::cout << i << std::endl;
 	}
 }
 HelpForCommand::HelpForCommand(const std::string &name) : mName(name) {}
