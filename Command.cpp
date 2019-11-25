@@ -15,15 +15,15 @@ const std::vector<std::string> &Command::allCommands() {
 
 const std::string &Command::helpFor(const std::string &name) {
 	static std::unordered_map<std::string, std::string> HELP{
-		{{"exit", "exit\n"
-				  "  quits the application\n"
-				  "    parameters: none\n"},
-	    {"add_class", "add_class (className)\n"
-					 "  adds a new class to the UML diagram\n"
-					 "    parameters:\n"
-					 "    - className: name for the new class\n"}
+		{"exit", "exit\n"
+                  "  quits the application\n"
+                  "    parameters: none\n"},
+        {"add_class", "add_class (className)\n"
+                     "  adds a new class to the UML diagram\n"
+                     "    parameters:\n"
+                     "    - className: name for the new class\n"}
 
-      }};
+      };
 	
 	auto out = HELP.find(name);
 
@@ -90,5 +90,5 @@ HelpForCommand::HelpForCommand(const std::string &name) : mName(name)
 
 void HelpForCommand::execute() const
 {
-	helpFor(mName);
+	std::cout << helpFor(mName);
 }
