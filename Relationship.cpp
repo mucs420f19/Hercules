@@ -15,7 +15,7 @@ const Class & Relationship::child() const
 	return mChild;
 }
 
-RelationshipType typeConvert(const std::string & type)
+RelationshipType FromString(const std::string & type)
 {
 	std::string in = type;
 	RelationshipType result = RelationshipType::ERROR;
@@ -38,49 +38,23 @@ const Relationship& Relationship::operator=(const Relationship &other)
 	return other;
 }
 
+bool operator== (const Relationship &n1, const Relationship &n2)
+{
+	return n1.parent().name() == n2.parent().name();
+}
+
 void Relationship::setType(RelationshipType type)
 {
 	mType = type;
 }
 
-const std::string & FromString(RelationshipType t)
+const std::string & ToString(RelationshipType t)
 {
-	std::string temp;
-	switch (t)
-	{
-	case RelationshipType::AGGREGATION:
-		temp = "Aggregation";
-		break;
-	case RelationshipType::COMPOSITION:
-		temp = "Composition";
-		break;
-	case RelationshipType::ASSOCIATION:
-		temp = "Association";
-		break;
-	case RelationshipType::DEPENDENCY:
-		temp = "Dependency";
-		break;
-	}
-	return temp;
+	static const std::string str[4] = { "Aggregation", "Composition", "Association", "Dependency"};
+	return str[static_cast<int>(t)];
 }
 
 const char * ToRawString(RelationshipType t)
 {
-	std::string temp;
-	switch (t)
-	{
-	case RelationshipType::AGGREGATION:
-		temp = "Aggregation";
-		break;
-	case RelationshipType::COMPOSITION:
-		temp = "Composition";
-		break;
-	case RelationshipType::ASSOCIATION:
-		temp = "Association";
-		break;
-	case RelationshipType::DEPENDENCY:
-		temp = "Dependency";
-		break;
-	}
-	return temp.c_str();
+	return ToString(t).c_str();
 }

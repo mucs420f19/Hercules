@@ -25,6 +25,7 @@ public:
 
   const Relationship& operator=(const Relationship &other);
 
+
   RelationshipType type() const;
 
   void setType (RelationshipType type);
@@ -36,7 +37,10 @@ private:
 };
 
 
-RelationshipType typeConvert(const std::string &type);
+RelationshipType FromString(const std::string &type);
 
-const std::string &FromString(RelationshipType t);
+const std::string &ToString(RelationshipType t);
 const char* ToRawString(RelationshipType t);
+
+bool operator== (const Relationship &n1, const Relationship &n2);
+
