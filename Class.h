@@ -35,3 +35,7 @@ private:
   std::list<Field> mFields;
   std::list<Method> mMethods;
 };
+
+bool operator== (const Method &n1, const Method &n2);
+bool operator== (const Class &n1, const Class &n2);
+bool operator== (const Field &n1, const Field &n2);
