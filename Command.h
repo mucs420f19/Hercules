@@ -76,3 +76,10 @@ private:
   std::string mChild;
   RelationshipType mType;
 };
+
+class ListCommand : public Command {
+public:
+	ListCommand();
+
+	virtual void execute() const override;
+};
