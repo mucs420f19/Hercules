@@ -11,8 +11,8 @@ Class::Class()
 
 // Constructor given a name
 Class::Class(const std::string &name)
+	:mName(name)
 {
-    mName = name;
 }
 
 // Changes the name of an existing class to a new given name
@@ -48,7 +48,9 @@ void Class::addMethod(const Method &method)
 // Removes a field from the vector of fields at the given index
 void Class::removeField(int index)
 {
-    mFields.erase(mFields.begin(), index);
+	std::list<Field>::iterator it = mFields.begin();
+	std::advance(it, index);
+	mFields.erase(it);
 }
 
 // Removes a field from the vector of fields after finding its index
@@ -59,29 +61,31 @@ void Class::removeField(const std::string &name)
     {
         if (i.name() == name)
         {
-            mFields.erase(mFields.begin(), index);
+			mFields.remove(i);
         }
-        ++index;
     }
 }
 
 // Removes a method from the vector of methods at the given index
 void Class::removeMethod(int index)
 {
-    mMethods.erase(mMethods.begin(), index);
+	std::list<Method>::iterator it = mMethods.begin();
+	std::advance(it, index);
+	mMethods.erase(it);
 }
 
 // Removes a method from the vector of methods after finding its index
 void Class::removeMethod(const std::string &name)
 {
-    unsigned int index = 0;
+	std::string temp;
+
     for (auto &i : mMethods)
     {
-        if (i.name() == name)
+		temp = i.name();
+        if (temp == name)
         {
-            mMethods.erase(mMethods.begin(), index);
+			mMethods.remove(i);
         }
-        ++index;
     }
 }
 
@@ -90,8 +94,10 @@ Method &Class::method(const std::string &name)
 {
     for (auto &i : mMethods)
     {
-        if (i.name() == name)
-            return i;
+		if (i.name() == name)
+		{
+			return i;
+		}
     }
 }
 
@@ -100,21 +106,27 @@ const Method &Class::method(const std::string &name) const
 {
     for (auto &i : mMethods)
     {
-        if (i.name() == name)
-            return i;
+		if (i.name() == name)
+		{
+			return i;
+		}
     }
 }
 
 // Returns a method from the vector of methods given its index
 Method &Class::method(int index)
 {
-    return mMethods.at(index);
+	std::list<Method>::iterator it = mMethods.begin();
+	std::advance(it, index);
+	return *it;
 }
 
 // Returns a method from the vector of methods given its index
 const Method &Class::method(int index) const
 {
-    return mMethods.at(index);
+	std::list<Method>::const_iterator it = mMethods.begin();
+	std::advance(it, index);
+	return *it;
 }
 
 // Returns a field from the vector of fields gien its name
@@ -140,11 +152,30 @@ const Field &Class::field(const std::string &name) const
 // Returns a field from the vector of fields gien its index
 Field &Class::field(int index)
 {
-    return mFields.at(index);
+	std::list<Field>::iterator it = mFields.begin();
+	std::advance(it, index);
+	return *it;
 }
 
 // Returns a field from the vector of fields gien its index
 const Field &Class::field(int index) const
 {
-    return mFields.at(index);
+	std::list<Field>::const_iterator it = mFields.begin();
+	std::advance(it, index);
+	return *it;
+}
+
+bool operator== (const Method &n1, const Method &n2)
+{
+	return n1.name() == n2.name();
+}
+
+bool operator== (const Field &n1, const Field &n2)
+{
+	return n1.name() == n2.name();
+}
+
+bool operator== (const Class &n1, const Class &n2)
+{
+	return n1.name() == n2.name();
 }
