@@ -97,7 +97,7 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  //return std::make_unique<HelpCommand>();
   }
   if (cmdName == "list") {
-	 // return std::make_unique<ListCommand>();
+	 return std::make_unique<ListCommand>();
   }
   if (cmdName == "exit") {
 	 // return std::make_unique<ExitCommand>();
