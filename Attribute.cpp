@@ -1,19 +1,8 @@
-// System Includes 
-
-#include <initializer_list>
-
-// local includes 
-
 #include "Attribute.h"
 
-// Using declarations
-
-using std::initializer_list;
-
 Attribute::Attribute(const std::string & name, Visibility v)
-: mName(name), mVisibility(v)
+	:mName(name), mVisibility(v)
 {
-
 }
 
 void Attribute::setVisibility(Visibility v)
@@ -39,6 +28,11 @@ const char * Attribute::rawName() const
 const char * Attribute::rawVisibility() const
 {
 	return ToString(mVisibility).c_str();
+}
+
+Parameter::Parameter(const std::string & type, const std::string & name)
+	:mName(name), mType(type)
+{
 }
 
 void Parameter::setType(const std::string & type)
@@ -93,36 +87,34 @@ void Method::removeParameter(int index)
 
 void Method::setParameters(const std::vector<Parameter>& params)
 {
-	mParameters = params;
+	for (auto & i : params)
+	{
+		mParameters.push_back(i);
+	}
 }
 
 void Method::clearParameters()
 {
-	mParameters.clear();
+	int index = 0;
+	for (auto & i : mParameters)
+	{
+		mParameters.erase(mParameters.begin() + index);
+		++index;
+	}
 }
 
 const std::string & Method::params() const
 {
-	std::string params;
 	for (auto & i : mParameters)
 	{
-		//Work on This
-		params += "Type: " + i.type();
-		params += "Name: " + i.name() + ",";
+		mStringRep + i.type() + " " + i.name() + ", ";
 	}
-	return params;
+	return mStringRep;
 }
 
 const char * Method::rawParams() const
 {
-	std::string params;
-	for (auto & i : mParameters)
-	{
-		//Work on This
-		params += "Type: " + i.type();
-		params += "Name: " + i.name() + ",";
-	}
-	return params.c_str();
+	return mStringRep.c_str();
 }
 
 const std::string & ToString(Visibility v)
