@@ -55,7 +55,8 @@ std::unique_ptr<Command>
 make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
   const std::string &cmdName = cmdLineArgs.front();
   if (!checkParameterCount(cmdLineArgs)) {
-    return std::make_unique<ErrorCommand>(os, "invalid parameter count");
+    return std::make_unique<ErrorCommand>(os, "Invalid command. Please enter 'help' for a list of commands " 
+                                              "or 'help_for' before a command for additional info about that command.\n");
   }
   if (cmdName == "add_class") {
     return std::make_unique<AddClassCommand>(cmdLineArgs[1]);

@@ -10,10 +10,36 @@ ConsoleView::ConsoleView(std::ostream &os, std::istream &is) : os(os), is(is) {}
 void
 ConsoleView::runREPL() {
 
+  os << "\xDA" << std::flush;
+
+  for (size_t x = 0; x < 36; ++x)
+  {
+    os << "\xC4" << std::flush;
+  }
+  
+  os << "\xBF\n" << std::flush;
+  os << "\xB3 Welcome to the Hercules UML Editor \xB3\n" << std::flush;
+  os << "\xC0" << std::flush;
+
+  for (size_t x = 0; x < 36; ++x)
+  {
+    os << "\xC4" << std::flush;
+  }
+  
+  os << "\xD9\n" << std::flush;
+  os << "Please enter 'help' for a list of commands " << std::flush;
+  os << "or 'help_for' before a command for additional info about that command.\n" << std::flush;
+
   std::string line;
   os << PROMPT_STRING << std::flush;
+
   while (std::getline(is, line)) {
-    make_command(os,split(line))->execute();
+
+    if(line != "")
+    {
+      make_command(os,split(line))->execute();
+    }
+
     os << PROMPT_STRING << std::flush;
   }
 }
