@@ -132,11 +132,13 @@ const Method &Class::method(int index) const
 // Returns a field from the vector of fields gien its name
 Field &Class::field(const std::string &name)
 {
+	Field* result = nullptr;
     for (auto &i : mFields)
     {
-        if (i.name() == name)
-            return i;
+		if (i.name() == name)
+			result = &i;
     }
+	return *result;
 }
 
 // Returns a field from the vector of fields gien its name

@@ -27,6 +27,8 @@ void Model::addField(const std::string& className, const std::string& fieldName,
 {
 	Class* a = findClass(className);
 	if (a == nullptr) return;
+	//if the class already has a field with this name, exit
+	if (findField(className, fieldName) != nullptr) return;
 	Field f(fieldName, fieldVisibility, fieldType);
 	a->addField(f);
 }
@@ -157,4 +159,11 @@ const Class * Model::findClass(const std::string & name) const
 		}
 	}
 	return nullptr;
+}
+
+Field* Model::findField(const std::string& className, const std::string& fieldName)
+{
+	if (findClass(className) == nullptr) return nullptr;
+	Class* a = findClass(className);
+	return &a->field(fieldName);
 }

@@ -42,6 +42,8 @@ public:
   Class* findClass (const std::string &name);
   const Class* findClass (const std::string &name) const;
 
+  Field* findField(const std::string& className, const std::string& fieldName);
+
 private:
   std::list<Class> mClasses;
   std::list<Relationship> mRelationships;
