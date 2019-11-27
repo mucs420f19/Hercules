@@ -15,7 +15,7 @@ const Class & Relationship::child() const
 	return mChild;
 }
 
-RelationshipType FromString(const std::string & type)
+RelationshipType RelationshipFromString(const std::string & type)
 {
 	std::string in = type;
 	RelationshipType result = RelationshipType::ERROR;

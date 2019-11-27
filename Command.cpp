@@ -69,7 +69,7 @@ void DeleteClassCommand::execute() const
 AddRelationshipCommand::AddRelationshipCommand(const std::string &parent,
                                         const std::string &child,
 	const std::string &type)
-    : mParent(parent), mChild(child), mType(FromString(type)) {}
+    : mParent(parent), mChild(child), mType(RelationshipFromString(type)) {}
 
 void AddRelationshipCommand::execute() const 
 {
@@ -101,7 +101,7 @@ void HelpForCommand::execute() const
 }
 
 EditRelationshipCommand::EditRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type)
-	: mParent(parent), mChild(child), mType(FromString(type)) {}
+	: mParent(parent), mChild(child), mType(RelationshipFromString(type)) {}
 
 void EditRelationshipCommand::execute() const
 {

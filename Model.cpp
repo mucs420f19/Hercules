@@ -39,6 +39,9 @@ void Model::editField(const std::string& whichAttr, const std::string& className
 
 void Model::deleteField(const std::string& className, const std::string& fieldName)
 {
+	Class* a = findClass(className);
+	if (a == nullptr) return;
+	a->removeField(fieldName);
 }
 
 void Model::addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, Visibility methodVisibility)
@@ -57,6 +60,9 @@ void Model::editMethod(const std::string& whichAttr, const std::string& classNam
 
 void Model::deleteMethod(const std::string& className, const std::string& methodName)
 {
+	Class* a = findClass(className);
+	if (a == nullptr) return;
+	a->removeMethod(methodName);
 }
 
 void Model::addParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType)

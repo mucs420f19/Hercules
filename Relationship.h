@@ -37,7 +37,7 @@ private:
 };
 
 
-RelationshipType FromString(const std::string &type);
+RelationshipType RelationshipFromString(const std::string &type);
 
 const std::string &ToString(RelationshipType t);
 const char* ToRawString(RelationshipType t);
