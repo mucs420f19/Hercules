@@ -187,3 +187,34 @@ void DeleteParameterCommand::execute() const
 {
 	Command::modelInstance->deleteParameter(mclassName, mmethodName, mParameterName);
 }
+
+ExitCommand::ExitCommand()
+{
+}
+
+void ExitCommand::execute() const
+{
+	//TODO ask user if they want to save any unsaved work
+	exit(0);
+}
+
+SaveOverwriteCommand::SaveOverwriteCommand(const std::string& name)
+	: mName(name) {}
+
+void SaveOverwriteCommand::execute() const
+{
+}
+
+LoadCommand::LoadCommand(const std::string& name)
+	: mName(name) {}
+
+void LoadCommand::execute() const
+{
+}
+
+SaveCommand::SaveCommand(const std::string& name)
+	: mName(name) {}
+
+void SaveCommand::execute() const
+{
+}

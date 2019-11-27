@@ -199,6 +199,40 @@ public:
 	virtual void execute() const override;
 };
 
+class ExitCommand : public Command {
+public:
+	ExitCommand();
+
+	virtual void execute() const override;
+};
+
+class SaveOverwriteCommand : public Command {
+public:
+	SaveOverwriteCommand(const std::string& name);
+
+	virtual void execute() const override;
+private:
+	std::string mName;
+};
+
+class SaveCommand : public Command {
+public:
+	SaveCommand(const std::string& name);
+
+	virtual void execute() const override;
+private:
+	std::string mName;
+};
+
+class LoadCommand : public Command {
+public:
+	LoadCommand(const std::string& name);
+
+	virtual void execute() const override;
+private:
+	std::string mName;
+};
+
 class HelpCommand : public Command {
 public:
   HelpCommand ();
