@@ -34,6 +34,8 @@ public:
   const std::string &type() const;
   const char* rawType() const;
 
+  std::string TestToString();
+
 private:
   std::string mType;
 };
@@ -52,6 +54,8 @@ public:
   const char* rawType() const;
   const char* rawName() const;
 
+  std::string TestToString();
+
 private:
   std::string mType;
   std::string mName;
@@ -68,6 +72,8 @@ public:
 
   const std::string& params() const;
   const char* rawParams() const;
+
+  std::string TestToString();
 
 private:
 	std::string mReturnType;

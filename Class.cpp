@@ -167,6 +167,30 @@ const Field &Class::field(int index) const
 	return *it;
 }
 
+std::string Class::TestFieldsToString()
+{
+	std::string out;
+	out += "{";
+	for (auto a : mFields)
+	{
+		out += a.TestToString() + ", ";
+	}
+	out += "}";
+	return out;
+}
+
+std::string Class::TestMethodsToString()
+{
+	std::string out;
+	out += "{";
+	for (auto a : mMethods)
+	{
+		out += a.TestToString() + ", ";
+	}
+	out += "}";
+	return out;
+}
+
 bool operator== (const Method &n1, const Method &n2)
 {
 	return n1.name() == n2.name();

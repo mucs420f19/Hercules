@@ -149,6 +149,19 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 	return nullptr;
 }
 
+std::vector<const Relationship*> Model::findRelationship(const std::string& className) const
+{
+	std::vector<const Relationship*> result;
+	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
+	{
+		if ((*it).parent().name() == className || (*it).child().name() == className)
+		{
+			result.push_back(&(*it));
+		}
+	}
+	return result;
+}
+
 Class * Model::findClass(const std::string & name)
 {
 	for (auto  &i : mClasses)
@@ -185,4 +198,39 @@ Method* Model::findMethod(const std::string& className, const std::string& metho
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
 	return &a->method(methodName);
+}
+
+std::string Model::TestClassToString(const std::string& className)
+{
+	std::string result = "A class with that name was not found.";
+	Class* a = findClass(className);
+	if (a != nullptr)
+	{
+		result = "Title: {" + a->name() + "}, Fields:" + a->TestFieldsToString() + ", Methods: " + a->TestMethodsToString() + ", Relationships: " + TestClassRelationshipsToString(a->name());
+	}
+	return result;
+}
+
+std::string Model::TestClassRelationshipsToString(const std::string& className)
+{
+	std::string out;
+	out += "{";
+	for (auto a : findRelationship(className))
+	{
+		out += a->TestToString() + ", ";
+	}
+	out += "}";
+	return out;
+}
+
+std::string Model::TestFullModelToString()
+{
+	std::string out;
+	out += "{";
+	for (auto a : mClasses)
+	{
+		out += TestClassToString(a.name()) + ", ";
+	}
+	out += "}";
+	return out;
 }

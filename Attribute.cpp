@@ -65,6 +65,11 @@ const char * Parameter::rawName() const
 	return mName.c_str();
 }
 
+std::string Parameter::TestToString()
+{
+	return mType + " " + name();
+}
+
 Field::Field(const std::string& name, Visibility v, const std::string& type)
 	: Attribute{ name, v }, mType(type)
 {
@@ -78,6 +83,11 @@ const std::string & Field::type() const
 const char * Field::rawType() const
 {
 	return mType.c_str();
+}
+
+std::string Field::TestToString()
+{
+	return "{" + name() + ", " + mType + ", " + visibility() + "}";
 }
 
 Method::Method(const std::string& name, Visibility v, const std::string& type)
@@ -117,6 +127,18 @@ const std::string & Method::params() const
 const char * Method::rawParams() const
 {
 	return mStringRep.c_str();
+}
+
+std::string Method::TestToString()
+{
+	std::string out = "{" + name() + ", " + mReturnType + ", {";
+	for (auto a : mParameters)
+	{
+		out += a.TestToString() + ", ";
+	}
+	out += "}, ";
+	out += visibility() + "}";
+	return out;
 }
 
 Visibility VisibilityFromString(const std::string& type)

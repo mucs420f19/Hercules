@@ -30,6 +30,9 @@ public:
   Field& field (int index);
   const Field& field (int index) const;
 
+  std::string TestFieldsToString();
+  std::string TestMethodsToString();
+
 private:
   std::string mName;
   std::list<Field> mFields;

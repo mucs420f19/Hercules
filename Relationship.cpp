@@ -48,6 +48,11 @@ void Relationship::setType(RelationshipType type)
 	mType = type;
 }
 
+std::string Relationship::TestToString() const
+{
+	return "{" + mParent.name() + " is Parent in relationship " + ToString(mType) + " with " + mChild.name() + "}";
+}
+
 const std::string & ToString(RelationshipType t)
 {
 	static const std::string str[4] = { "Aggregation", "Composition", "Association", "Dependency"};
