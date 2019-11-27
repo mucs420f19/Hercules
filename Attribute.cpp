@@ -109,7 +109,8 @@ void Method::clearParameters()
 
 const std::string & Method::params() const
 {
-	std::string &temp = std::string("test");
+	std::string test = "test";
+	std::string &temp = test;
 	temp.clear();
 	for (auto & i : mParameters)
 	{
