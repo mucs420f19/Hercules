@@ -163,3 +163,27 @@ void DeleteMethodCommand::execute() const
 {
 	Command::modelInstance->deleteMethod(mclassName, mmethodName);
 }
+
+AddParameterCommand::AddParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType)
+	: mclassName(className), mmethodName(methodName), mParameterName(ParameterName), mParameterType(ParameterType) {}
+
+void AddParameterCommand::execute() const
+{
+	Command::modelInstance->addParameter(mclassName, mmethodName, mParameterName, mParameterType);
+}
+
+EditParameterCommand::EditParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
+	: mclassName(className), mmethodName(methodName), mParameterName(ParameterName), mNewValue(NewValue), mWhichAttr(WhichAttr) {}
+
+void EditParameterCommand::execute() const
+{
+	Command::modelInstance->editParameter(mclassName, mmethodName, mParameterName, mNewValue, mWhichAttr);
+}
+
+DeleteParameterCommand::DeleteParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName)
+	: mclassName(className), mmethodName(methodName), mParameterName(ParameterName) {}
+
+void DeleteParameterCommand::execute() const
+{
+	Command::modelInstance->deleteParameter(mclassName, mmethodName, mParameterName);
+}

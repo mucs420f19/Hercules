@@ -17,10 +17,14 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     {"help_for", 2},
     // add
     {"add_class", 2},
+	// add_field <className> <fieldName> <fieldType> <fieldVisibility>
     {"add_field", 5},
-    {"add_method", 5},
-	{"add_parameter", 7},
-    {"add_relationship", 4},
+	// add_method <className> <methodName> <methodType> <methodVisibility>
+	{"add_method", 5},
+	// add_parameter <className> <methodName> <parameterName> <parameterType>
+	{"add_parameter", 5},
+	// add_relationship <className1> <className2> <relationshipType>
+	{"add_relationship", 4},
 
     // edit_class <className> <newName>
     {"edit_class", 3},

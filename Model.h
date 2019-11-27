@@ -21,6 +21,10 @@ public:
   void editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue);
   void deleteMethod(const std::string& className, const std::string& methodName);
 
+  void addParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType);
+  void editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr);
+  void deleteParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName);
+
 
   void addRelationship(const std::string &parent, const std::string &child,
                        RelationshipType type);

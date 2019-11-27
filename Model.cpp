@@ -47,6 +47,18 @@ void Model::deleteMethod(const std::string& className, const std::string& method
 {
 }
 
+void Model::addParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType)
+{
+}
+
+void Model::editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
+{
+}
+
+void Model::deleteParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName)
+{
+}
+
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)
 {
 	auto p = find(mClasses.begin(), mClasses.end(), parent);

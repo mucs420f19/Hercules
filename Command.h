@@ -160,6 +160,36 @@ private:
 	std::string mclassName, mmethodName;
 };
 
+class AddParameterCommand : public Command {
+public:
+	AddParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName, mParameterName, mParameterType;
+};
+
+class EditParameterCommand : public Command {
+public:
+	EditParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName, mParameterName, mNewValue, mWhichAttr;
+};
+
+class DeleteParameterCommand : public Command {
+public:
+	DeleteParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName, mParameterName;
+};
+
 class ListCommand : public Command {
 public:
 	ListCommand();
