@@ -91,7 +91,7 @@ private:
 
 class DeleteRelationshipCommand : public Command {
 public:
-	DeleteRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type);
+	DeleteRelationshipCommand(const std::string& parent, const std::string& child);
 
 	virtual void execute() const override;
 

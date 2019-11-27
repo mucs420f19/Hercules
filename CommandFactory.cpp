@@ -78,40 +78,40 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
 	  return std::make_unique<DeleteClassCommand>(cmdLineArgs[1]);
   }
   if (cmdName == "add_field") {
-	  //return std::make_unique<AddFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	  return std::make_unique<AddFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "edit_field") {
-	  //return std::make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	  return std::make_unique<EditFieldCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_field") {
-	 // return std::make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	 return std::make_unique<DeleteFieldCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_method") {
-	 // return std::make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	 return std::make_unique<AddMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "edit_method") {
-	 // return std::make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
+	 return std::make_unique<EditMethodCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "delete_method") {
-	  //return std::make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	  return std::make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "add_parameter") {
-	  // return std::make_unique<AddParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4], cmdLineArgs[5]);
+	  return std::make_unique<AddParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4]);
   }
   if (cmdName == "edit_parameter") {
-	  // return std::make_unique<EditParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4], cmdLineArgs[5]);
+	  return std::make_unique<EditParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4], cmdLineArgs[5]);
   }
   if (cmdName == "delete_parameter") {
-	  //return std::make_unique<DeleteParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
+	  return std::make_unique<DeleteParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "add_relationship") {
 	  return std::make_unique<AddRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "edit_relationship") {
-	  //return std::make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
+	  return std::make_unique<EditRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "delete_relationship") {
-	 // return std::make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+	 return std::make_unique<DeleteRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "help") {
 	  return std::make_unique<HelpCommand>();

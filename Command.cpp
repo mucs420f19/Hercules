@@ -108,7 +108,7 @@ void EditRelationshipCommand::execute() const
 	Command::modelInstance->editRelationship(mParent, mChild, mType);
 }
 
-DeleteRelationshipCommand::DeleteRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type)
+DeleteRelationshipCommand::DeleteRelationshipCommand(const std::string& parent, const std::string& child)
 	: mParent(parent), mChild(child) {}
 
 void DeleteRelationshipCommand::execute() const
