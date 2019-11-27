@@ -94,11 +94,11 @@ void Model::removeRelationship(const std::string & one, const std::string & two)
 {
 	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		if ((*it).parent().name() == one && (*it).child().name() == two)
+		if (it->parent().name() == one && it->child().name() == two)
 		{
 			mRelationships.erase(it);
 		}
-		if ((*it).parent().name() == two && (*it).child().name() == one)
+		if (it->parent().name() == two && it->child().name() == one)
 		{
 			mRelationships.erase(it);
 		}
@@ -121,11 +121,11 @@ Relationship * Model::findRelationship(const std::string & one, const std::strin
 {
 	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		if ((*it).parent().name() == one && (*it).child().name() == two)
+		if (it->parent().name() == one && it->child().name() == two)
 		{
 			return &(*it);
 		}
-		if ((*it).parent().name() == two && (*it).child().name() == one)
+		if (it->parent().name() == two && it->child().name() == one)
 		{
 			return &(*it);
 		}
@@ -137,11 +137,11 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 {
 	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		if ((*it).parent().name() == one && (*it).child().name() == two)
+		if (it->parent().name() == one && it->child().name() == two)
 		{
 			return &(*it);
 		}
-		if ((*it).parent().name() == two && (*it).child().name() == one)
+		if (it->parent().name() == two && it->child().name() == one)
 		{
 			return &(*it);
 		}
@@ -154,7 +154,7 @@ std::vector<const Relationship*> Model::findRelationship(const std::string& clas
 	std::vector<const Relationship*> result;
 	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
 	{
-		if ((*it).parent().name() == className || (*it).child().name() == className)
+		if (it->parent().name() == className || it->child().name() == className)
 		{
 			result.push_back(&(*it));
 		}
@@ -198,39 +198,4 @@ Method* Model::findMethod(const std::string& className, const std::string& metho
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
 	return &a->method(methodName);
-}
-
-std::string Model::TestClassToString(const std::string& className)
-{
-	std::string result = "A class with that name was not found.";
-	Class* a = findClass(className);
-	if (a != nullptr)
-	{
-		result = "Title: {" + a->name() + "}, Fields:" + a->TestFieldsToString() + ", Methods: " + a->TestMethodsToString() + ", Relationships: " + TestClassRelationshipsToString(a->name());
-	}
-	return result;
-}
-
-std::string Model::TestClassRelationshipsToString(const std::string& className)
-{
-	std::string out;
-	out += "{";
-	for (auto a : findRelationship(className))
-	{
-		out += a->TestToString() + ", ";
-	}
-	out += "}";
-	return out;
-}
-
-std::string Model::TestFullModelToString()
-{
-	std::string out;
-	out += "{";
-	for (auto a : mClasses)
-	{
-		out += TestClassToString(a.name()) + ", ";
-	}
-	out += "}";
-	return out;
 }
