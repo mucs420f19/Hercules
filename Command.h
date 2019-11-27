@@ -10,7 +10,7 @@ public:
 
   static void setModelInstance(Model *instance);
 
-  static const std::vector<std::string> allCommands();
+  static const std::vector<std::string>& allCommands();
 
   static const std::string& helpFor(const std::string&)
 ;
@@ -107,8 +107,8 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mfieldName, mfieldType;
-	Visibility mfieldVisibility;
+	std::string mClassName, mFieldName, mFieldType;
+	Visibility mFieldVisibility;
 };
 
 class EditFieldCommand : public Command {
@@ -118,7 +118,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mfieldName, mNewValue, mWhichAttr;
+	std::string mClassName, mFieldName, mNewValue, mWhichAttr;
 };
 
 class DeleteFieldCommand : public Command {
@@ -128,7 +128,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mfieldName;
+	std::string mClassName, mFieldName;
 };
 
 class AddMethodCommand : public Command {
@@ -138,8 +138,8 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mmethodType;
-	Visibility mmethodVisibility;
+	std::string mClassName, mMethodName, mMethodType;
+	Visibility mMethodVisibility;
 };
 
 class EditMethodCommand : public Command {
@@ -149,7 +149,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mNewValue, mWhichAttr;
+	std::string mClassName, mMethodName, mNewValue, mWhichAttr;
 };
 
 class DeleteMethodCommand : public Command {
@@ -159,7 +159,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName;
+	std::string mClassName, mMethodName;
 };
 
 class AddParameterCommand : public Command {
@@ -169,7 +169,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mParameterName, mParameterType;
+	std::string mClassName, mMethodName, mParameterName, mParameterType;
 };
 
 class EditParameterCommand : public Command {
@@ -179,7 +179,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mParameterName, mNewValue, mWhichAttr;
+	std::string mClassName, mMethodName, mParameterName, mNewValue, mWhichAttr;
 };
 
 class DeleteParameterCommand : public Command {
@@ -189,7 +189,7 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mParameterName;
+	std::string mClassName, mMethodName, mParameterName;
 };
 
 class ListCommand : public Command {
