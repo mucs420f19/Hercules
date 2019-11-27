@@ -65,10 +65,6 @@ const char * Parameter::rawName() const
 	return mName.c_str();
 }
 
-std::string Parameter::TestToString()
-{
-	return mType + " " + name();
-}
 
 Field::Field(const std::string& name, Visibility v, const std::string& type)
 	: Attribute{ name, v }, mType(type)
@@ -85,10 +81,6 @@ const char * Field::rawType() const
 	return mType.c_str();
 }
 
-std::string Field::TestToString()
-{
-	return "{" + name() + ", " + mType + ", " + visibility() + "}";
-}
 
 Method::Method(const std::string& name, Visibility v, const std::string& type)
 	: Attribute{ name, v }, mReturnType(type)
@@ -117,11 +109,13 @@ void Method::clearParameters()
 
 const std::string & Method::params() const
 {
+	std::string &temp = std::string("test");
+	temp.clear();
 	for (auto & i : mParameters)
 	{
-		mStringRep + i.type() + " " + i.name() + ", ";
+		temp += i.type() + " " + i.name() + ", ";
 	}
-	return mStringRep;
+	return temp;
 }
 
 const char * Method::rawParams() const
@@ -129,27 +123,16 @@ const char * Method::rawParams() const
 	return mStringRep.c_str();
 }
 
-std::string Method::TestToString()
-{
-	std::string out = "{" + name() + ", " + mReturnType + ", {";
-	for (auto a : mParameters)
-	{
-		out += a.TestToString() + ", ";
-	}
-	out += "}, ";
-	out += visibility() + "}";
-	return out;
-}
 
 Visibility VisibilityFromString(const std::string& type)
 {
 	std::string in = type;
-	Visibility result = Visibility::PRIVATE;
+	Visibility result = Visibility::INVALID;
 	if (in.size() == 0) return result;
 	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
-	if (in == "private" || in[0] == '-') result = Visibility::PRIVATE;
-	else if (in == "public" || in[0] == '+') result = Visibility::PUBLIC;
-	else if (in == "protected" || in[0] == '#') result = Visibility::PROTECTED;
+	if (in == "private") result = Visibility::PRIVATE;
+	else if (in == "public") result = Visibility::PUBLIC;
+	else if (in == "protected") result = Visibility::PROTECTED;
 	return result;
 }
 

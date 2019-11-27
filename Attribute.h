@@ -8,7 +8,7 @@
 #include <cctype>
 
 
-enum class Visibility { PUBLIC = 0, PROTECTED = 1, PRIVATE = 2 };
+enum class Visibility { PUBLIC = 0, PROTECTED = 1, PRIVATE = 2, INVALID = -1};
 
 class Attribute {
 public:
@@ -34,7 +34,6 @@ public:
   const std::string &type() const;
   const char* rawType() const;
 
-  std::string TestToString();
 
 private:
   std::string mType;
@@ -54,7 +53,6 @@ public:
   const char* rawType() const;
   const char* rawName() const;
 
-  std::string TestToString();
 
 private:
   std::string mType;
@@ -73,10 +71,9 @@ public:
   const std::string& params() const;
   const char* rawParams() const;
 
-  std::string TestToString();
 
 private:
-	std::string mReturnType;
+  std::string mReturnType;
   std::vector<Parameter> mParameters;
   std::string mStringRep;
 };
