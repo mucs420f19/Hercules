@@ -92,13 +92,13 @@ void Class::removeMethod(const std::string &name)
 // Returns a method from the vector of methods given its name
 Method &Class::method(const std::string &name)
 {
-	Method* result = nullptr;
 	for (auto& i : mMethods)
 	{
 		if (i.name() == name)
-			result = &i;
+		{
+			return i;
+		}
 	}
-	return *result;
 }
 
 // Returns a method from the vector of methods given its name
@@ -132,13 +132,13 @@ const Method &Class::method(int index) const
 // Returns a field from the vector of fields gien its name
 Field &Class::field(const std::string &name)
 {
-	Field* result = nullptr;
     for (auto &i : mFields)
     {
 		if (i.name() == name)
-			result = &i;
+		{
+			return i;
+		}
     }
-	return *result;
 }
 
 // Returns a field from the vector of fields gien its name
@@ -165,30 +165,6 @@ const Field &Class::field(int index) const
 	std::list<Field>::const_iterator it = mFields.begin();
 	std::advance(it, index);
 	return *it;
-}
-
-std::string Class::TestFieldsToString()
-{
-	std::string out;
-	out += "{";
-	for (auto a : mFields)
-	{
-		out += a.TestToString() + ", ";
-	}
-	out += "}";
-	return out;
-}
-
-std::string Class::TestMethodsToString()
-{
-	std::string out;
-	out += "{";
-	for (auto a : mMethods)
-	{
-		out += a.TestToString() + ", ";
-	}
-	out += "}";
-	return out;
 }
 
 bool operator== (const Method &n1, const Method &n2)
