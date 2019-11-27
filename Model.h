@@ -12,8 +12,17 @@ public:
 
   void removeClass(const std::string &name);
 
+
+  void addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility);
+  void editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue);
+  void deleteField(const std::string& className, const std::string& fieldName);
+
+
   void addRelationship(const std::string &parent, const std::string &child,
                        RelationshipType type);
+
+  void editRelationship(const std::string& parent, const std::string& child,
+	  RelationshipType type);
 
   void removeRelationship(const std::string &one, const std::string &two);
 

@@ -67,14 +67,67 @@ private:
 
 class AddRelationshipCommand : public Command {
 public:
-  AddRelationshipCommand (const std::string &parent, const std::string &child, const std::string &type);
+	AddRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type);
 
-  virtual void execute() const override;
+	virtual void execute() const override;
 
 private:
-  std::string mParent;
-  std::string mChild;
-  RelationshipType mType;
+	std::string mParent;
+	std::string mChild;
+	RelationshipType mType;
+};
+
+class EditRelationshipCommand : public Command {
+public:
+	EditRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type);
+
+	virtual void execute() const override;
+
+private:
+	std::string mParent;
+	std::string mChild;
+	RelationshipType mType;
+};
+
+class DeleteRelationshipCommand : public Command {
+public:
+	DeleteRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type);
+
+	virtual void execute() const override;
+
+private:
+	std::string mParent;
+	std::string mChild;
+};
+
+class AddFieldCommand : public Command {
+public:
+	AddFieldCommand(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mfieldName, mfieldType, mfieldVisibility;
+};
+
+class EditFieldCommand : public Command {
+public:
+	EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& fieldType);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mfieldName, mfieldType, mWhichAttr;
+};
+
+class DeleteFieldCommand : public Command {
+public:
+	DeleteFieldCommand(const std::string& className, const std::string& fieldName);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mfieldName;
 };
 
 class ListCommand : public Command {

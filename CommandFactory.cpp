@@ -19,14 +19,17 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     {"add_class", 2},
     {"add_field", 5},
     {"add_method", 6},
+	{"add_parameter", 7},
     {"add_relationship", 4},
 
     // edit_class <className> <newName>
     {"edit_class", 3},
     // edit_field <attr> <className> <fieldName> <newValue>
     {"edit_field", 5},
-    // edit_method <attr> <className> <methodName> <newValue>
-    {"edit_method", 5},
+	// edit_method <attr> <className> <methodName> <newValue>
+	{"edit_method", 5},
+	// edit_parameter <attr> <className> <methodName> <parameterName> <newValue>
+	{"edit_parameter", 6},
     // edit_relationship <class1> <class2> <newType>
     {"edit_relationship", 4},
 
@@ -34,8 +37,10 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     {"delete_class", 2},
     // delete_field <class> <name>
     {"delete_field", 3},
-    // delete_method <class> <name>
-    {"delete_method", 3},
+	// delete_method <class> <name>
+	{"delete_method", 3},
+	// delete_parameter <class> <method> <name>
+	{"delete_parameter", 4},
     // delete_relationship <class1> <class2>
     {"delete_relationship", 3}}};
 
@@ -85,6 +90,15 @@ make_command(std::ostream& os, const std::vector<std::string> &cmdLineArgs) {
   }
   if (cmdName == "delete_method") {
 	  //return std::make_unique<DeleteMethodCommand>(cmdLineArgs[1], cmdLineArgs[2]);
+  }
+  if (cmdName == "add_parameter") {
+	  // return std::make_unique<AddParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4], cmdLineArgs[5]);
+  }
+  if (cmdName == "edit_parameter") {
+	  // return std::make_unique<EditParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3], cmdLineArgs[4], cmdLineArgs[5]);
+  }
+  if (cmdName == "delete_parameter") {
+	  //return std::make_unique<DeleteParameterCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);
   }
   if (cmdName == "add_relationship") {
 	  return std::make_unique<AddRelationshipCommand>(cmdLineArgs[1], cmdLineArgs[2], cmdLineArgs[3]);

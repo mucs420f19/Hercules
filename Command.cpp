@@ -9,9 +9,9 @@ void Command::setModelInstance(Model *instance) {
 
 const std::vector<std::string> Command::allCommands() {
 	std::vector<std::string> myvector{ "help", "help_for", "list", "save", "load", "exit", "",
-	                                      "add_class", "add_field", "add_method", "add_relationship", "",
-										  "edit_class", "edit_field", "edit_method", "edit_relationship", "",
-								  "delete_class", "delete_field", "delete_method", "delete_relationship"};
+	                                      "add_class", "add_field", "add_method", "add_parameter", "add_relationship", "",
+										  "edit_class", "edit_field", "edit_method", "edit_parameter", "edit_relationship", "",
+								  "delete_class", "delete_field", "delete_method", "delete_parameter", "delete_relationship"};
 	return myvector;
 }
 
@@ -98,4 +98,44 @@ HelpForCommand::HelpForCommand(const std::string &name) : mName(name) {}
 void HelpForCommand::execute() const
 {
 	std::cout << helpFor(mName);
+}
+
+EditRelationshipCommand::EditRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type)
+	: mParent(parent), mChild(child), mType(FromString(type)) {}
+
+void EditRelationshipCommand::execute() const
+{
+	Command::modelInstance->editRelationship(mParent, mChild, mType);
+}
+
+DeleteRelationshipCommand::DeleteRelationshipCommand(const std::string& parent, const std::string& child, const std::string& type)
+	: mParent(parent), mChild(child) {}
+
+void DeleteRelationshipCommand::execute() const
+{
+	Command::modelInstance->removeRelationship(mParent, mChild);
+}
+
+AddFieldCommand::AddFieldCommand(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility)
+	: mclassName(className), mfieldName(fieldName), mfieldType(fieldType), mfieldVisibility(fieldVisibility) {}
+
+void AddFieldCommand::execute() const
+{
+	Command::modelInstance->addField(mclassName, mfieldName, mfieldType, mfieldVisibility);
+}
+
+EditFieldCommand::EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& fieldType)
+	: mclassName(className), mfieldName(fieldName), mfieldType(fieldType), mWhichAttr(whichAttr) {}
+
+void EditFieldCommand::execute() const
+{
+	Command::modelInstance->editField(mWhichAttr, mclassName, mfieldName, mfieldType);
+}
+
+DeleteFieldCommand::DeleteFieldCommand(const std::string& className, const std::string& fieldName)
+	: mclassName(className), mfieldName(fieldName) {}
+
+void DeleteFieldCommand::execute() const
+{
+	Command::modelInstance->deleteField(mclassName, mfieldName);
 }

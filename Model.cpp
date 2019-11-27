@@ -23,11 +23,29 @@ void Model::removeClass(const std::string & name)
 	mClasses.erase(it);
 }
 
+void Model::addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility)
+{
+}
+
+void Model::editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue)
+{
+}
+
+void Model::deleteField(const std::string& className, const std::string& fieldName)
+{
+}
+
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)
 {
 	auto p = find(mClasses.begin(), mClasses.end(), parent);
 	auto c = find(mClasses.begin(), mClasses.end(), child);
 	mRelationships.push_back(Relationship((*p), (*c), type));
+}
+
+void Model::editRelationship(const std::string& parent, const std::string& child, RelationshipType type)
+{
+	if (findRelationship(parent, child) == NULL) return;
+	findRelationship(parent, child)->setType(type);
 }
 
 void Model::removeRelationship(const std::string & one, const std::string & two)
