@@ -172,7 +172,7 @@ private:
 
 class EditParameterCommand : public Command {
 public:
-	EditParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr);
+	EditParameterCommand(const std::string& WhichAttr, const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue);
 
 	virtual void execute() const override;
 

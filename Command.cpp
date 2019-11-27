@@ -172,7 +172,7 @@ void AddParameterCommand::execute() const
 	Command::modelInstance->addParameter(mclassName, mmethodName, mParameterName, mParameterType);
 }
 
-EditParameterCommand::EditParameterCommand(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
+EditParameterCommand::EditParameterCommand(const std::string& WhichAttr, const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue)
 	: mclassName(className), mmethodName(methodName), mParameterName(ParameterName), mNewValue(NewValue), mWhichAttr(WhichAttr) {}
 
 void EditParameterCommand::execute() const
