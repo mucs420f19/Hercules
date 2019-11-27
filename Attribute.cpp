@@ -80,6 +80,11 @@ const char * Field::rawType() const
 	return mType.c_str();
 }
 
+Method::Method(const std::string& name, Visibility v, const std::string& type)
+	: Attribute{ name, v }, mReturnType(type)
+{
+}
+
 void Method::appendParameter(const Parameter & param)
 {
 	mParameters.push_back(param);

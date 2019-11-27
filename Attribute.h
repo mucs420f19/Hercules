@@ -60,7 +60,7 @@ private:
 class Method : public Attribute {
 public:
   using Attribute::Attribute;
-
+  Method(const std::string& name, Visibility v, const std::string& type);
   void appendParameter (const Parameter & param);
   void removeParameter (int index);
   void setParameters (const std::vector<Parameter>& params);

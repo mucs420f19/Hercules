@@ -43,6 +43,7 @@ public:
   const Class* findClass (const std::string &name) const;
 
   Field* findField(const std::string& className, const std::string& fieldName);
+  Method* findMethod(const std::string& className, const std::string& methodName);
 
 private:
   std::list<Class> mClasses;

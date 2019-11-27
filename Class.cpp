@@ -92,13 +92,13 @@ void Class::removeMethod(const std::string &name)
 // Returns a method from the vector of methods given its name
 Method &Class::method(const std::string &name)
 {
-    for (auto &i : mMethods)
-    {
+	Method* result = nullptr;
+	for (auto& i : mMethods)
+	{
 		if (i.name() == name)
-		{
-			return i;
-		}
-    }
+			result = &i;
+	}
+	return *result;
 }
 
 // Returns a method from the vector of methods given its name

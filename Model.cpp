@@ -43,6 +43,12 @@ void Model::deleteField(const std::string& className, const std::string& fieldNa
 
 void Model::addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, Visibility methodVisibility)
 {
+	Class* a = findClass(className);
+	if (a == nullptr) return;
+	//if the class already has a field with this name, exit
+	if (findField(className, methodName) != nullptr) return;
+	Method f(methodName, methodVisibility, methodType);
+	a->addMethod(f);
 }
 
 void Model::editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue)
@@ -166,4 +172,11 @@ Field* Model::findField(const std::string& className, const std::string& fieldNa
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
 	return &a->field(fieldName);
+}
+
+Method* Model::findMethod(const std::string& className, const std::string& methodName)
+{
+	if (findClass(className) == nullptr) return nullptr;
+	Class* a = findClass(className);
+	return &a->method(methodName);
 }
