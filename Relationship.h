@@ -30,7 +30,6 @@ public:
 
   void setType (RelationshipType type);
 
-  std::string TestToString() const;
 
 private:
   const Class &mParent;

@@ -18,10 +18,10 @@ int main(int argc, char** argv)
 
 	//Vars for class holders
 	//UMLObjectsHolder* holder = new UMLObjectsHolder();
-	ConsoleView View = ConsoleView(std::cout, std::cin);
+	ConsoleView view(std::cout, std::cin);
 	if (argc == 1)
 	{
-		View.runREPL();
+		view.runREPL();
 	}
 	else
 	{

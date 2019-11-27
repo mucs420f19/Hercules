@@ -21,10 +21,10 @@ RelationshipType RelationshipFromString(const std::string & type)
 	RelationshipType result = RelationshipType::ERROR;
 	if (in.size() == 0) return result;
 	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
-	if (in[0] == 'a') result = RelationshipType::AGGREGATION;
-	else if (in[0] == 'c') result = RelationshipType::COMPOSITION;
-	else if (in[1] == 's') result = RelationshipType::ASSOCIATION;
-	else if (in[0] == 'd') result = RelationshipType::DEPENDENCY;
+	if (in == "aggregation") result = RelationshipType::AGGREGATION;
+	else if (in == "composition") result = RelationshipType::COMPOSITION;
+	else if (in == "association") result = RelationshipType::ASSOCIATION;
+	else if (in == "dependency") result = RelationshipType::DEPENDENCY;
 	return result;
 }
 
@@ -48,10 +48,6 @@ void Relationship::setType(RelationshipType type)
 	mType = type;
 }
 
-std::string Relationship::TestToString() const
-{
-	return "{" + mParent.name() + " is Parent in relationship " + ToString(mType) + " with " + mChild.name() + "}";
-}
 
 const std::string & ToString(RelationshipType t)
 {
