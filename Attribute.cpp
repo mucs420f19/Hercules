@@ -65,6 +65,11 @@ const char * Parameter::rawName() const
 	return mName.c_str();
 }
 
+Field::Field(const std::string& name, Visibility v, const std::string& type)
+	: Attribute{ name, v }, mType(type)
+{
+}
+
 const std::string & Field::type() const
 {
 	return mType;
@@ -107,6 +112,18 @@ const std::string & Method::params() const
 const char * Method::rawParams() const
 {
 	return mStringRep.c_str();
+}
+
+Visibility VisibilityFromString(const std::string& type)
+{
+	std::string in = type;
+	Visibility result = Visibility::PRIVATE;
+	if (in.size() == 0) return result;
+	std::transform(std::cbegin(in), std::cend(in), std::begin(in), [](const unsigned char i) { return std::tolower(i); });
+	if (in == "private" || in[0] == '-') result = Visibility::PRIVATE;
+	else if (in == "public" || in[0] == '+') result = Visibility::PUBLIC;
+	else if (in == "protected" || in[0] == '#') result = Visibility::PROTECTED;
+	return result;
 }
 
 const std::string & ToString(Visibility v)

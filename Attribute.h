@@ -3,6 +3,10 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <algorithm>
+#include <locale>
+#include <cctype>
+
 
 enum class Visibility { PUBLIC = 0, PROTECTED = 1, PRIVATE = 2 };
 
@@ -24,7 +28,9 @@ private:
 
 class Field : public Attribute {
 
+	using Attribute::Attribute;
 public:
+	Field(const std::string& name, Visibility v, const std::string& type);
   const std::string &type() const;
   const char* rawType() const;
 
@@ -68,6 +74,8 @@ private:
   std::vector<Parameter> mParameters;
   std::string mStringRep;
 };
+
+Visibility VisibilityFromString(const std::string& type);
 
 const std::string &ToString(Visibility v);
 const char* ToRawString(Visibility v);

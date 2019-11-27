@@ -117,7 +117,7 @@ void DeleteRelationshipCommand::execute() const
 }
 
 AddFieldCommand::AddFieldCommand(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility)
-	: mclassName(className), mfieldName(fieldName), mfieldType(fieldType), mfieldVisibility(fieldVisibility) {}
+	: mclassName(className), mfieldName(fieldName), mfieldType(fieldType), mfieldVisibility(VisibilityFromString(fieldVisibility)) {}
 
 void AddFieldCommand::execute() const
 {
@@ -141,7 +141,7 @@ void DeleteFieldCommand::execute() const
 }
 
 AddMethodCommand::AddMethodCommand(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility)
-	: mclassName(className), mmethodName(methodName), mmethodType(methodType), mmethodVisibility(methodVisibility) {}
+	: mclassName(className), mmethodName(methodName), mmethodType(methodType), mmethodVisibility(VisibilityFromString(methodVisibility)) {}
 
 void AddMethodCommand::execute() const
 {

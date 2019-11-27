@@ -23,8 +23,12 @@ void Model::removeClass(const std::string & name)
 	mClasses.erase(it);
 }
 
-void Model::addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility)
+void Model::addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, Visibility fieldVisibility)
 {
+	Class* a = findClass(className);
+	if (a == nullptr) return;
+	Field f(fieldName, fieldVisibility, fieldType);
+	a->addField(f);
 }
 
 void Model::editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue)
@@ -35,7 +39,7 @@ void Model::deleteField(const std::string& className, const std::string& fieldNa
 {
 }
 
-void Model::addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility)
+void Model::addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, Visibility methodVisibility)
 {
 }
 

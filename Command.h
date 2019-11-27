@@ -107,7 +107,8 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mfieldName, mfieldType, mfieldVisibility;
+	std::string mclassName, mfieldName, mfieldType;
+	Visibility mfieldVisibility;
 };
 
 class EditFieldCommand : public Command {
@@ -137,7 +138,8 @@ public:
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mmethodName, mmethodType, mmethodVisibility;
+	std::string mclassName, mmethodName, mmethodType;
+	Visibility mmethodVisibility;
 };
 
 class EditMethodCommand : public Command {

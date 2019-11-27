@@ -13,11 +13,11 @@ public:
   void removeClass(const std::string &name);
 
 
-  void addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, const std::string& fieldVisibility);
+  void addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, Visibility fieldVisibility);
   void editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue);
   void deleteField(const std::string& className, const std::string& fieldName);
 
-  void addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility);
+  void addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, Visibility methodVisibility);
   void editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue);
   void deleteMethod(const std::string& className, const std::string& methodName);
 
