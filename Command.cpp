@@ -124,12 +124,12 @@ void AddFieldCommand::execute() const
 	Command::modelInstance->addField(mclassName, mfieldName, mfieldType, mfieldVisibility);
 }
 
-EditFieldCommand::EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& fieldType)
-	: mclassName(className), mfieldName(fieldName), mfieldType(fieldType), mWhichAttr(whichAttr) {}
+EditFieldCommand::EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& newValue)
+	: mclassName(className), mfieldName(fieldName), mNewValue(newValue), mWhichAttr(whichAttr) {}
 
 void EditFieldCommand::execute() const
 {
-	Command::modelInstance->editField(mWhichAttr, mclassName, mfieldName, mfieldType);
+	Command::modelInstance->editField(mWhichAttr, mclassName, mfieldName, mNewValue);
 }
 
 DeleteFieldCommand::DeleteFieldCommand(const std::string& className, const std::string& fieldName)
@@ -138,4 +138,28 @@ DeleteFieldCommand::DeleteFieldCommand(const std::string& className, const std::
 void DeleteFieldCommand::execute() const
 {
 	Command::modelInstance->deleteField(mclassName, mfieldName);
+}
+
+AddMethodCommand::AddMethodCommand(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility)
+	: mclassName(className), mmethodName(methodName), mmethodType(methodType), mmethodVisibility(methodVisibility) {}
+
+void AddMethodCommand::execute() const
+{
+	Command::modelInstance->addMethod(mclassName, mmethodName, mmethodType, mmethodVisibility);
+}
+
+EditMethodCommand::EditMethodCommand(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& newValue)
+	: mclassName(className), mmethodName(methodName), mNewValue(newValue), mWhichAttr(whichAttr) {}
+
+void EditMethodCommand::execute() const
+{
+	Command::modelInstance->editMethod(mWhichAttr, mclassName, mmethodName, mNewValue);
+}
+
+DeleteMethodCommand::DeleteMethodCommand(const std::string& className, const std::string& methodName)
+	: mclassName(className), mmethodName(methodName) {}
+
+void DeleteMethodCommand::execute() const
+{
+	Command::modelInstance->deleteMethod(mclassName, mmethodName);
 }

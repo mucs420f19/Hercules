@@ -35,6 +35,18 @@ void Model::deleteField(const std::string& className, const std::string& fieldNa
 {
 }
 
+void Model::addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility)
+{
+}
+
+void Model::editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue)
+{
+}
+
+void Model::deleteMethod(const std::string& className, const std::string& methodName)
+{
+}
+
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)
 {
 	auto p = find(mClasses.begin(), mClasses.end(), parent);

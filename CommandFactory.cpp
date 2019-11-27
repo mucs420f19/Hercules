@@ -18,7 +18,7 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     // add
     {"add_class", 2},
     {"add_field", 5},
-    {"add_method", 6},
+    {"add_method", 5},
 	{"add_parameter", 7},
     {"add_relationship", 4},
 

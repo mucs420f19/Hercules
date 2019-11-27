@@ -64,6 +64,7 @@ public:
   const char* rawParams() const;
 
 private:
+	std::string mReturnType;
   std::vector<Parameter> mParameters;
   std::string mStringRep;
 };

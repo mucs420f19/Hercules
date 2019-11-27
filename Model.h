@@ -17,6 +17,10 @@ public:
   void editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue);
   void deleteField(const std::string& className, const std::string& fieldName);
 
+  void addMethod(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility);
+  void editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue);
+  void deleteMethod(const std::string& className, const std::string& methodName);
+
 
   void addRelationship(const std::string &parent, const std::string &child,
                        RelationshipType type);

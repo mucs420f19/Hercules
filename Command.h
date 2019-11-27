@@ -112,12 +112,12 @@ private:
 
 class EditFieldCommand : public Command {
 public:
-	EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& fieldType);
+	EditFieldCommand(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& newValue);
 
 	virtual void execute() const override;
 
 private:
-	std::string mclassName, mfieldName, mfieldType, mWhichAttr;
+	std::string mclassName, mfieldName, mNewValue, mWhichAttr;
 };
 
 class DeleteFieldCommand : public Command {
@@ -128,6 +128,36 @@ public:
 
 private:
 	std::string mclassName, mfieldName;
+};
+
+class AddMethodCommand : public Command {
+public:
+	AddMethodCommand(const std::string& className, const std::string& methodName, const std::string& methodType, const std::string& methodVisibility);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName, mmethodType, mmethodVisibility;
+};
+
+class EditMethodCommand : public Command {
+public:
+	EditMethodCommand(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& newValue);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName, mNewValue, mWhichAttr;
+};
+
+class DeleteMethodCommand : public Command {
+public:
+	DeleteMethodCommand(const std::string& className, const std::string& methodName);
+
+	virtual void execute() const override;
+
+private:
+	std::string mclassName, mmethodName;
 };
 
 class ListCommand : public Command {
