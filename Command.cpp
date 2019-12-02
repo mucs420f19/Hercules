@@ -17,13 +17,46 @@ const std::vector<std::string>& Command::allCommands() {
 
 const std::string &Command::helpFor(const std::string &name) {
 	static std::unordered_map<std::string, std::string> HELP{
+		{"help", "help\n"
+		         "  Displays a list of usable commands.\n"
+				 "    Parameters: N/A\n"},
+		{"help_for", "help_for (command)\n"
+		             "  Displays information relating to a given command.\n"
+					 "    Paramaters:\n"
+					 "    - command: Information will be shown about this given command.\n"},
+		{"list", "list\n"
+		         "  Displays all existing classes, their attributes, and relationships.\n"
+				 "    Paramaters: N/A\n"},
+		{"save", "save (fileName)\n"
+		         "  Saves the current UML project to a file.\n"
+				 "    Parameters:\n"
+				 "    - fileName: The file that the project will be saved to.\n"},
+		{"load", "load (fileName)\n"
+		         "  Loads a UML project from a file.\n"
+				 "    Paramters:\n"
+				 "    - fileName: The file containing the project to be loaded.\n"},
 		{"exit", "exit\n"
-                  "  quits the application\n"
-                  "    parameters: none\n"},
+                 "  Quits the application.\n"
+                 "    Parameters: N/A\n"},
+
         {"add_class", "add_class (className)\n"
-                     "  adds a new class to the UML diagram\n"
-                     "    parameters:\n"
-                     "    - className: name for the new class\n"}
+                      "  Adds a new class to the UML diagram.\n"
+                      "    Parameters:\n"
+                      "    - className: Name for the new class.\n"},
+		{"add_field", "add_field (className) (fieldName) (type) (visibility)\n"
+                      "  Adds a new field to an existing class.\n"
+                      "    Parameters:\n"
+                      "    - className: The new field will be added to this class.\n"
+					  "    - fieldName: The name for the new field.\n"
+					  "    - type: The return type of the new field.\n"
+					  "    - visibility: The visibility of the new field.\n"},
+		{"add_method", "add_method (className) (methodName) (type) (visibility)\n"
+                      "  Adds a new method to an existing class.\n"
+                      "    Parameters:\n"
+                      "    - className: The new method will be added to this class.\n"
+					  "    - methodName: The name for the new method.\n"
+					  "    - type: The return type of the new method.\n"
+					  "    - visibility: The visibility of the new method.\n"}
 
       };
 	
