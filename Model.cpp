@@ -107,6 +107,88 @@ void Model::removeRelationship(const std::string & one, const std::string & two)
 
 void Model::list()
 {
+	for (auto& i : mClasses)
+	{
+		size_t largestString = 0;
+
+		if (i.name().size() > largestString)
+		{
+			largestString = i.name().size();
+		}
+
+		for (size_t x = 0; x < i.getFieldSize(); ++x)
+		{
+			Field& temp = i.field(x);
+
+			std::string check = temp.visibility() + " " + temp.name() + " : " + temp.type();
+
+			if (check.size() > largestString)
+			{
+				largestString = check.size();
+			}
+		}
+
+		// ====================================================================================================
+
+		size_t temp = 0;
+		size_t addSpace = 0;
+
+		// ┌────────────────────┐
+
+		std::cout << "\xDA";
+
+		for (size_t x = 0; x < largestString + 2; ++x)
+		{
+			std::cout << "\xC4";
+		}
+
+		std::cout << "\xBF\n";
+
+		// │ Title              │
+
+		temp = i.name().size();
+		addSpace = largestString - temp;
+
+		std::cout << "\xB3 " + i.name();
+
+		for (size_t x = 0; x < addSpace; ++x)
+			std::cout << " ";
+
+		std::cout << " \xB3\n";
+
+		// ├────────────────────┤
+
+		std::cout << "\xC3";
+
+		for (size_t x = 0; x < largestString + 2; ++x)
+		{
+			std::cout << "\xC4";
+		}
+
+		std::cout << "\xB4\n";
+
+		// Fields
+
+		for (size_t x = 0; x < i.getFieldSize(); ++x)
+		{
+			Field& tempField = i.field(x);
+
+			std::cout << "\xB3 " + tempField.visibility() + " " + tempField.name() + " : " + tempField.type();
+
+			for (size_t x = 0; x < addSpace; ++x)
+			{
+				std::cout << " ";
+			}
+
+			std::cout << " \xB3\n";
+		}
+	}
+
+	
+
+
+
+	/*
 	for (auto & i : mClasses)
 	{
 		std::cout << i.name() << "\n";
@@ -115,6 +197,7 @@ void Model::list()
 	{
 		std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
 	}
+	*/
 }
 
 Relationship * Model::findRelationship(const std::string & one, const std::string & two)

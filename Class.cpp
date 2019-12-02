@@ -167,6 +167,18 @@ const Field &Class::field(int index) const
 	return *it;
 }
 
+// Returns the number of methods in the list mMethods
+unsigned int Class::getMethodSize ()
+{
+	return mMethods.size();
+}
+
+// Returns the number of fields in the list mMethods
+unsigned int Class::getFieldSize ()
+{
+	return mFields.size();
+}
+
 bool operator== (const Method &n1, const Method &n2)
 {
 	return n1.name() == n2.name();

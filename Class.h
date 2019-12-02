@@ -30,6 +30,9 @@ public:
   Field& field (int index);
   const Field& field (int index) const;
 
+  unsigned int getMethodSize ();
+  unsigned int getFieldSize ();
+
 private:
   std::string mName;
   std::list<Field> mFields;
