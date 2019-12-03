@@ -1,4 +1,5 @@
 #include "Attribute.h"
+#include <iostream>
 
 Attribute::Attribute(const std::string & name, Visibility v)
 	:mName(name), mVisibility(v)
@@ -17,7 +18,7 @@ const std::string & Attribute::name() const
 
 const std::string & Attribute::visibility() const
 {
-	return ToString(mVisibility);
+	return ToStringVis(mVisibility);
 }
 
 const char * Attribute::rawName() const
@@ -27,7 +28,7 @@ const char * Attribute::rawName() const
 
 const char * Attribute::rawVisibility() const
 {
-	return ToString(mVisibility).c_str();
+	return ToRawStringVis(mVisibility);
 }
 
 Parameter::Parameter(const std::string & type, const std::string & name)
@@ -107,6 +108,11 @@ void Method::clearParameters()
 	mParameters.clear();
 }
 
+const std::string & Method::ReturnType() const
+{
+	return mReturnType;
+}
+
 const std::string & Method::params() const
 {
 	std::string test;
@@ -136,13 +142,13 @@ Visibility VisibilityFromString(const std::string& type)
 	return result;
 }
 
-const std::string & ToString(Visibility v)
+const std::string & ToStringVis(Visibility v)
 {
 	static const std::string str[3] = { "Public", "Protected", "Private" };
 	return str[static_cast<int>(v)];
 }
 
-const char * ToRawString(Visibility v)
+const char * ToRawStringVis(Visibility v)
 {
-	return ToString(v).c_str();
+	return ToStringVis(v).c_str();
 }

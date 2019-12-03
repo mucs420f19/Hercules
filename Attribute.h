@@ -67,6 +67,7 @@ public:
   void removeParameter (int index);
   void setParameters (const std::vector<Parameter>& params);
   void clearParameters ();
+  const std::string &ReturnType() const;
 
   const std::string& params() const;
   const char* rawParams() const;
@@ -80,5 +81,5 @@ private:
 
 Visibility VisibilityFromString(const std::string& type);
 
-const std::string &ToString(Visibility v);
-const char* ToRawString(Visibility v);
+const std::string &ToStringVis(Visibility v);
+const char* ToRawStringVis(Visibility v);

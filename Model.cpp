@@ -26,11 +26,16 @@ void Model::removeClass(const std::string & name)
 void Model::addField(const std::string& className, const std::string& fieldName, const std::string& fieldType, Visibility fieldVisibility)
 {
 	Class* a = findClass(className);
-	if (a == nullptr) return;
+	if (a == nullptr)
+	{
+		return;
+	}
 	//if the class already has a field with this name, exit
-	if (findField(className, fieldName) != nullptr) return;
-	Field f(fieldName, fieldVisibility, fieldType);
-	a->addField(f);
+	if (findField(className, fieldName) != nullptr)
+	{
+		return;
+	}
+	a->addField(Field(fieldName, fieldVisibility, fieldType));
 }
 
 void Model::editField(const std::string& whichAttr, const std::string& className, const std::string& fieldName, const std::string& NewValue)
@@ -49,9 +54,11 @@ void Model::addMethod(const std::string& className, const std::string& methodNam
 	Class* a = findClass(className);
 	if (a == nullptr) return;
 	//if the class already has a field with this name, exit
-	if (findField(className, methodName) != nullptr) return;
-	Method f(methodName, methodVisibility, methodType);
-	a->addMethod(f);
+	if (findMethod(className, methodName) != nullptr)
+	{
+		return;
+	}
+	a->addMethod(Method(methodName, methodVisibility, methodType));
 }
 
 void Model::editMethod(const std::string& whichAttr, const std::string& className, const std::string& methodName, const std::string& NewValue)
@@ -149,8 +156,8 @@ void Model::list()
 		temp = i.name().size();
 		addSpace = largestString - temp;
 
-		std::cout << "\xB3 " + i.name();
-
+		std::cout << "\xB3 " + i.name()<< std::flush;
+		
 		for (size_t x = 0; x < addSpace; ++x)
 			std::cout << " ";
 
@@ -166,14 +173,28 @@ void Model::list()
 		}
 
 		std::cout << "\xB4\n";
-
 		// Fields
-
+		std::cout << "Fields" << std::endl;
 		for (size_t x = 0; x < i.getFieldSize(); ++x)
 		{
 			Field& tempField = i.field(x);
 
-			std::cout << "\xB3 " + tempField.visibility() + " " + tempField.name() + " : " + tempField.type();
+			std::cout << "\xB3 " + tempField.visibility() + " " + tempField.name() + " : " + tempField.type() << std::flush;
+
+			for (size_t x = 0; x < addSpace; ++x)
+			{
+				std::cout << " ";
+			}
+
+			std::cout << " \xB3\n";
+		}
+		// Methods
+		std::cout << "Methods" << std::endl;
+		for (size_t x = 0; x < i.getMethodSize(); ++x)
+		{
+			Method& tempMethod = i.method(x);
+
+			std::cout << "\xB3 " + tempMethod.visibility() + " " + tempMethod.name() + " : " + tempMethod.ReturnType() << std::flush;
 
 			for (size_t x = 0; x < addSpace; ++x)
 			{
@@ -271,14 +292,17 @@ const Class * Model::findClass(const std::string & name) const
 
 Field* Model::findField(const std::string& className, const std::string& fieldName)
 {
-	if (findClass(className) == nullptr) return nullptr;
+	if (findClass(className) == nullptr)
+	{
+		return nullptr;
+	}
 	Class* a = findClass(className);
-	return &a->field(fieldName);
+	return a->field(fieldName);
 }
 
 Method* Model::findMethod(const std::string& className, const std::string& methodName)
 {
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
-	return &a->method(methodName);
+	return a->method(methodName);
 }

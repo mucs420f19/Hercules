@@ -4,6 +4,8 @@
 // Local includes
 #include "Class.h"
 
+#include <iostream>
+
 // Default constructor
 Class::Class()
 {
@@ -90,27 +92,31 @@ void Class::removeMethod(const std::string &name)
 }
 
 // Returns a method from the vector of methods given its name
-Method &Class::method(const std::string &name)
+Method *Class::method(const std::string &name)
 {
+	Method *Temp = nullptr;
 	for (auto& i : mMethods)
 	{
 		if (i.name() == name)
 		{
-			return i;
+			return &i;
 		}
 	}
+	return Temp;
 }
 
 // Returns a method from the vector of methods given its name
-const Method &Class::method(const std::string &name) const
+const Method *Class::method(const std::string &name) const
 {
+	Method *Temp = nullptr;
     for (auto &i : mMethods)
     {
 		if (i.name() == name)
 		{
-			return i;
+			return &i;
 		}
     }
+	return Temp;
 }
 
 // Returns a method from the vector of methods given its index
@@ -129,26 +135,32 @@ const Method &Class::method(int index) const
 	return *it;
 }
 
-// Returns a field from the vector of fields gien its name
-Field &Class::field(const std::string &name)
+// Returns a field from the vector of fields given its name
+Field *Class::field(const std::string &name)
 {
+	Field *Temp = nullptr;
     for (auto &i : mFields)
     {
 		if (i.name() == name)
 		{
-			return i;
+			return &i;
 		}
     }
+	return Temp;
 }
 
 // Returns a field from the vector of fields gien its name
-const Field &Class::field(const std::string &name) const
+const Field *Class::field(const std::string &name) const
 {
-    for (auto &i : mFields)
-    {
-        if (i.name() == name)
-            return i;
-    }
+	Field *Temp = nullptr;
+	for (auto &i : mFields)
+	{
+		if (i.name() == name)
+		{
+			return &i;
+		}
+	}
+	return Temp;
 }
 
 // Returns a field from the vector of fields gien its index

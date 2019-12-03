@@ -20,13 +20,13 @@ public:
   void removeMethod (int index);
   void removeMethod (const std::string& name);
 
-  Method& method (const std::string& name);
-  const Method& method (const std::string& name) const;
+  Method* method (const std::string& name);
+  const Method* method (const std::string& name) const;
   Method& method (int index);
   const Method& method (int index) const;
 
-  Field& field (const std::string& name);
-  const Field& field (const std::string& name) const;
+  Field* field (const std::string& name);
+  const Field* field (const std::string& name) const;
   Field& field (int index);
   const Field& field (int index) const;
 
