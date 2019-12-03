@@ -9,8 +9,8 @@
 #include "UMLObject.h"
 #include "UMLObjectsHolder.h"
 //#include "REPL.h"
-//#include "GUI.h"
-//#include "node_editor.h"
+#include "GUI.h"
+#include "node_editor.h"
 #include "ConsoleView.h"
 
 int main(int argc, char** argv)
