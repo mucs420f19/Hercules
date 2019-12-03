@@ -35,6 +35,7 @@ public:
   void removeRelationship(const std::string &one, const std::string &two);
 
   void list();
+  size_t getLargestStringSize();
 
   Relationship* findRelationship (const std::string &one, const std::string &two);
   const Relationship* findRelationship (const std::string &one, const std::string &two) const;

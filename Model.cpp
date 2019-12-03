@@ -116,30 +116,10 @@ void Model::list()
 {
 	for (auto& i : mClasses)
 	{
-		size_t largestString = 0;
-
-		if (i.name().size() > largestString)
-		{
-			largestString = i.name().size();
-		}
-
-		for (size_t x = 0; x < i.getFieldSize(); ++x)
-		{
-			Field& temp = i.field(x);
-
-			std::string check = temp.visibility() + " " + temp.name() + " : " + temp.type();
-
-			if (check.size() > largestString)
-			{
-				largestString = check.size();
-			}
-		}
-
-		// ====================================================================================================
-
-		size_t temp = 0;
+		size_t largestString = getLargestStringSize();
 		size_t addSpace = 0;
 
+		// ==================================================
 		// ┌────────────────────┐
 
 		std::cout << "\xDA";
@@ -151,35 +131,48 @@ void Model::list()
 
 		std::cout << "\xBF\n";
 
+		// ==================================================
 		// │ Title              │
 
-		temp = i.name().size();
-		addSpace = largestString - temp;
+		addSpace = largestString - i.name().size();
 
 		std::cout << "\xB3 " + i.name()<< std::flush;
 		
 		for (size_t x = 0; x < addSpace; ++x)
+		{
 			std::cout << " ";
+		}
 
 		std::cout << " \xB3\n";
 
+		// ==================================================
 		// ├────────────────────┤
 
-		std::cout << "\xC3";
+		std::string breakLine = "\xC3";
 
 		for (size_t x = 0; x < largestString + 2; ++x)
 		{
-			std::cout << "\xC4";
+			breakLine += "\xC4";
 		}
 
-		std::cout << "\xB4\n";
+		breakLine += "\xB4\n";
+
+		std::cout << breakLine;
+
+		// ==================================================
 		// Fields
-		std::cout << "Fields" << std::endl;
+
 		for (size_t x = 0; x < i.getFieldSize(); ++x)
 		{
 			Field& tempField = i.field(x);
 
-			std::cout << "\xB3 " + tempField.visibility() + " " + tempField.name() + " : " + tempField.type() << std::flush;
+			std::cout << "\xB3 ";
+
+			std::string out = tempField.visibility() + " " + tempField.name() + " : " + tempField.type();
+
+			addSpace = largestString - out.size();
+
+			std::cout << out;
 
 			for (size_t x = 0; x < addSpace; ++x)
 			{
@@ -188,21 +181,15 @@ void Model::list()
 
 			std::cout << " \xB3\n";
 		}
+
+		// ==================================================
+		// ├────────────────────┤
+
+		std::cout << breakLine;
+
+		// ==================================================
 		// Methods
-		std::cout << "Methods" << std::endl;
-		for (size_t x = 0; x < i.getMethodSize(); ++x)
-		{
-			Method& tempMethod = i.method(x);
-
-			std::cout << "\xB3 " + tempMethod.visibility() + " " + tempMethod.name() + " : " + tempMethod.ReturnType() << std::flush;
-
-			for (size_t x = 0; x < addSpace; ++x)
-			{
-				std::cout << " ";
-			}
-
-			std::cout << " \xB3\n";
-		}
+		
 	}
 
 	
@@ -219,6 +206,33 @@ void Model::list()
 		std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
 	}
 	*/
+}
+
+size_t Model::getLargestStringSize()
+{
+	size_t largestString = 0;
+
+	for (auto& i : mClasses)
+	{
+		if (i.name().size() > largestString)
+		{
+			largestString = i.name().size();
+		}
+
+		for (size_t x = 0; x < i.getFieldSize(); ++x)
+		{
+			Field& temp = i.field(x);
+
+			std::string check = temp.visibility() + " " + temp.name() + " : " + temp.type();
+
+			if (check.size() > largestString)
+			{
+				largestString = check.size();
+			}
+		}
+	}
+
+	return largestString;
 }
 
 Relationship * Model::findRelationship(const std::string & one, const std::string & two)
