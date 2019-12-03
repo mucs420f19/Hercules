@@ -18,7 +18,7 @@ public:
 
   const std::string &name() const;
   const std::string &visibility() const;
-  const std::string & Attribute::visibilitySymbol() const;
+  const std::string &visibilitySymbol() const;
   const char* rawName() const;
   const char* rawVisibility() const;
 
