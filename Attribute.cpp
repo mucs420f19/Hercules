@@ -21,6 +21,26 @@ const std::string & Attribute::visibility() const
 	return ToStringVis(mVisibility);
 }
 
+const std::string & Attribute::visibilitySymbol() const
+{
+	if (mVisibility == Visibility::PUBLIC)
+	{
+		return "+";
+	}
+	else if (mVisibility == Visibility::PROTECTED)
+	{
+		return "#";
+	}
+	else if (mVisibility == Visibility::PRIVATE)
+	{
+		return "-";
+	}
+	else
+	{
+		return "?";
+	}
+}
+
 const char * Attribute::rawName() const
 {
 	return mName.c_str();
