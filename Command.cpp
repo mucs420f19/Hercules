@@ -239,6 +239,7 @@ SaveOverwriteCommand::SaveOverwriteCommand(const std::string& name)
 
 void SaveOverwriteCommand::execute() const
 {
+	SavingLoadingIO::SaveProjectToFile(modelInstance, mName, true);
 }
 
 LoadCommand::LoadCommand(const std::string& name)
@@ -253,5 +254,5 @@ SaveCommand::SaveCommand(const std::string& name)
 
 void SaveCommand::execute() const
 {
-	//SavingLoadingIO::SaveProjectToFile();
+	SavingLoadingIO::SaveProjectToFile(modelInstance, mName);
 }

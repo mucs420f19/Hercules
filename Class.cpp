@@ -8,12 +8,13 @@
 
 // Default constructor
 Class::Class()
+	:x(0), y(0)
 {
 }
 
 // Constructor given a name
 Class::Class(const std::string &name)
-	:mName(name)
+	:mName(name), x(0), y(0)
 {
 }
 
