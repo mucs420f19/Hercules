@@ -33,10 +33,21 @@ public:
   unsigned int getMethodSize ();
   unsigned int getFieldSize ();
 
+  void SetX(unsigned int in);
+  void SetY(unsigned int in);
+
+  unsigned int GetXPosition();
+  unsigned int GetYPosition();
+
+  const std::list<Field>* ReturnFields() const;
+  const std::list<Method>* ReturnMethods() const;
+
 private:
   std::string mName;
   std::list<Field> mFields;
   std::list<Method> mMethods;
+  unsigned int x;
+  unsigned int y;
 };
 
 bool operator== (const Method &n1, const Method &n2);

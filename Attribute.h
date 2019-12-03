@@ -72,7 +72,7 @@ public:
 
   const std::string& params() const;
   const char* rawParams() const;
-
+  const std::vector<Parameter>* ReturnParameters() const;
 
 private:
   std::string mReturnType;

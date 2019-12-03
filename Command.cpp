@@ -253,4 +253,5 @@ SaveCommand::SaveCommand(const std::string& name)
 
 void SaveCommand::execute() const
 {
+	//SavingLoadingIO::SaveProjectToFile();
 }

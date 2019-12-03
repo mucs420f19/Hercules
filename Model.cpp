@@ -112,6 +112,34 @@ void Model::removeRelationship(const std::string & one, const std::string & two)
 	}
 }
 
+void Model::SetX(const std::string& className, unsigned int in)
+{
+	Class* a = findClass(className);
+	if (a != nullptr) a->SetX(in);
+}
+
+void Model::SetY(const std::string& className, unsigned int in)
+{
+	Class* a = findClass(className);
+	if (a != nullptr) a->SetY(in);
+}
+
+unsigned int Model::GetXPosition(const std::string& className)
+{
+	unsigned int result;
+	Class* a = findClass(className);
+	if (a != nullptr) result = a->GetXPosition();
+	return result;
+}
+
+unsigned int Model::GetYPosition(const std::string& className)
+{
+	unsigned int result;
+	Class* a = findClass(className);
+	if (a != nullptr) result = a->GetYPosition();
+	return result;
+}
+
 void Model::list()
 {
 	for (auto& i : mClasses)
@@ -354,4 +382,20 @@ Method* Model::findMethod(const std::string& className, const std::string& metho
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
 	return a->method(methodName);
+}
+
+const std::list<Class>* Model::ReturnClasses() const
+{
+	return &mClasses;
+}
+
+const std::list<Relationship>* Model::ReturnRelationships() const
+{
+	return &mRelationships;
+}
+
+void Model::ClearProject()
+{
+	mClasses.clear();
+	mRelationships.clear();
 }

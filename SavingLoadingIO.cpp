@@ -2,7 +2,7 @@
 
 namespace SavingLoadingIO
 {
-	int SaveProjectToFile(UMLObjectsHolder* in, std::string filename, bool overwrite)
+	int SaveProjectToFile(Model* in, std::string filename, bool overwrite)
 	{
 		std::ifstream test(filename);
 		
@@ -22,84 +22,78 @@ namespace SavingLoadingIO
 
 		out << "Hercules:\n";
 
-		for (auto i : in->ReturnPtrToVector())
+		for (auto i : *in->ReturnClasses())
 		{
 			out << "  UMLObject:\n";
 			out << "    Title:\n";
-			out << "      - " << i->ReturnTitle() << "\n";
-			for (auto j : i->ReturnFieldsRaw())
+			out << "      - " << i.name() << "\n";
+			for (auto j : *i.ReturnFields())
 			{
 				out << "    UMLField:\n";
 
 				out << "      Name:\n";
-				out << "        - " << j.ReturnName() << "\n";
+				out << "        - " << j.name() << "\n";
 
 				out << "      Type:\n";
-				out << "        - " << j.ReturnType() << "\n";
+				out << "        - " << j.type() << "\n";
 
 				out << "      Visibility:\n";
-				out << "        - " << j.ReturnVisibility() << "\n";
+				out << "        - " << j.visibility() << "\n";
 			}
 
-			for (auto j : i->ReturnMethodsRaw())
+			for (auto j : *i.ReturnMethods())
 			{
 				out << "    UMLMethod:\n";
 
 				out << "      Name:\n";
-				out << "        - " << j.ReturnName() << "\n";
+				out << "        - " << j.name() << "\n";
 
 				out << "      Type:\n";
 				out << "        - " << j.ReturnType() << "\n";
 
 				out << "      Visibility:\n";
-				out << "        - " << j.ReturnVisibility() << "\n";
+				out << "        - " << j.visibility() << "\n";
 
 				out << "      Parameters:\n";
 
-				for (auto k : j.ReturnParametersRaw())
+				for (auto k : *j.ReturnParameters())
 				{
 					out << "        UMLParameter:\n";
 
 					out << "          Type:\n";
-					out << "            - " << k.ReturnType()<< "\n";
+					out << "            - " << k.type()<< "\n";
 
 					out << "          Name:\n";
-					out << "            - " << k.ReturnName() << "\n";
+					out << "            - " << k.name() << "\n";
 
-					out << "          Optional:\n";
-					out << "            - " << k.ReturnOpt() << "\n";
-
-					out << "          Default:\n";
-					out << "            - " << k.ReturnDefault() << "\n";
 				}
 			}
 
-			for (auto j : i->ReturnRelationshipsRaw())
-			{
-				out << "    UMLRelationship:\n";
-
-				out << "      Object:\n";
-				out << "        - " << j.GetObject() << "\n";
-
-				out << "      Type:\n";
-				out << "        - " << j.type << "\n";
-
-				out << "      Quantifier:\n";
-				out << "        - " << j.quantifier << "\n";
-
-				out << "      Parent:\n";
-				out << "        - " << j.parent << "\n";
-			}
 			out << "    X:\n";
-			out << "      - " << i->GetXPosition() << "\n";
+			out << "      - " << i.GetXPosition() << "\n";
 			out << "    Y:\n";
-			out << "      - " << i->GetYPosition() << "\n";
+			out << "      - " << i.GetYPosition() << "\n";
 		}
+
+		for (auto i : *in->ReturnRelationships())
+		{
+			out << "  UMLRelationship:\n";
+
+			out << "    Type:\n";
+			out << "      - " << ToString(i.type()) << "\n";
+
+			out << "    Parent:\n";
+			out << "      - " << i.parent().name() << "\n";
+
+			out << "    Child:\n";
+			out << "      - " << i.child().name() << "\n";
+		}
+
 		out.close();
 		return SaveSuccess;
 	}
 
-	bool LoadProject(UMLObjectsHolder* out, std::string filename)
+	bool LoadProject(Model* out, std::string filename)
 	{
 		std::ifstream in(filename);
 		if (!in.good()) return false;
@@ -121,12 +115,7 @@ namespace SavingLoadingIO
 		Node* t = new Node();
 		t->key = StripNode(lines[0]);
 		ParseNode(t, lines);
-		std::vector<Relationship> rela;
-		ProcessResults(t, out, rela);
-		for (auto i : rela)
-		{
-			out->GetUMLObject(i.parent)->AddRelationship({ std::stoi(i.type), std::stoi(i.quantifier), out->GetUMLObject(i.child), out->GetUMLObject(i.parent), i.bparent });
-		}
+		ProcessResults(t, out);
 		LoadingCleanup(t);
 		return out;
 	}
@@ -214,7 +203,7 @@ namespace SavingLoadingIO
 		}
 	}
 
-	void ProcessResults(Node* current, UMLObjectsHolder* out, std::vector<Relationship>& relationships)
+	void ProcessResults(Node* current, Model * out)
 	{
 		std::string title;
 		for (auto i : current->children)
@@ -231,44 +220,38 @@ namespace SavingLoadingIO
 				}
 				if (title != "")
 				{
-					UMLObject* a = new UMLObject();
-					a->SetTitle(title);
-					out->AddUMLObject(a);
+					out->addClass(title);
 					for (auto j : i->children)
 					{
 						if (j->key == "UMLField")
 						{
-							UMLField field(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), std::stoi(FindChildWhere(j, "Visibility")));
-							a->AddField(field);
+							out->addField(title, FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), VisibilityFromString(FindChildWhere(j, "Visibility")));
 						}
 						else if (j->key == "UMLMethod")
 						{
-							std::vector<UMLParameter> params;
+							out->addMethod(title, FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), VisibilityFromString(FindChildWhere(j, "Visibility")));
 							if (FindNodesWhere(j, "Parameters").size() > 0)
 							{
 								Node* head = FindNodesWhere(j, "Parameters")[0];
 								std::vector<Node*> tar = FindNodesWhere(head, "UMLParameter");
 								for (auto i : tar)
 								{
-									UMLParameter param(FindChildWhere(i, "Type"), FindChildWhere(i, "Name"), FindChildWhere(i, "Optional"), FindChildWhere(i, "Default"));
-									params.push_back(param);
+									out->addParameter(title, FindChildWhere(j, "Name"), FindChildWhere(i, "Name"), FindChildWhere(i, "Type"));
 								}
 								
 							}
-							UMLMethod method(FindChildWhere(j, "Name"), FindChildWhere(j, "Type"), params, std::stoi(FindChildWhere(j, "Visibility")));
-							a->AddMethod(method);
 						}
 						else if (j->key == "UMLRelationship")
 						{
-							relationships.push_back(Relationship(title, FindChildWhere(j, "Object"), FindChildWhere(j, "Type"), FindChildWhere(j, "Quantifier"), std::stoi(FindChildWhere(j, "Parent"))));
+							out->addRelationship(FindChildWhere(j, "Parent"), FindChildWhere(j, "Child"), RelationshipFromString(FindChildWhere(j, "Type")));
 						}
 						else if (j->key == "X")
 						{
-							a->SetXPosition(std::stoi(j->contents[0]));
+							out->SetX(title, std::stoi(j->contents[0]));
 						}
 						else if (j->key == "Y")
 						{
-							a->SetYPosition(std::stoi(j->contents[0]));
+							out->SetY(title, std::stoi(j->contents[0]));
 						}
 					}
 				}

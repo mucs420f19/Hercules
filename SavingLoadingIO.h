@@ -1,6 +1,5 @@
 #pragma once
-#include "UMLObject.h"
-#include "UMLObjectsHolder.h"
+#include "Model.h"
 #include <fstream>
 #include <algorithm>
 
@@ -20,33 +19,16 @@ namespace SavingLoadingIO
 		std::vector<std::string> contents;
 	};
 
-	struct Relationship
-	{
-		Relationship(std::string p, std::string c, std::string t, std::string q, bool par)
-		{
-			parent = p;
-			child = c;
-			type = t;
-			quantifier = q;
-			bparent = par;
-		}
-		std::string parent;
-		std::string child;
-		std::string type;
-		std::string quantifier;
-		bool bparent;
-	};
-
 	//SaveProjectToFile does as it says. A default file name is given if there is none specified
 	//the file will return SaveSuccess for success, SaveError for an unspecified error,
 	//or SaveAlreadyExists if the target file already exists
 	//the file can be overwritten if the overwrite optional parameter is true
-	int SaveProjectToFile(UMLObjectsHolder * in, std::string filename = DefaultFileName, bool overwrite = false);
+	int SaveProjectToFile(Model * in, std::string filename = DefaultFileName, bool overwrite = false);
 
 	//LoadProject accepts a UMLObjectsHolder and attempts to load filename into it as a Hercules project
 	//The contents of the UMLObjectsHolder passed in are deleted regardless of what happens
 	//a default file name is given if there is none specified
-	bool LoadProject(UMLObjectsHolder* out, std::string filename = DefaultFileName);
+	bool LoadProject(Model * out, std::string filename = DefaultFileName);
 
 	//these functions assign in generating and parsing the file for saving/loading
 	std::string RemoveQuotes(std::string in);
@@ -66,6 +48,6 @@ namespace SavingLoadingIO
 
 	//Once the items have been read from the file and a tree has been constructed, this function is used to load
 	//the contents into a UMLObjectsHolder by parsing the tree
-	void ProcessResults(Node* current, UMLObjectsHolder* out, std::vector<Relationship>& relationships);
+	void ProcessResults(Node* current, Model* out);
 
 }

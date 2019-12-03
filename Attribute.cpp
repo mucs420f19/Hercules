@@ -154,6 +154,11 @@ const char * Method::rawParams() const
 	return mStringRep.c_str();
 }
 
+const std::vector<Parameter>* Method::ReturnParameters() const
+{
+	return &mParameters;
+}
+
 
 Visibility VisibilityFromString(const std::string& type)
 {

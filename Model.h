@@ -34,6 +34,13 @@ public:
 
   void removeRelationship(const std::string &one, const std::string &two);
 
+
+  void SetX(const std::string& className, unsigned int in);
+  void SetY(const std::string& className, unsigned int in);
+
+  unsigned int GetXPosition(const std::string& className);
+  unsigned int GetYPosition(const std::string& className);
+
   void list();
   size_t getLargestStringSize();
 
@@ -46,6 +53,11 @@ public:
 
   Field* findField(const std::string& className, const std::string& fieldName);
   Method* findMethod(const std::string& className, const std::string& methodName);
+
+  const std::list<Class>* ReturnClasses() const;
+  const std::list<Relationship>* ReturnRelationships() const;
+
+  void ClearProject();
 
 private:
   std::list<Class> mClasses;

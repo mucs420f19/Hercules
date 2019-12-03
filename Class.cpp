@@ -191,6 +191,36 @@ unsigned int Class::getFieldSize ()
 	return mFields.size();
 }
 
+void Class::SetX(unsigned int in)
+{
+	x = in;
+}
+
+void Class::SetY(unsigned int in)
+{
+	y = in;
+}
+
+unsigned int Class::GetXPosition()
+{
+	return x;
+}
+
+unsigned int Class::GetYPosition()
+{
+	return y;
+}
+
+const std::list<Field>* Class::ReturnFields() const
+{
+	return &mFields;
+}
+
+const std::list<Method>* Class::ReturnMethods() const
+{
+	return &mMethods;
+}
+
 bool operator== (const Method &n1, const Method &n2)
 {
 	return n1.name() == n2.name();
