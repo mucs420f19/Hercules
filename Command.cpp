@@ -247,6 +247,12 @@ LoadCommand::LoadCommand(const std::string& name)
 
 void LoadCommand::execute() const
 {
+	if (Command::modelInstance == nullptr)
+	{
+		Model * test = new Model;
+		setModelInstance(test);
+	}
+	SavingLoadingIO::LoadProject(modelInstance, mName);
 }
 
 SaveCommand::SaveCommand(const std::string& name)
