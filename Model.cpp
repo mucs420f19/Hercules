@@ -126,7 +126,7 @@ void Model::SetY(const std::string& className, unsigned int in)
 
 unsigned int Model::GetXPosition(const std::string& className)
 {
-	unsigned int result;
+	unsigned int result = 0;
 	Class* a = findClass(className);
 	if (a != nullptr) result = a->GetXPosition();
 	return result;
@@ -134,7 +134,7 @@ unsigned int Model::GetXPosition(const std::string& className)
 
 unsigned int Model::GetYPosition(const std::string& className)
 {
-	unsigned int result;
+	unsigned int result = 0;
 	Class* a = findClass(className);
 	if (a != nullptr) result = a->GetYPosition();
 	return result;

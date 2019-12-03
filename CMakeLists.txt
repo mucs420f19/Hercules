@@ -28,7 +28,7 @@ endif()
 
 # WKK - header files do not belong in source list; source files != header files
 add_executable (Hercules Main.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Class.cpp Attribute.cpp Model.cpp Relationship.cpp Command.cpp CommandFactory.cpp ConsoleView.cpp)
-
+add_executable (HerculesTest Unit-test.cpp UMLObject.cpp SavingLoadingIO.cpp UMLObjectsHolder.cpp Class.cpp Attribute.cpp Model.cpp Relationship.cpp Command.cpp CommandFactory.cpp)
 enable_testing()
 
 target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
