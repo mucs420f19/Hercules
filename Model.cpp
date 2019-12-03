@@ -167,12 +167,10 @@ void Model::list()
 			Field& tempField = i.field(x);
 
 			std::cout << "\xB3 ";
-
-			std::string out = tempField.visibility() + " " + tempField.name() + " : " + tempField.type();
+			std::string out = tempField.visibilitySymbol() + " " + tempField.name() + " : " + tempField.type();
+			std::cout << out;
 
 			addSpace = largestString - out.size();
-
-			std::cout << out;
 
 			for (size_t x = 0; x < addSpace; ++x)
 			{
@@ -190,22 +188,42 @@ void Model::list()
 		// ==================================================
 		// Methods
 		
+		for (size_t x = 0; x < i.getMethodSize(); ++x)
+		{
+			Method& tempMethod = i.method(x);
+
+			std::cout << "\xB3 ";
+			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.name() + "(!PARAMS!) : " + tempMethod.ReturnType();
+			std::cout << out;
+
+			addSpace = largestString - out.size();
+
+			for (size_t x = 0; x < addSpace; ++x)
+			{
+				std::cout << " ";
+			}
+
+			std::cout << " \xB3\n";
+		}
+
+		// ==================================================
+		// └────────────────────┘
+
+		std::cout << "\xC0";
+
+		for (size_t x = 0; x < largestString + 2; ++x)
+		{
+			std::cout << "\xC4";
+		}
+
+		std::cout << "\xD9\n";
 	}
 
-	
-
-
-
-	/*
-	for (auto & i : mClasses)
-	{
-		std::cout << i.name() << "\n";
-	}
+	// Print relationships
 	for (auto & i : mRelationships)
 	{
 		std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
 	}
-	*/
 }
 
 size_t Model::getLargestStringSize()
@@ -214,16 +232,33 @@ size_t Model::getLargestStringSize()
 
 	for (auto& i : mClasses)
 	{
+		// Check length of class name
 		if (i.name().size() > largestString)
 		{
 			largestString = i.name().size();
 		}
 
+		// Check length of field strings
+		// visibility fieldName : type
 		for (size_t x = 0; x < i.getFieldSize(); ++x)
 		{
 			Field& temp = i.field(x);
 
-			std::string check = temp.visibility() + " " + temp.name() + " : " + temp.type();
+			std::string check = temp.visibilitySymbol() + " " + temp.name() + " : " + temp.type();
+
+			if (check.size() > largestString)
+			{
+				largestString = check.size();
+			}
+		}
+
+		// Check length of method strings
+		// visibility methodName(paramaters) : type
+		for (size_t x = 0; x < i.getMethodSize(); ++x)
+		{
+			Method& temp = i.method(x);
+
+			std::string check = temp.visibilitySymbol() + " " + temp.name() + "(!PARAMS!) : " + temp.ReturnType();
 
 			if (check.size() > largestString)
 			{

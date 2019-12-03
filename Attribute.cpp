@@ -23,21 +23,26 @@ const std::string & Attribute::visibility() const
 
 const std::string & Attribute::visibilitySymbol() const
 {
-	if (mVisibility == Visibility::PUBLIC)
+	static std::string plus = "+";
+	static std::string bash = "#";
+	static std::string minus = "-";
+	static std::string qmark = "?";
+
+	if (ToStringVis(mVisibility) == "Public")
 	{
-		return "+";
+		return plus;
 	}
-	else if (mVisibility == Visibility::PROTECTED)
+	else if (ToStringVis(mVisibility) == "Protected")
 	{
-		return "#";
+		return bash;
 	}
-	else if (mVisibility == Visibility::PRIVATE)
+	else if (ToStringVis(mVisibility) == "Private")
 	{
-		return "-";
+		return minus;
 	}
 	else
 	{
-		return "?";
+		return qmark;
 	}
 }
 
@@ -140,7 +145,7 @@ const std::string & Method::params() const
 	{
 		test += i.type() + " " + i.name() + ", ";
 	}
-	const std::string &temp = test;
+	static const std::string &temp = test;
 	return temp;
 }
 
