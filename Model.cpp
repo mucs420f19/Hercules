@@ -74,6 +74,26 @@ void Model::deleteMethod(const std::string& className, const std::string& method
 
 void Model::addParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& ParameterType)
 {
+	Class* c = findClass(className);
+	if (c == nullptr) 
+	{
+		return;
+	}
+
+	Method* m = findMethod(className, methodName);
+	if (m == nullptr)
+	{
+		return;
+	}
+
+	if (findParameter(className, methodName, ParameterName) != nullptr)
+	{
+		return;
+	}
+
+	const std::vector<Parameter>* params = m->ReturnParameters();
+    params->push_back(Parameter (ParameterName, ParameterType));
+    m.setParameters(params);
 }
 
 void Model::editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
@@ -382,6 +402,27 @@ Method* Model::findMethod(const std::string& className, const std::string& metho
 	if (findClass(className) == nullptr) return nullptr;
 	Class* a = findClass(className);
 	return a->method(methodName);
+}
+
+const Parameter* Model::findParameter(const std::string& className, const std::string& methodName, const std::string& paramName)
+{
+	if (findMethod(className, methodName) == nullptr)
+	{
+		return nullptr;
+	}
+
+	Method* a = findMethod(className, methodName);
+	const std::vector<Parameter>* paramVec = a->ReturnParameters();
+	
+	for (auto &i : *paramVec)
+	{
+		if (i.name() == paramName)
+		{
+			return &i;
+		}
+	}
+
+	return nullptr;
 }
 
 const std::list<Class>* Model::ReturnClasses() const

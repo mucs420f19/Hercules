@@ -54,6 +54,8 @@ public:
   Field* findField(const std::string& className, const std::string& fieldName);
   Method* findMethod(const std::string& className, const std::string& methodName);
 
+  const Parameter* findParameter(const std::string& className, const std::string& methodName, const std::string& paramName);
+
   const std::list<Class>* ReturnClasses() const;
   const std::list<Relationship>* ReturnRelationships() const;
 
