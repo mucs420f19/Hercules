@@ -92,11 +92,6 @@ AddClassCommand::AddClassCommand(const std::string &name) : mName(name) {}
 
 void AddClassCommand::execute() const
 {
-	if (Command::modelInstance == nullptr)
-	{
-		Model * test = new Model;
-		setModelInstance(test);
-	}
   Command::modelInstance->addClass(mName);
 }
 
@@ -273,17 +268,4 @@ SaveCommand::SaveCommand(const std::string& name)
 void SaveCommand::execute() const
 {
 	SavingLoadingIO::SaveProjectToFile(modelInstance, mName);
-}
-
-StartCommand::StartCommand()
-{
-}
-
-void StartCommand::execute() const
-{
-	if (Command::modelInstance == nullptr)
-	{
-		Model * test = new Model;
-		setModelInstance(test);
-	}
 }

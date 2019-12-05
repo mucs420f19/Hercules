@@ -60,10 +60,10 @@ bool checkParameterCount(const std::vector<std::string> &cmdLine) {
 }
 
 } // namespace
+bool startup = false;
 std::unique_ptr<Command>
 make_command(std::ostream &os, const std::vector<std::string> &cmdLineArgs) {
   const std::string &cmdName = cmdLineArgs.front();
-  
   if (!checkParameterCount(cmdLineArgs)) {
     return std::make_unique<ErrorCommand>(
         os, "Invalid command. Please enter 'help' for a list of commands "
