@@ -91,9 +91,7 @@ void Model::addParameter(const std::string& className, const std::string& method
 		return;
 	}
 
-	const std::vector<Parameter>* params = m->ReturnParameters();
-    params->push_back(Parameter (ParameterName, ParameterType));
-    m.setParameters(params);
+	m->appendParameter(Parameter(ParameterName, ParameterType));
 }
 
 void Model::editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
