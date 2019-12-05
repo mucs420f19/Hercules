@@ -170,10 +170,12 @@ void Model::removeRelationship(const std::string & one, const std::string & two)
 		if (it->parent().name() == one && it->child().name() == two)
 		{
 			mRelationships.erase(it);
+			return;
 		}
 		if (it->parent().name() == two && it->child().name() == one)
 		{
 			mRelationships.erase(it);
+			return;
 		}
 	}
 }
