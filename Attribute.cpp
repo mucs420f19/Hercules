@@ -11,6 +11,11 @@ void Attribute::setVisibility(Visibility v)
 	mVisibility = v;
 }
 
+void Attribute::setName(const std::string &name)
+{
+	mName = name;
+}
+
 const std::string & Attribute::name() const
 {
 	return mName;
@@ -107,6 +112,10 @@ const char * Field::rawType() const
 	return mType.c_str();
 }
 
+void Field::setType(const std::string &type)
+{
+	mType = type;
+}
 
 Method::Method(const std::string& name, Visibility v, const std::string& type)
 	: Attribute{ name, v }, mReturnType(type)
@@ -159,6 +168,10 @@ const std::vector<Parameter>* Method::ReturnParameters() const
 	return &mParameters;
 }
 
+void Method::setType(const std::string &type)
+{
+	mReturnType = type;
+}
 
 Visibility VisibilityFromString(const std::string& type)
 {

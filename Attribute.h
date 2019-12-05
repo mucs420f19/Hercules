@@ -15,6 +15,7 @@ public:
   Attribute(const std::string &name, Visibility v);
 
   void setVisibility(Visibility v);
+  void setName(const std::string &name);
 
   const std::string &name() const;
   const std::string &visibility() const;
@@ -35,6 +36,7 @@ public:
   const std::string &type() const;
   const char* rawType() const;
 
+  void setType(const std::string &type);
 
 private:
   std::string mType;
@@ -73,6 +75,8 @@ public:
   const std::string& params() const;
   const char* rawParams() const;
   const std::vector<Parameter>* ReturnParameters() const;
+
+  void setType(const std::string &type);
 
 private:
   std::string mReturnType;
