@@ -42,21 +42,33 @@ const std::string &Command::helpFor(const std::string &name) {
         {"add_class", "add_class (className)\n"
                       "  Adds a new class to the UML diagram.\n"
                       "    Parameters:\n"
-                      "    - className: Name for the new class.\n"},
+                      "    - className: Name of the new class.\n"},
 		{"add_field", "add_field (className) (fieldName) (type) (visibility)\n"
                       "  Adds a new field to an existing class.\n"
                       "    Parameters:\n"
                       "    - className: The new field will be added to this class.\n"
-					  "    - fieldName: The name for the new field.\n"
+					  "    - fieldName: The name of the new field.\n"
 					  "    - type: The return type of the new field.\n"
 					  "    - visibility: The visibility of the new field.\n"},
 		{"add_method", "add_method (className) (methodName) (type) (visibility)\n"
                       "  Adds a new method to an existing class.\n"
                       "    Parameters:\n"
-                      "    - className: The new method will be added to this class.\n"
-					  "    - methodName: The name for the new method.\n"
+                      "    - className: The name of the class containing the method.\n"
+					  "    - methodName: The name of the new method.\n"
 					  "    - type: The return type of the new method.\n"
-					  "    - visibility: The visibility of the new method.\n"}
+					  "    - visibility: The visibility of the new method.\n"},
+		{"add_parameter", "add_parameter (className) (methodName) (parameterName) (type)\n"
+						  "  Adds a new parameter to an existing method.\n"
+						  "    Parameters:\n"
+						  "    - className: The name of the class containing the method.\n"
+						  "    - methodName: The name of the method containing the parameter.\n"
+						  "    - parameterName: The name of the new parameter.\n"
+						  "    - type: The return type of the new parameter.\n"},
+		{"add_relationship", "add_relationship (parent) (child) (type)\n"
+						  "  Adds a relationship between two classes.\n"
+						  "    Parameters:\n"
+						  "    - parent: The class that will be the parent in the relationship"
+						  "    - type: The return type of the new parameter.\n"},
 
       };
 	
@@ -261,4 +273,17 @@ SaveCommand::SaveCommand(const std::string& name)
 void SaveCommand::execute() const
 {
 	SavingLoadingIO::SaveProjectToFile(modelInstance, mName);
+}
+
+StartCommand::StartCommand()
+{
+}
+
+void StartCommand::execute() const
+{
+	if (Command::modelInstance == nullptr)
+	{
+		Model * test = new Model;
+		setModelInstance(test);
+	}
 }

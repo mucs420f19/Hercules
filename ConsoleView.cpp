@@ -10,6 +10,7 @@ ConsoleView::ConsoleView(std::ostream &os, std::istream &is) : os(os), is(is) {}
 void
 ConsoleView::runREPL() {
 
+  std::make_unique<StartCommand>();
   os << "\xDA" << std::flush;
 
   for (size_t x = 0; x < 36; ++x)

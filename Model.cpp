@@ -24,6 +24,12 @@ void Model::editClass(const std::string & Oldname, const std::string & Newname)
 
 void Model::removeClass(const std::string & name)
 {
+	Class* c = findClass(name);
+	if (c == nullptr)
+	{
+		return;
+	}
+
 	auto it = find(mClasses.begin(), mClasses.end(), name);
 	mClasses.erase(it);
 }
@@ -427,6 +433,10 @@ Class * Model::findClass(const std::string & name)
 
 const Class * Model::findClass(const std::string & name) const
 {
+	if (mClasses.empty())
+	{
+		return nullptr;
+	}
 	for (auto  &i : mClasses)
 	{
 		if (i.name() == name)
