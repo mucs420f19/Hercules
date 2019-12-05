@@ -306,7 +306,9 @@ void Model::list()
 	// Print relationships
 	for (auto & i : mRelationships)
 	{
-		std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
+		std::cout << i.parent().name() << " is the parent of " << i.child().name() << " in a " << ToString(i.type()) << " relationship.\n";
+
+		//std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
 	}
 }
 
