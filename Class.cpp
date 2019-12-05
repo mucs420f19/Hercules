@@ -57,16 +57,12 @@ void Class::removeField(int index)
 }
 
 // Removes a field from the vector of fields after finding its index
-void Class::removeField(const std::string &name)
+void Class::removeField(const std::string& name)
 {
-    unsigned int index = 0;
-    for (auto &i : mFields)
-    {
-        if (i.name() == name)
-        {
-			mFields.remove(i);
-        }
-    }
+	auto matchesName = [&name](auto const& f) {
+		return f.name() == name;
+	};
+	mFields.remove_if(matchesName);
 }
 
 // Removes a method from the vector of methods at the given index
