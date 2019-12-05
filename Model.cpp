@@ -147,6 +147,11 @@ void Model::deleteParameter(const std::string& className, const std::string& met
 
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)
 {
+	if (parent == child)
+	{
+		return;
+	}
+
 	auto p = find(mClasses.begin(), mClasses.end(), parent);
 	auto c = find(mClasses.begin(), mClasses.end(), child);
 	mRelationships.push_back(Relationship((*p), (*c), type));
