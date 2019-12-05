@@ -68,19 +68,19 @@ public:
   Method(const std::string& name, Visibility v, const std::string& type);
   void appendParameter (const Parameter & param);
   void removeParameter (int index);
-  void setParameters (const std::vector<Parameter>& params);
+  void setParameters (const std::list<Parameter>& params);
   void clearParameters ();
   const std::string &ReturnType() const;
 
   const std::string& params() const;
   const char* rawParams() const;
-  const std::vector<Parameter>* ReturnParameters() const;
+  const std::list<Parameter>* ReturnParameters() const;
 
   void setType(const std::string &type);
 
 private:
   std::string mReturnType;
-  std::vector<Parameter> mParameters;
+  std::list<Parameter> mParameters;
   std::string mStringRep;
 };
 

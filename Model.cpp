@@ -472,7 +472,7 @@ const Parameter* Model::findParameter(const std::string& className, const std::s
 	}
 
 	Method* a = findMethod(className, methodName);
-	const std::vector<Parameter>* paramVec = a->ReturnParameters();
+	const std::list<Parameter>* paramVec = a->ReturnParameters();
 	
 	for (auto &i : *paramVec)
 	{

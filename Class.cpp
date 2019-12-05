@@ -76,16 +76,10 @@ void Class::removeMethod(int index)
 // Removes a method from the vector of methods after finding its index
 void Class::removeMethod(const std::string &name)
 {
-	std::string temp;
-
-    for (auto &i : mMethods)
-    {
-		temp = i.name();
-        if (temp == name)
-        {
-			mMethods.remove(i);
-        }
-    }
+	auto matchesName = [&name](auto const& f) {
+		return f.name() == name;
+	};
+	mMethods.remove_if(matchesName);
 }
 
 // Returns a method from the vector of methods given its name

@@ -129,10 +129,12 @@ void Method::appendParameter(const Parameter & param)
 
 void Method::removeParameter(int index)
 {
-	mParameters.erase(mParameters.begin() + index);
+	std::list<Parameter>::const_iterator it = mParameters.begin();
+	std::advance(it, index);
+	mParameters.erase(it);
 }
 
-void Method::setParameters(const std::vector<Parameter>& params)
+void Method::setParameters(const std::list<Parameter>& params)
 {
 	mParameters = params;
 }
@@ -163,7 +165,7 @@ const char * Method::rawParams() const
 	return mStringRep.c_str();
 }
 
-const std::vector<Parameter>* Method::ReturnParameters() const
+const std::list<Parameter>* Method::ReturnParameters() const
 {
 	return &mParameters;
 }
