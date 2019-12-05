@@ -2,8 +2,13 @@
 
 void Model::addClass(const std::string & name)
 {
-	Class a(name);
-	mClasses.push_back(a);
+	Class* testClassName = findClass(name);
+
+	if (testClassName == nullptr)
+	{
+		Class a(name);
+		mClasses.push_back(a);
+	}
 }
 
 void Model::editClass(const std::string & Oldname, const std::string & Newname)
