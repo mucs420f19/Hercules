@@ -72,7 +72,9 @@ public:
   void clearParameters ();
   const std::string &ReturnType() const;
 
-  const std::string& params() const;
+  void setmStringRep(const std::string &type);
+
+  const std::string& params();
   const char* rawParams() const;
   const std::list<Parameter>* ReturnParameters() const;
 

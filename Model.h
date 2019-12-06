@@ -46,7 +46,6 @@ public:
 
   Relationship* findRelationship (const std::string &one, const std::string &two);
   const Relationship* findRelationship (const std::string &one, const std::string &two) const;
-  std::vector<const Relationship*> findRelationship(const std::string& className) const;
 
   Class* findClass (const std::string &name);
   const Class* findClass (const std::string &name) const;

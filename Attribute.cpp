@@ -149,15 +149,24 @@ const std::string & Method::ReturnType() const
 	return mReturnType;
 }
 
-const std::string & Method::params() const
+void Method::setmStringRep(const std::string & type)
 {
-	std::string test;
-	for (auto & i : mParameters)
+	mStringRep.append(type);
+}
+
+const std::string & Method::params()
+{
+	mStringRep.clear();
+	if (!mParameters.empty())
 	{
-		test += i.type() + " " + i.name() + ", ";
+		for (auto & i : mParameters)
+		{
+			mStringRep += i.type() + "," + i.name() + ", ";
+		}
+		return mStringRep;
 	}
-	static const std::string &temp = test;
-	return temp;
+	mStringRep += "()";
+	return mStringRep;
 }
 
 const char * Method::rawParams() const

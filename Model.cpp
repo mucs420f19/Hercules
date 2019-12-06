@@ -295,7 +295,7 @@ void Model::list()
 			Method& tempMethod = i.method(x);
 
 			std::cout << "\xB3 ";
-			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.name() + "(!PARAMS!) : " + tempMethod.ReturnType();
+			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.name() + tempMethod.params() +tempMethod.ReturnType();
 			std::cout << out;
 
 			addSpace = largestString - out.size();
@@ -406,18 +406,7 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 	return nullptr;
 }
 
-std::vector<const Relationship*> Model::findRelationship(const std::string& className) const
-{
-	std::vector<const Relationship*> result;
-	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
-	{
-		if (it->parent().name() == className || it->child().name() == className)
-		{
-			result.push_back(&(*it));
-		}
-	}
-	return result;
-}
+
 
 Class * Model::findClass(const std::string & name)
 {
