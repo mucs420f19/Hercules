@@ -29,7 +29,11 @@ void Model::removeClass(const std::string & name)
 	{
 		return;
 	}
-
+	std::vector<Relationship> temp = findRelationship(name);
+	for (auto &i : temp)
+	{
+		removeRelationship(i.parent().name(),i.child().name());
+	}
 	auto it = find(mClasses.begin(), mClasses.end(), name);
 	mClasses.erase(it);
 }
@@ -404,6 +408,19 @@ const Relationship * Model::findRelationship(const std::string & one, const std:
 		}
 	}
 	return nullptr;
+}
+
+std::vector< Relationship> Model::findRelationship(const std::string& className) const
+{
+	std::vector<Relationship> result;
+	for (auto it = mRelationships.begin(); it != mRelationships.end(); ++it)
+	{
+		if (it->parent().name() == className || it->child().name() == className)
+		{
+			result.push_back((*it));
+		}
+	}
+	return result;
 }
 
 
