@@ -12,7 +12,7 @@ static const std::unordered_map<std::string, int> PARAM_COUNTS{{
     {"help", 1},
     {"list", 1},
     {"exit", 1},
-    {"save", 2},
+    {"save", 3},
     {"save_overwrite", 2},
     {"load", 2},
     {"help_for", 2},
@@ -144,7 +144,7 @@ make_command(std::ostream &os, const std::vector<std::string> &cmdLineArgs) {
     return std::make_unique<SaveOverwriteCommand>(cmdLineArgs[1]);
   }
   if (cmdName == "save") {
-    return std::make_unique<SaveCommand>(cmdLineArgs[1]);
+    return std::make_unique<SaveCommand>(cmdLineArgs[1], cmdLineArgs[2]);
   }
   if (cmdName == "load") {
     return std::make_unique<LoadCommand>(cmdLineArgs[1]);

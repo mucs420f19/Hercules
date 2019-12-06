@@ -219,10 +219,11 @@ private:
 class SaveCommand : public Command {
 public:
 	SaveCommand(const std::string& name);
-
+	SaveCommand(const std::string& name, const std::string& overwrite);
 	virtual void execute() const override;
 private:
 	std::string mName;
+	std::string mOverwrite;
 };
 
 class LoadCommand : public Command {

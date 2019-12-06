@@ -265,7 +265,18 @@ void LoadCommand::execute() const
 SaveCommand::SaveCommand(const std::string& name)
 	: mName(name) {}
 
+SaveCommand::SaveCommand(const std::string& name, const std::string& overwrite)
+	: mName(name),mOverwrite(overwrite) {}
+
 void SaveCommand::execute() const
 {
-	SavingLoadingIO::SaveProjectToFile(modelInstance, mName);
+	if (mOverwrite == "yes")
+	{
+		SavingLoadingIO::SaveProjectToFile(modelInstance, mName, true);
+	}
+	else 
+	{
+
+		SavingLoadingIO::SaveProjectToFile(modelInstance, mName);
+	}
 }
