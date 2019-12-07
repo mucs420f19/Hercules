@@ -492,7 +492,15 @@ Method* Model::findMethod(const std::string& className, const std::string& metho
 	return a->method(methodName);
 }
 
-const Parameter* Model::findParameter(const std::string& className, const std::string& methodName, const std::string& paramName)
+const Method* Model::findMethod(const std::string& className, const std::string& methodName) const
+{
+	if (findClass(className) == nullptr) return nullptr;
+	const Class* a = findClass(className);
+	return a->method(methodName);
+}
+
+
+Parameter* Model::findParameter(const std::string& className, const std::string& methodName, const std::string& paramName)
 {
 	if (findMethod(className, methodName) == nullptr)
 	{
@@ -500,8 +508,28 @@ const Parameter* Model::findParameter(const std::string& className, const std::s
 	}
 
 	Method* a = findMethod(className, methodName);
-	const std::list<Parameter>* paramVec = a->ReturnParameters();
+	std::list<Parameter>* paramVec = a->ReturnParameters();
 	
+	for (auto &i : *paramVec)
+	{
+		if (i.name() == paramName)
+		{
+			return &i;
+		}
+	}
+
+	return nullptr;
+}
+
+const Parameter* Model::findParameter(const std::string& className, const std::string& methodName, const std::string& paramName) const
+{
+	if (findMethod(className, methodName) == nullptr)
+	{
+		return nullptr;
+	}
+
+	const Method* a = findMethod(className, methodName);
+	const std::list<Parameter>* paramVec = a->ReturnParameters();
 	for (auto &i : *paramVec)
 	{
 		if (i.name() == paramName)

@@ -77,6 +77,7 @@ public:
   const std::string& params();
   const char* rawParams() const;
   const std::list<Parameter>* ReturnParameters() const;
+  std::list<Parameter>* ReturnParameters();
 
   void setType(const std::string &type);
 

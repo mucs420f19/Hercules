@@ -184,6 +184,11 @@ const std::list<Parameter>* Method::ReturnParameters() const
 	return &mParameters;
 }
 
+std::list<Parameter>* Method::ReturnParameters()
+{
+	return &mParameters;
+}
+
 void Method::setType(const std::string &type)
 {
 	mReturnType = type;
