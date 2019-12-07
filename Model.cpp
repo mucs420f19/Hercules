@@ -144,7 +144,7 @@ void Model::addParameter(const std::string& className, const std::string& method
 		return;
 	}
 
-	m->appendParameter(Parameter(ParameterName, ParameterType));
+	m->appendParameter(Parameter(ParameterType, ParameterName));
 }
 
 void Model::editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
@@ -273,7 +273,7 @@ void Model::list()
 			Field& tempField = i.field(x);
 
 			std::cout << "\xB3 ";
-			std::string out = tempField.visibilitySymbol() + " " + tempField.name() + " : " + tempField.type();
+			std::string out = tempField.visibilitySymbol() + " " + tempField.type() + " " + tempField.name();
 			std::cout << out;
 
 			addSpace = largestString - out.size();
@@ -299,7 +299,7 @@ void Model::list()
 			Method& tempMethod = i.method(x);
 
 			std::cout << "\xB3 ";
-			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.name() + tempMethod.params() +tempMethod.ReturnType();
+			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.ReturnType() + " " + tempMethod.name() + " " + tempMethod.params();
 			std::cout << out;
 
 			addSpace = largestString - out.size();
@@ -352,7 +352,7 @@ size_t Model::getLargestStringSize()
 		{
 			Field& temp = i.field(x);
 
-			std::string check = temp.visibilitySymbol() + " " + temp.name() + " : " + temp.type();
+			std::string check = temp.visibilitySymbol() + " " + temp.type() + " " + temp.name();
 
 			if (check.size() > largestString)
 			{
@@ -366,7 +366,7 @@ size_t Model::getLargestStringSize()
 		{
 			Method& temp = i.method(x);
 
-			std::string check = temp.visibilitySymbol() + " " + temp.name() + "(!PARAMS!) : " + temp.ReturnType();
+			std::string check = temp.visibilitySymbol() + " " + temp.ReturnType() + " " + temp.name() + " " + temp.params();
 
 			if (check.size() > largestString)
 			{

@@ -157,15 +157,19 @@ void Method::setmStringRep(const std::string & type)
 const std::string & Method::params()
 {
 	mStringRep.clear();
+	mStringRep += "(";
+
 	if (!mParameters.empty())
 	{
 		for (auto & i : mParameters)
 		{
-			mStringRep += i.type() + "," + i.name() + ", ";
+			mStringRep += i.type() + " " + i.name() + ", ";
 		}
-		return mStringRep;
+
+		mStringRep.pop_back();
+		mStringRep.pop_back();
 	}
-	mStringRep += "()";
+	mStringRep += ")";
 	return mStringRep;
 }
 
