@@ -30,6 +30,7 @@ public:
 
   void setType (RelationshipType type);
 
+  void PrintRelationships();
 
 private:
   const Class &mParent;

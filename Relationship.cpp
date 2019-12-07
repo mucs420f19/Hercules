@@ -48,6 +48,10 @@ void Relationship::setType(RelationshipType type)
 	mType = type;
 }
 
+void Relationship::PrintRelationships()
+{
+	std::cout << parent().name() << " is the parent of " << child().name() << " in a " << ToString(type()) << " relationship.\n";
+}
 
 const std::string & ToString(RelationshipType t)
 {

@@ -42,6 +42,8 @@ public:
   const std::list<Field>* ReturnFields() const;
   const std::list<Method>* ReturnMethods() const;
 
+  void PrintClasses(size_t largest);
+
 private:
   std::string mName;
   std::list<Field> mFields;

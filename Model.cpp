@@ -242,117 +242,17 @@ unsigned int Model::GetYPosition(const std::string& className)
 
 void Model::list()
 {
+	size_t largestString = getLargestStringSize();
+
 	for (auto& i : mClasses)
 	{
-		size_t largestString = getLargestStringSize();
-		size_t addSpace = 0;
-
-		// ==================================================
-		// ┌────────────────────┐
-
-		std::cout << "\xDA";
-
-		for (size_t x = 0; x < largestString + 2; ++x)
-		{
-			std::cout << "\xC4";
-		}
-
-		std::cout << "\xBF\n";
-
-		// ==================================================
-		// │ Title              │
-
-		addSpace = largestString - i.name().size();
-
-		std::cout << "\xB3 " + i.name()<< std::flush;
-		
-		for (size_t x = 0; x < addSpace; ++x)
-		{
-			std::cout << " ";
-		}
-
-		std::cout << " \xB3\n";
-
-		// ==================================================
-		// ├────────────────────┤
-
-		std::string breakLine = "\xC3";
-
-		for (size_t x = 0; x < largestString + 2; ++x)
-		{
-			breakLine += "\xC4";
-		}
-
-		breakLine += "\xB4\n";
-
-		std::cout << breakLine;
-
-		// ==================================================
-		// Fields
-
-		for (size_t x = 0; x < i.getFieldSize(); ++x)
-		{
-			Field& tempField = i.field(x);
-
-			std::cout << "\xB3 ";
-			std::string out = tempField.visibilitySymbol() + " " + tempField.type() + " " + tempField.name();
-			std::cout << out;
-
-			addSpace = largestString - out.size();
-
-			for (size_t x = 0; x < addSpace; ++x)
-			{
-				std::cout << " ";
-			}
-
-			std::cout << " \xB3\n";
-		}
-
-		// ==================================================
-		// ├────────────────────┤
-
-		std::cout << breakLine;
-
-		// ==================================================
-		// Methods
-		
-		for (size_t x = 0; x < i.getMethodSize(); ++x)
-		{
-			Method& tempMethod = i.method(x);
-
-			std::cout << "\xB3 ";
-			std::string out = tempMethod.visibilitySymbol() + " " + tempMethod.ReturnType() + " " + tempMethod.name() + " " + tempMethod.params();
-			std::cout << out;
-
-			addSpace = largestString - out.size();
-
-			for (size_t x = 0; x < addSpace; ++x)
-			{
-				std::cout << " ";
-			}
-
-			std::cout << " \xB3\n";
-		}
-
-		// ==================================================
-		// └────────────────────┘
-
-		std::cout << "\xC0";
-
-		for (size_t x = 0; x < largestString + 2; ++x)
-		{
-			std::cout << "\xC4";
-		}
-
-		std::cout << "\xD9\n";
+		i.PrintClasses(largestString);
 	}
 
 	// Print relationships
 	for (auto & i : mRelationships)
 	{
-		std::cout << i.parent().name() << " is the parent of " << i.child().name() << " in a " << ToString(i.type()) << " relationship.\n";
-
-		//std::cout << i.parent().name() << i.child().name() << ToString(i.type()) << "\n";
+		i.PrintRelationships();
 	}
 }
 
