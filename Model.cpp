@@ -149,10 +149,32 @@ void Model::addParameter(const std::string& className, const std::string& method
 
 void Model::editParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName, const std::string& NewValue, const std::string& WhichAttr)
 {
+	Parameter* p = findParameter (className, methodName, ParameterName);
+
+	if (p == nullptr)
+	{
+		return;
+	}
+
+	if (WhichAttr == "name")
+	{
+		p->setName(NewValue);
+	}
+	else if (WhichAttr == "type")
+	{
+		p->setType(NewValue);
+	}
 }
 
 void Model::deleteParameter(const std::string& className, const std::string& methodName, const std::string& ParameterName)
 {
+	Method* m = findMethod(className, methodName);
+	if (m == nullptr)
+	{
+		return;
+	}
+
+	m->removeParameter(ParameterName);
 }
 
 void Model::addRelationship(const std::string & parent, const std::string & child, RelationshipType type)

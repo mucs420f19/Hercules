@@ -127,11 +127,12 @@ void Method::appendParameter(const Parameter & param)
 	mParameters.push_back(param);
 }
 
-void Method::removeParameter(int index)
+void Method::removeParameter(const std::string& name)
 {
-	std::list<Parameter>::const_iterator it = mParameters.begin();
-	std::advance(it, index);
-	mParameters.erase(it);
+	auto matchesName = [&name](auto const& f) {
+		return f.name() == name;
+	};
+	mParameters.remove_if(matchesName);
 }
 
 void Method::setParameters(const std::list<Parameter>& params)
