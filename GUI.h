@@ -23,8 +23,8 @@
 #define NK_GLFW_GL3_IMPLEMENTATION
 #define NK_KEYSTATE_BASED_INPUT
 #define INCLUDE_STYLE
-#define WINDOW_WIDTH 1200
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
 #include "nuklear.h"
 #include "nuklear_glfw_gl3.h"
@@ -65,6 +65,8 @@ void RunGUI(UMLObjectsHolder* holder)
 	node_ftables[1].draw = &draw_info;
 	static struct node_editor node1;
 	static struct node_editor node2;
+	static int show_pop_fields_edit = nk_false;
+	static int show_pop_methods_edit = nk_false;
 
 	/* GLFW */
 	glfwSetErrorCallback(error_callback);
@@ -123,6 +125,69 @@ void RunGUI(UMLObjectsHolder* holder)
 			//Begin menubar here or core dump later on		
 			nk_menubar_begin(ctx);
 
+		//Creates a popup window when edit methods button is clicked.
+		if (show_pop_methods_edit)
+		{
+			 /* about popup */
+            static struct nk_rect s = {900,475, 300, 190};
+            if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Edit Methods", NK_WINDOW_CLOSABLE | NK_WINDOW_MOVABLE, s))
+            {
+                nk_layout_row_dynamic(ctx, 20, 1);
+                nk_layout_row_static(ctx, 0, 150, 1);
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Confirm Class Name"))
+			{
+				strcpy(classname, add);
+			}
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Enter Method Name"))
+			{
+				strcpy(tempName, method);
+			}
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Enter New Method Name"))
+			{
+				//TODO use MVC instead
+				//holder->EditMethodName(classname, tempName, editMethod);
+				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
+				strcpy(tempName, overwrite);
+				strcpy(classname, overwrite);
+			}
+                nk_popup_end(ctx);
+            } else show_pop_methods_edit = nk_false;
+		}
+
+		//Shows up if edit fields button is clicked.  Creates a popup
+		if (show_pop_fields_edit)
+		{
+			 /* about popup */
+            static struct nk_rect s = {900,475, 300, 190};
+            if (nk_popup_begin(ctx, NK_POPUP_STATIC, "Edit Fields", NK_WINDOW_CLOSABLE | NK_WINDOW_MOVABLE, s))
+            {
+                nk_layout_row_dynamic(ctx, 20, 1);
+                nk_layout_row_static(ctx, 0, 150, 1);
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Confirm Class Name"))
+			{
+				strcpy(classname, add);
+			}
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Enter Field Name"))
+			{
+				strcpy(tempName, field);
+			}
+			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
+			if (nk_button_label(ctx, "Enter New fields Name"))
+			{
+				//TODO use MVC instead
+				//holder->EditMethodName(classname, tempName, editMethod);
+				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditField(tempName, editField);
+				strcpy(tempName, overwrite);
+				strcpy(classname, overwrite);
+			}
+                nk_popup_end(ctx);
+            } else show_pop_fields_edit = nk_false;
+		}
 		//Saving and Loading buttons
 		{
 			nk_layout_row_static(ctx, 50, 200, 2);
@@ -153,6 +218,7 @@ void RunGUI(UMLObjectsHolder* holder)
                 {
                     node_editor_add(&node1, add, nk_rect(400, 260, 180, 220), node_data(), 1, 2, node_ftables[1], true, 1);
                 }
+                strcpy(add,overwrite);
 				
 			}
 		}
@@ -182,33 +248,9 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_menu_end(ctx);
 		}
 
-		//Edit method
-		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "Edit method", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+		if (nk_button_label(ctx, "Edit Method"))
 		{
-			nk_layout_row_static(ctx, 0, 150, 1);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				strcpy(classname, add);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, method, sizeof(method) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Enter Method Name"))
-			{
-				strcpy(tempName, method);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editMethod, sizeof(editMethod) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Enter New Method Name"))
-			{
-				//TODO use MVC instead
-				//holder->EditMethodName(classname, tempName, editMethod);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditMethod(tempName, editMethod);
-				strcpy(tempName, overwrite);
-				strcpy(classname, overwrite);
-			}
-
-			nk_menu_end(ctx);
+			show_pop_methods_edit = true;
 		}
 
 		//Delete method
@@ -260,32 +302,9 @@ void RunGUI(UMLObjectsHolder* holder)
 		}
 
 		//Edit field
-		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "Edit field", NK_TEXT_CENTERED, nk_vec2(200, 200)))
+		if (nk_button_label(ctx, "Edit Fields"))
 		{
-			nk_layout_row_static(ctx, 0, 150, 1);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				strcpy(classname, add);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Enter Field Name"))
-			{
-				strcpy(tempName, field);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, editField, sizeof(editField) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Enter New field Name"))
-			{
-				//TODO MVC
-				//holder->EditFieldName(classname, tempName, editField);
-				if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->EditField(tempName, editField);
-				strcpy(tempName, overwrite);
-				strcpy(classname, overwrite);
-			}
-
-			nk_menu_end(ctx);
+			show_pop_fields_edit = true;
 		}
 
 		//Delete field
@@ -310,46 +329,7 @@ void RunGUI(UMLObjectsHolder* holder)
 
 			nk_menu_end(ctx);
 		}
-		// Add Relationship
-		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "Add Relationship", NK_TEXT_CENTERED, nk_vec2(200, 200)))
-		{
-			nk_layout_row_static(ctx, 0, 150, 1);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				strcpy(classname, add);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				holder->AddRelationship(classname, field, 0, 0, 0);
-				strcpy(classname, overwrite);
-			}
-			nk_menu_end(ctx);
-		}
-
-		//Delete Relationship
-		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
-		nk_layout_row_push(ctx, 200);
-		if (nk_menu_begin_label(ctx, "Delete Relationship", NK_TEXT_CENTERED, nk_vec2(200, 200)))
-		{
-			nk_layout_row_static(ctx, 0, 150, 1);
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, add, sizeof(add) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				strcpy(classname, add);
-			}
-			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, field, sizeof(field) - 1, nk_filter_default);
-			if (nk_button_label(ctx, "Confirm Class Name"))
-			{
-				holder->DeleteRelationship(classname, field);
-				strcpy(classname, overwrite);
-			}
-
-			nk_menu_end(ctx);
-		}
+	
 		//Creates dropdown box that lists all created classes.  Updates dynamically when a class is added or deleted.			
 		nk_layout_row_begin(ctx, NK_STATIC, 25, 5);
 		nk_layout_row_push(ctx, 405);

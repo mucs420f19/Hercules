@@ -340,7 +340,7 @@ static void node_editor_init(struct node_editor *editor)
     editor->end = NULL;
     editor->deleted_begin = NULL;
     editor->deleted_end = NULL;
-    node_editor_add(editor, "Source", nk_rect(40, 10, 180, 220), node_data(), 0, 1, node_ftables[0]);
+    node_editor_add(editor, "Source", nk_rect(500, 200, 180, 220), node_data(), 0, 1, node_ftables[0]);
     node_editor_link(editor, 0, 0, 2, 0);
     node_editor_link(editor, 1, 0, 2, 1);
     editor->show_grid = nk_true;
@@ -412,8 +412,8 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
     }
 
 #ifndef NDE_NO_WINDOW
-    if (nk_begin(ctx, title, nk_rect(450, 0, 800, WINDOW_HEIGHT),
-                NK_WINDOW_BORDER|NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE))
+    if (nk_begin(ctx, title, nk_rect(450, 0, 1400, 1000),
+                NK_WINDOW_BORDER | NK_WINDOW_SCALABLE))
     {
 #endif
         /* allocate complete window space */
@@ -483,7 +483,7 @@ static int node_edit(struct nk_context *ctx, struct node_editor* nodeedit, const
                     node = nk_window_get_panel(ctx);
                     if (updated != nodeedit->end && hovering_in_node(in, node->bounds) &&
                             (!(it->prev && hovering_in_node(in,
-                                                                                                        nk_layout_space_rect_to_screen(ctx, node->bounds)))))
+                                nk_layout_space_rect_to_screen(ctx, node->bounds)))))
                     {
                         updated = it;
                     }
