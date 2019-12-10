@@ -208,62 +208,62 @@ void RunREPL(UMLObjectsHolder* holder, std::string input)
 			  	break;
 		  	}
 
-		  	case 2:
-		  	{
+		  	//case 2:
+		  	//{
 			  	// 'save _____' 
-			  	if (substrings[0] == "save")
-			  	{
+			  	//if (substrings[0] == "save")
+			  	//{
 				  	// Save successful
-				  	if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveSuccess)
-					  	std::cout << "File saved successfully." << std::endl;
+				  //	if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveSuccess)
+					 // 	std::cout << "File saved successfully." << std::endl;
 
-				  	// Save file already exists
-				  	else if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveAlreadyExists)
-				  	{
-					  	std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
+				  //	// Save file already exists
+				  //	else if (SavingLoadingIO::SaveProjectToFile(holder, substrings[1], false) == SaveAlreadyExists)
+				  //	{
+					 // 	std::cout << "This file already exists. Would you like to overwrite it? (y/n)" << std::endl;
 
-						std::string yn;
-						if (run)
-						{
-							std::cin >> yn;
-						}
-						//if we are in test mode, just assign it to "y"
-						else yn = "y";
+						//std::string yn;
+						//if (run)
+						//{
+						//	std::cin >> yn;
+						//}
+						////if we are in test mode, just assign it to "y"
+						//else yn = "y";
 
-					  	if (yn == "y")
-					  	{
-						  	SavingLoadingIO::SaveProjectToFile(holder, substrings[1], true);
+					 // 	if (yn == "y")
+					 // 	{
+						//  	SavingLoadingIO::SaveProjectToFile(holder, substrings[1], true);
 
-						  	std::cout << "File saved successfully." << std::endl;
-					  	}
+						//  	std::cout << "File saved successfully." << std::endl;
+					 // 	}
 
-					  	else
-					  		std::cout << "File not saved." << std::endl;
-				  	}
-				  
-				  	// Save error
-				  	else 
-				    	std::cout << "An error has occurred while trying to save. File not saved." << std::endl;
-			  	}
+					 // 	else
+					 // 		std::cout << "File not saved." << std::endl;
+				  //	}
+				  //
+				  //	// Save error
+				  //	else 
+				  //  	std::cout << "An error has occurred while trying to save. File not saved." << std::endl;
+			  	//}
 			  
-			  	// 'load _____'
-			  	else if (substrings[0] == "load")
-			  	{
-			    	// Load unsuccessful
-			    	if (SavingLoadingIO::LoadProject(holder, substrings[1]) == false)
-			      		std::cout << "An error has occurred while trying to load. Make sure the file exists and is not currently open." << std::endl;
-			    
-			    	// Load successful
-			    	else
-			      		std::cout << "File loaded successfully." << std::endl;
-			  	}
+			  	//// 'load _____'
+			  	//else if (substrings[0] == "load")
+			  	//{
+			   // 	// Load unsuccessful
+			   // 	if (SavingLoadingIO::LoadProject(holder, substrings[1]) == false)
+			   //   		std::cout << "An error has occurred while trying to load. Make sure the file exists and is not currently open." << std::endl;
+			   // 
+			   // 	// Load successful
+			   // 	else
+			   //   		std::cout << "File loaded successfully." << std::endl;
+			  	//}
 
-			  	// Fail if first substring is not 'save' or 'load'
-			  	else
-			   		fail();
+			  	//// Fail if first substring is not 'save' or 'load'
+			  	//else
+			   //		fail();
 			  
-			  	break;
-		  	}
+			  	//break;
+		  	//}
 
 		  	case 3:
 		  	{

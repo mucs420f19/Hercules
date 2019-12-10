@@ -128,11 +128,11 @@ void RunGUI(UMLObjectsHolder* holder)
 			nk_layout_row_static(ctx, 50, 200, 2);
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, save, sizeof(save) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Save"))
-				SavingLoadingIO::SaveProjectToFile(holder, save, true);
+				//SavingLoadingIO::SaveProjectToFile(holder, save, true);
 			nk_edit_string_zero_terminated(ctx, NK_EDIT_FIELD, load, sizeof(load) - 1, nk_filter_default);
 			if (nk_button_label(ctx, "Load"))
 			{
-				SavingLoadingIO::LoadProject(holder, load);
+				//SavingLoadingIO::LoadProject(holder, load);
 				for (auto & i : holder->ReturnTitles())
 				{
 					strcpy(add, i.c_str());
