@@ -69,7 +69,65 @@ const std::string &Command::helpFor(const std::string &name) {
 						  "    Parameters:\n"
 						  "    - parent: The class that will be the parent in the relationship"
 						  "    - type: The return type of the new parameter.\n"},
-
+		{"edit_class",	"edit_class (className) (newName)\n"
+						  "	Edits the name of an existing class.\n"
+						  "    Parameters:\n"
+						  "    - classname: The currently existing class.\n"
+						  "    - newName:  The name to change the current class too.\n"},
+	    {"edit_field",  "edit_field (attr) (className) (fieldName) (newValue)\n"
+	    				"  Edits an existing field in a class.\n"
+	    				"  Parameters:\n"
+	    				"  - attr:  Type, name, visibility\n"
+	    				"  - className: Name of the class where a field can be edited.\n"
+	    				"  - fieldName: Name of the field to be edited.\n"
+	    				"  - newValue: Name of the new field attr.\n"},
+	    {"edit_method",  "edit_method (attr) (className) (methodName) (newValue)\n"
+	    				"  Edits an existing method in a class.\n"
+	    				"  Parameters:\n"
+	    				"	-attr:  Type, name, visibility\n"
+	    				"	-className: Name of the class where a method can be editing.\n"
+	    				"	-methodName: Name of the method to be edited.\n"
+	    				"	-newValue: Name of the new method attr\n."},
+		{"edit_parameter", "edit_parameter (attr) (className) (methodName) (parameterName) (newValue)\n"
+						"  Edits the parameter of an existing class.\n"
+						"  Parameters:\n"
+						"	-attr: Type, name\n"
+						"	-className:  Name of the class.\n"
+						"	-methodName: Name of method.\n"
+						"	-parameterName:  Name of the parameter.\n"
+						"	-newValue:  Name of the new parameter attr.\n"},
+		{"edit_relationship",	"edit_relationship (classOne) (classTwo) (newType)\n"
+						"	Edits the relationship between two classes.\n"
+						"	Parameters:\n"
+						"	 -classOne: Name of first class.\n"
+						"	 -classTwo: Name of second class.\n"
+						"	 -newType:  New type of relationship. Aggregation, Composition, Association, Dependency.\n"},
+		{"delete_class",	"delete_class (name)\n"
+						"  Deletes an existing class.\n"
+						"  Parameters:\n"
+						"	-name: Name of the class to delete.\n"},
+		{"delete_field",	"delete_field (class) (fieldName)\n"
+						"  Deletes a field from an existing class.\n"
+						"  Parameters:\n"
+						"	-class:  The class to delete the field from.\n"
+						"	-fieldName:  The field to delete from the class.\n"},
+		{"delete_method",	"delete_method (class) (methodName)\n"
+						"  Deletes a method from an existing class.\n"
+						"  Parameters:\n"
+						"	-class:  The class to delete the method from.\n"
+						"	-methodName:  The method to dlete from the class.\n"},
+		{"delete_parameter",	"delete_parameter (class) (methodName) (paramName)\n"
+						"  Deletes a parameter from a method exisiting within a class.\n"
+						"  Parameters:\n"
+						"	-class:  The class to delete the method from.\n"
+						"	-methodName:  The method to delete the parameter from.\n"
+						"	-paramName:  The parameter to delete.\n"},
+		{"delete_relationship",	"delete_relationship (classOne) (classTwo)\n"
+						"  Deletes a relationship between two classes.\n"
+						"  Parameters:\n"
+						"	-classOne:  The first class from the relationship.\n"
+						"	-classTwo:  The second class from the relationship.\n"}
+					
       };
 	
 	auto out = HELP.find(name);
