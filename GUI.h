@@ -103,7 +103,7 @@ void RunGUI(UMLObjectsHolder* holder)
 
 	ctx = nk_glfw3_init(win, NK_GLFW3_INSTALL_CALLBACKS);
 	/* Load Fonts: if none of these are loaded a default font will be used  */
-	/* Load Cursor: if you uncomment cursor loading please hide the cursor */
+	/* Load Cursor: if you uncomment cursor loading please hide the cursor */	
 	{
 		struct nk_font_atlas *atlas;
 		nk_glfw3_font_stash_begin(&atlas);
@@ -111,7 +111,7 @@ void RunGUI(UMLObjectsHolder* holder)
 	}
 
 #ifdef INCLUDE_STYLE
-	set_style(ctx, THEME_DARK);
+	set_style(ctx, THEME_WHITE);
 #endif	
 
 	//Background window color
@@ -123,9 +123,8 @@ void RunGUI(UMLObjectsHolder* holder)
 		nk_glfw3_new_frame();
 
 		/* GUI */
-		if (nk_begin(ctx, " ", nk_rect(0, 0, 450, WINDOW_HEIGHT),
-			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE |
-			NK_WINDOW_TITLE))
+		if (nk_begin(ctx, " ", nk_rect(0, 0, 450, 1000),
+			NK_WINDOW_BORDER | NK_WINDOW_MOVABLE | NK_WINDOW_SCALABLE))
 
 			//Begin menubar here or core dump later on		
 			nk_menubar_begin(ctx);
@@ -167,7 +166,7 @@ void RunGUI(UMLObjectsHolder* holder)
 				if (nk_button_label(ctx, "Enter Method Name"))
 				{
 					//TODO use MVC paradiagm instead of directly touching the model
-					holder->AddMethod(classname, method, "type goes here", "private");
+					holder->AddMethod(classname, method, " ", "private");
 					//UMLMethod newMethod;
 					//newMethod.SetName(method);
 					//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
@@ -248,7 +247,7 @@ void RunGUI(UMLObjectsHolder* holder)
 			if (nk_button_label(ctx, "Enter field Name"))
 			{
 				//TODO use MVC paradiagm instead of directly touching the model
-				holder->AddField(classname, field, "type goes here", "private");
+				holder->AddField(classname, field, " ", "private");
 				//UMLMethod newMethod;
 				//newMethod.SetName(method);
 				//if (holder->GetUMLObject(classname)) holder->GetUMLObject(classname)->AddMethod(newMethod);
