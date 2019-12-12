@@ -28,18 +28,16 @@ if (COVERALLS)
    coveralls_setup("${HERCULES_COVERAGE_SRCS}" On)
 endif()
 
-add_library (HerculesModel STATIC ${HERCULES_MODEL_SRCS})
-add_library (HerculesAPI STATIC ${HERCULES_API_SRCS})
+add_library (HerculesAPI STATIC ${HERCULES_MODEL_SRCS} ${HERCULES_API_SRCS})
 
-# WKK - header files do not belong in source list; source files != header files
 add_executable (Hercules Main.cpp ConsoleView.cpp)
+
+target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
+target_link_libraries(Hercules PUBLIC ${CONAN_LIBS} HerculesAPI)
 
 FILE(GLOB TEST_FILES tests/*.cpp)
 add_executable (HerculesTest UnitTest.cpp ${TEST_FILES})
+target_link_libraries(HerculesTest PUBLIC HerculesAPI)
+
 enable_testing()
-
-target_include_directories(Hercules PUBLIC ${OPENGL_INCLUDE_DIRS} ${GLEW_INCLUDE_DIRS} ${glfw3_INCLUDE_DIRS})
-target_link_libraries(Hercules PUBLIC ${CONAN_LIBS} HerculesModel HerculesAPI)
-target_link_libraries(HerculesTest PUBLIC HerculesModel HerculesAPI)
-
 add_test (NAME mytest COMMAND HerculesTest)
