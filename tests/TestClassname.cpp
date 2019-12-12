@@ -2,6 +2,9 @@
 
 #include "catch2/catch.hpp"
 
+#include <string.h>
+#include <stdio.h>
+
 TEST_CASE("Classes work")
 {
 	std::string newName("newName");
@@ -18,7 +21,7 @@ TEST_CASE("Classes work")
 
 	SECTION("Classes rawNames work")
 	{
-		if (std::strcmp(a.rawName(), name.c_str()) == 0)
+		if (strcmp(a.rawName(), name.c_str()) == 0)
 		{
 			equal = true;
 		}
