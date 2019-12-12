@@ -8,6 +8,7 @@ TEST_CASE("Classes work")
 	std::string name("test");
 	Class a(name);
 	REQUIRE(a.name() == name);
+	bool equal = false;
 
 	SECTION("Classes can have names changed")
 	{
@@ -17,6 +18,10 @@ TEST_CASE("Classes work")
 
 	SECTION("Classes rawNames work")
 	{
-		REQUIRE(strcmp(a.rawName(), name.c_str() == 0);
+		if (strcmp(a.rawName(), name.c_str()) == 0)
+		{
+			equal = true;
+		}
+		REQUIRE(equal == true);
 	}
 }
