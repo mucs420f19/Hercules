@@ -18,7 +18,7 @@ TEST_CASE("Classes work")
 
 	SECTION("Classes rawNames work")
 	{
-		if (strcmp(a.rawName(), name.c_str()) == 0)
+		if (std::strcmp(a.rawName(), name.c_str()) == 0)
 		{
 			equal = true;
 		}
