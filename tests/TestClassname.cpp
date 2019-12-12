@@ -17,6 +17,6 @@ TEST_CASE("Classes work")
 
 	SECTION("Classes rawNames work")
 	{
-		REQUIRE(a.rawName() == name.c_str());
+		REQUIRE(strcmp(a.rawName(), name.c_str() == 0);
 	}
 }
