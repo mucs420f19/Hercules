@@ -96,4 +96,20 @@ TEST_CASE("Commands work")
 		SendCommand2("delete_relationship test1 test2");
 		REQUIRE(holder2->findRelationship(classOne, classTwo) == nullptr);
 	}
+
+	SECTION("Edit Field")
+	{
+		std::string className("test1");
+		std::string editName("test2");
+		SendCommand2("edit_field test2");
+		REQUIRE(holder2->findField(className, editName) == nullptr);
+	}
+
+	SECTION("Edit Method")
+	{
+		std::string className("test1");
+		std::string editName("test2");
+		SendCommand2("edit_method test2");
+		REQUIRE(holder2->findMethod(className, editName) == nullptr);
+	}
 }
