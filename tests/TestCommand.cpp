@@ -64,22 +64,6 @@ TEST_CASE("Commands work")
 		REQUIRE(holder2->findClass(deleteName) == nullptr);
 	}
 
-	SECTION("Edit Field Command")
-	{
-		std::string className("test1");
-		std::string editField("test3");
-		SendCommand2("edit_field test1 test2 test3");
-		REQUIRE(holder2->findField(className, editField) != nullptr);
-	}
-
-	SECTION("Edit Method Command")
-	{
-		std::string className("test1");
-		std::string editMethod("test3");
-		SendCommand2("edit_field test1 test2 test3");
-		REQUIRE(holder2->findMethod(className, editMethod) != nullptr);
-	}
-
 	SECTION("Delete Field Command")
 	{
 		std::string className("test1");
