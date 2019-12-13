@@ -79,4 +79,21 @@ TEST_CASE("Commands work")
 		SendCommand2("delete_method" "test3");
 		REQUIRE(holder2->findMethod(className, deleteMethod) == nullptr);
 	}
+
+	SECTION("Delete Parameter")
+	{
+		std::string className("test1");
+		std::string deleteParamName("test2");
+		std::string methodName("test3");
+		SendCommand2("delete_parameter test2");
+		REQUIRE(holder2->findParameter(className, methodName, deleteParamName) == nullptr);
+	}
+
+	SECTION("DeleteRelationShip")
+	{
+		std::string classOne("test1");
+		std::string classTwo("test2");
+		SendCommand2("delete_relationship test1 test2");
+		REQUIRE(holder2->findRelationship(classOne, classTwo) == nullptr);
+	}
 }
