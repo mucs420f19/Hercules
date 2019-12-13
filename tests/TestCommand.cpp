@@ -32,7 +32,7 @@ void SendCommand(std::string in)
 TEST_CASE("Commands work")
 {
 	Model* holder = new Model;
-	Command::setModelInstance(holder)
+	Command::setModelInstance(holder);
 
 	SendCommand("add_class test1");
 	SendCommand("add_class test2");
@@ -52,8 +52,9 @@ TEST_CASE("Commands work")
 
 	SECTION("Edit Class Command")
 	{
+		std::string editName("test4");
 		SendCommand("edit_class test1 test4");
-		REQUIRE(holder->findClass(test4) != nullptr);
+		REQUIRE(holder->findClass(editName) != nullptr);
 	}
 
 	SECTION("Attribute can have name change")
