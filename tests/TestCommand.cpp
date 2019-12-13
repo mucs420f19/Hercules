@@ -9,8 +9,8 @@ TEST_CASE("Commands work")
 	SECTION("Add Class Command")
 	{
 		std::string Name("Name");
-		return std::make_unique<AddClassCommand>("Name");
-		REQUIRE(Command::modelInstance->findClass(Name) != nullptr);
+		std::make_unique<AddClassCommand>("Name");
+		REQUIRE(modelInstance->findClass(Name) != nullptr);
 	}
 
 	SECTION("Attribute can have name change")
