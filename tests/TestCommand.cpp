@@ -69,7 +69,7 @@ TEST_CASE("Commands work")
 		std::string className("test1");
 		std::string editField("test3");
 		SendCommand2("edit_field test1 test2 test3");
-		REQUIRE(holder2->findField(className, editField));
+		REQUIRE(holder2->findField(className, editField) != nullptr);
 	}
 
 	SECTION("Edit Method Command")
@@ -77,7 +77,7 @@ TEST_CASE("Commands work")
 		std::string className("test1");
 		std::string editMethod("test3");
 		SendCommand2("edit_field test1 test2 test3");
-		REQUIRE(holder2->findMethod(className, editMethod));
+		REQUIRE(holder2->findMethod(className, editMethod) != nullptr);
 	}
 
 	SECTION("Delete Field Command")
