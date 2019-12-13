@@ -34,6 +34,8 @@ TEST_CASE("Commands work")
 	Model* holder2 = new Model;
 	Command::setModelInstance(holder2);
 
+	SendCommand2("help");
+	SendCommand2("list");
 	SendCommand2("add_class test1");
 	SendCommand2("add_class test2");
 	SendCommand2("add_class test3");
