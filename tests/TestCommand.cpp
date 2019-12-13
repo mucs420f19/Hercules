@@ -57,7 +57,10 @@ TEST_CASE("Commands work")
 		REQUIRE(holder->findClass(editName) != nullptr);
 	}
 
-	SECTION("Attribute can have name change")
+	SECTION("Delete Class Command")
 	{
+		std::string deleteName("test1");
+		SendCommand("delete_class test1");
+		REQUIRE(holder->findClass(deleteName) == nullptr);
 	}
 }
