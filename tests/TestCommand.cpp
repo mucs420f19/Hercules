@@ -4,26 +4,6 @@
 
 #include "catch2/catch.hpp"
 
-std::vector<std::string>
-split(const std::string& line)
-{
-
-	std::vector<std::string> tokenized;
-	const char* WS = "\t ";
-	auto wordStart = line.find_first_not_of(WS);
-	while (wordStart != std::string::npos)
-	{
-		auto wordEnd = line.find_first_of(WS, wordStart);
-		if (wordEnd == std::string::npos)
-		{
-			wordEnd = line.size();
-		}
-		tokenized.emplace_back(line.begin() + wordStart, line.begin() + wordEnd);
-		wordStart = line.find_first_not_of(WS, wordEnd);
-	}
-	return tokenized;
-}
-
 void SendCommand(std::string in)
 {
 	make_command(std::cout, split(in))->execute();
