@@ -1,6 +1,7 @@
 #include "../Attribute.h"
 
 #include "catch2/catch.hpp"
+#include <string.h>
 
 std::ostream &
 operator<<(std::ostream& os, Visibility const & v) {
@@ -27,6 +28,7 @@ TEST_CASE("Attributes work")
   Attribute a (name, vis);
   REQUIRE (a.visibility() == ToStringVis(vis));
   REQUIRE (a.name() == name);
+  bool equal = false;
 
   SECTION("Attribute can have visibility change")
   {
@@ -39,5 +41,14 @@ TEST_CASE("Attributes work")
     std::string newName ("newName");
     a.setName(newName);
     REQUIRE (a.name() == newName);
+  }
+
+  SECTION("Attributes rawNames work")
+  {
+    if (strcmp(a.rawName(), name.c_str()) == 0)
+    {
+      equal = true;
+    }
+    REQUIRE(equal == true);
   }
 }
