@@ -70,7 +70,7 @@ TEST_CASE("Commands work")
 	{
 		std::string className("test1");
 		std::string deleteField("test3");
-		SendCommand2("delete_field" "test3");
+		SendCommand2("delete_field test1 test3");
 		REQUIRE(holder2->findField(className, deleteField) == nullptr);
 	}
 
@@ -78,7 +78,7 @@ TEST_CASE("Commands work")
 	{
 		std::string className("test1");
 		std::string deleteMethod("test3");
-		SendCommand2("delete_method" "test3");
+		SendCommand2("delete_method test1 test3");
 		REQUIRE(holder2->findMethod(className, deleteMethod) == nullptr);
 	}
 
@@ -87,7 +87,7 @@ TEST_CASE("Commands work")
 		std::string className("test1");
 		std::string deleteParamName("test2");
 		std::string methodName("test3");
-		SendCommand2("delete_parameter test2");
+		SendCommand2("delete_parameter test1 test3 test2");
 		REQUIRE(holder2->findParameter(className, methodName, deleteParamName) == nullptr);
 	}
 
@@ -103,7 +103,9 @@ TEST_CASE("Commands work")
 	{
 		std::string className("test1");
 		std::string editName("test2");
-		SendCommand2("edit_field test2");
+		std::string fieldName("test3");
+		std::string attr("test4");
+		SendCommand2("edit_field test4 test1 test3 test2");
 		REQUIRE(holder2->findField(className, editName) == nullptr);
 	}
 
@@ -111,7 +113,9 @@ TEST_CASE("Commands work")
 	{
 		std::string className("test1");
 		std::string editName("test2");
-		SendCommand2("edit_method test2");
+		std::string methodName("test3");
+		std::string attr("test4");
+		SendCommand2("edit_method test4 test1 test3 test2");
 		REQUIRE(holder2->findMethod(className, editName) == nullptr);
 	}
 }
