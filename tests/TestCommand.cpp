@@ -35,6 +35,7 @@ TEST_CASE("Commands work")
 	Command::setModelInstance(holder2);
 
 	SendCommand2("help");
+	SendCommand2("help_for");
 	SendCommand2("list");
 	SendCommand2("add_class test1");
 	SendCommand2("add_class test2");
@@ -51,6 +52,7 @@ TEST_CASE("Commands work")
 	SendCommand2("add_relationship test1 test2 aggregation");
 	SendCommand2("add_relationship test1 test3 composition");
 	SendCommand2("add_relationship test2 test3 dependency");
+
 
 	SECTION("Edit Class Command")
 	{
