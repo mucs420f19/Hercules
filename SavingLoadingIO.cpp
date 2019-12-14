@@ -241,10 +241,6 @@ namespace SavingLoadingIO
 								
 							}
 						}
-						else if (j->key == "UMLRelationship")
-						{
-							out->addRelationship(FindChildWhere(j, "Parent"), FindChildWhere(j, "Child"), RelationshipFromString(FindChildWhere(j, "Type")));
-						}
 						else if (j->key == "X")
 						{
 							out->SetX(title, std::stoi(j->contents[0]));
@@ -255,6 +251,10 @@ namespace SavingLoadingIO
 						}
 					}
 				}
+			}
+			else if (i->key == "UMLRelationship")
+			{
+				out->addRelationship(FindChildWhere(i, "Parent"), FindChildWhere(i, "Child"), RelationshipFromString(FindChildWhere(i, "Type")));
 			}
 		}
 	}

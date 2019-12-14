@@ -34,7 +34,7 @@ matrix:
         - cmake --build .
         - ctest -C Debug --verbose
       after_success:
-        - coveralls --root ../ --build-root ./ --exclude-pattern '.+/usr/' --exclude 'style.c' --exclude 'nuklear.h' --exclude 'node_editor.h' --exclude 'GUI.h' --exclude 'Main.cpp' --exclude 'nuklear_glfw_gl3.h' --exclude-pattern '.+/CMakeFiles/' --gcov /usr/bin/gcov --gcov-options '\--long-file-names --preserve-paths' --verbose;
+        - coveralls --root ../ --build-root ./ --exclude-pattern '.+/tests/' --exclude-pattern '.+/usr/' --exclude-pattern '.+/CMakeFiles/' --gcov /usr/bin/gcov --gcov-options '\--long-file-names --preserve-paths' --verbose;
     - os: linux
       compiler: clang
       env: PATH=$HOME/.local/bin:$PATH
