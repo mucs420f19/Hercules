@@ -36,6 +36,12 @@ TEST_CASE("Attributes work")
     REQUIRE(a.visibility() == ToStringVis(Visibility::PRIVATE));
   }
 
+  SECTION("Attribute raw visibility")
+  {
+    a.setVisibility(Visibility::PRIVATE);
+    REQUIRE(a.rawVisibility() == ToStringVis(Visibility::PRIVATE));
+  }
+
   SECTION("Attribute can have name change")
   {
     std::string newName ("newName");

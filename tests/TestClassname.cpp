@@ -27,4 +27,9 @@ TEST_CASE("Classes work")
 		}
 		REQUIRE(equal == true);
 	}
+
+	SECTION("Print")
+	{
+		a.PrintClasses(name.length());
+	}
 }
