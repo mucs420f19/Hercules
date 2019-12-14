@@ -54,6 +54,12 @@ TEST_CASE("Commands work")
 	SendCommand2("add_relationship test1 test2 aggregation");
 	SendCommand2("add_relationship test1 test3 composition");
 	SendCommand2("add_relationship test2 test3 dependency");
+	SendCommand2("edit_field name test1 test2 test3");
+	SendCommand2("edit_field type test1 test2 test3");
+	SendCommand2("edit_field visibility test1 test2 test3");
+	SendCommand2("edit_method name test1 test2 test3");
+	SendCommand2("edit_method type test1 test2 test3");
+	SendCommand2("edit_method visibility test1 test2 test3");
 
 
 	SECTION("Edit Class Command")
