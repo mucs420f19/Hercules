@@ -1,6 +1,7 @@
 #include "../ConsoleView.h"
 #include "../Command.h"
 #include "../CommandFactory.h"
+#include "../Model.h"
 
 #include "catch2/catch.hpp"
 
@@ -54,13 +55,6 @@ TEST_CASE("Commands work")
 	SendCommand2("add_relationship test1 test2 aggregation");
 	SendCommand2("add_relationship test1 test3 composition");
 	SendCommand2("add_relationship test2 test3 dependency");
-	SendCommand2("edit_field name test1 test2 test3");
-	SendCommand2("edit_field type test1 test2 test3");
-	SendCommand2("edit_field visibility test1 test2 test3");
-	SendCommand2("edit_method name test1 test2 test3");
-	SendCommand2("edit_method type test1 test2 test3");
-	SendCommand2("edit_method visibility test1 test2 test3");
-
 
 	SECTION("Edit Class Command")
 	{
@@ -115,8 +109,17 @@ TEST_CASE("Commands work")
 		std::string editName("test2");
 		std::string fieldName("test3");
 		std::string attr("test4");
-		SendCommand2("edit_field test4 test1 test3 test2");
+		std::string attrName("name");
+		std::string attrType("type");
+		std::string attrVis("visibility");
+		SendCommand2("edit_field name test1 test3 test2");
 		REQUIRE(holder2->findField(className, editName) == nullptr);
+		holder2->editField(attrName, className, fieldName, editName);
+		REQUIRE(attrName == "name");
+		holder2->editField(attrType, className, fieldName, editName);
+		REQUIRE(attrType == "type");
+		holder2->editField(attrVis, className, fieldName, editName);
+		REQUIRE(attrVis == "visibility");
 	}
 
 	SECTION("Edit Method")
