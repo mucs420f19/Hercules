@@ -118,4 +118,24 @@ TEST_CASE("Commands work")
 		SendCommand2("edit_method test4 test1 test3 test2");
 		REQUIRE(holder2->findMethod(className, editName) == nullptr);
 	}
+
+	SECTION("Edit Parameter")
+	{
+		std::string attr("test1");
+		std::string className("test2");
+		std::string methodName("test3");
+		std::string paramName("test4");
+		std::string editName("test5");
+		SendCommand2("edit_parameter test1 test2 test3 test4 test5");
+		REQUIRE(holder2->findParameter(className, methodName, editName) == nullptr);
+	}
+
+	SECTION("Edit Relationship")
+	{
+		std::string classOne("test1");
+		std::string classTwo("test2");
+		std::string newType("test3");
+		SendCommand2("edit_relationship test1 test2 test3");
+		REQUIRE(holder2->findRelationship(classOne, classTwo) != nullptr);
+	}
 }
