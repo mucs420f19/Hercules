@@ -36,6 +36,9 @@ TEST_CASE("Commands work")
 
 	SendCommand2("help");
 	SendCommand2("list");
+	SendCommand2("help_for add_class");
+	SendCommand2("help_for add_method");
+	SendCommand2("help_for add_field");
 	SendCommand2("add_class test1");
 	SendCommand2("add_class test2");
 	SendCommand2("add_class test3");
